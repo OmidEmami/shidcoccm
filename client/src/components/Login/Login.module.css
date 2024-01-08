@@ -1,0 +1,57 @@
+.loginMainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+    font-family:"shabnamM";
+
+}
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+    font-family:"shabnamM";
+    background-color: rgba(0, 153, 255, 0.144);
+    padding: 2rem;
+    border-radius: 15px;
+}
+.formContainer label {
+    font-family:"shabnamM";
+   
+}
+.formContainer Button {
+    font-family:"shabnamM";
+}
+@font-face {
+    font-family: 'shabnamM'; /* Choose a suitable name for your font */
+    src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
+    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
+  }
+.formButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1rem;
+}
+.loginHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin:2rem;
+    margin-bottom: 4rem;
+}
+.modalContainer{
+    font-family: "shabnamM";
+    
+}
+.modalContainer Button{
+    font-family: "shabnamM";
+}
+* TextField{
+    font-family: "shabnamM";
+}

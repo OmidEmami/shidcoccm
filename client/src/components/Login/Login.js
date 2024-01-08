@@ -1,0 +1,79 @@
+import React,{useState} from 'react'
+import TextField from '@mui/material/TextField';
+import styles from "./Login.module.css";
+import Button from '@mui/material/Button';
+import Logo from "../../assests/Logo/mainLogo.png";
+import { notify } from "../toast/toast.js";
+import Modal from 'react-modal';
+
+function Login() {
+    const [loginCodeModal, setLoginCodeModal] = useState(false);
+    const [phone, setPhone] = useState('')
+    const [userName, setUserName] = useState('');
+    const [password,setPassword] = useState('');
+    const [userNameError, setUserNameError] = useState({status : '', msg:''});
+    const [passwordError, setPasswordError] = useState({status : '', msg:''});
+    const [phoneError, setPhoneError] = useState({status:'',msg:''})
+    const customStyles = {
+      
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        
+        
+      },
+      overlay: {zIndex: 1000}
+    };
+    
+    const loginFunction = async (e)=>{
+        e.preventDefault();
+        setPasswordError({status:false, msg:''})
+        setUserNameError({status:false, msg:''})
+        if(userName === '' || userName === null){
+            setUserNameError({status:true, msg:"این قسمت الزامی است"})
+        }else if(password === '' || password === null){
+            setPasswordError({status:true, msg:"این فیلد الزامی است"})
+        }
+        
+    }
+  return (
+    <div className={styles.loginMainContainer}>
+       <Modal
+       
+        isOpen={loginCodeModal}
+        onRequestClose={()=>setLoginCodeModal(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className={styles.modalContainer}>
+          <label>شماره موبایل</label>
+        <TextField  className={styles.modalContainer} value={phone} onChange={(e)=>setPhone(e.target.value)} fullWidth error={phoneError.status} type='text'  id="phone" label="شماره موبایل" variant="outlined" />
+        <Button fullWidth variant="outlined">دریافت کد یکبارمصرف</Button>
+        </div>
+      </Modal>
+        <div className={styles.loginHeader}>
+            <h3>ورود به سیستم</h3>
+            <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
+        </div>
+      <form className={styles.formContainer} onSubmit={loginFunction}>
+        <label>نام کاربری</label>
+      <TextField value={userName} onChange={(e)=>setUserName(e.target.value)} fullWidth error={userNameError.status} type='text'  id="userName" label="نام کاربری" variant="outlined" />
+      {userNameError.status && <span style={{color:"red"}}>{userNameError.msg}</span>}
+      <label>رمز عبور</label>
+      <TextField value={password} onChange={(e)=>setPassword(e.target.value)} fullWidth type='password' error={passwordError.status}  id="password" label="رمز عبور" variant='outlined' />
+      {passwordError.status && <span style={{color:"red"}}>{passwordError.msg}</span>}
+      <div className={styles.formButtonContainer}>
+      <Button type='submit' variant="outlined">ورود</Button>
+      <Button variant="outlined">حساب ندارم، ثبت نام میکنم</Button>
+      </div>
+      <Button onClick={()=>setLoginCodeModal(true)} fullWidth variant="outlined">ورود با کد یکبار مصرف</Button>
+      </form>
+    </div>
+  )
+}
+
+export default Login
