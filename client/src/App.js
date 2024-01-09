@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
-import SignUpUser from "./components/SignUp/SignUpUser";
+import SignUpUser from "./components/Signup/SignUpUser";
 function App() {
   return (
-    <div>
+    <div style={{direction:"rtl"}}>
       <BrowserRouter>
       <Switch>
         <Route exact path="/login">

@@ -66,3 +66,13 @@
 .modalContainer label{
     font-family: 'shabnamM';
 }
+.formContainer input{
+  font-family: 'shabnamM';
+  direction: rtl;
+}
+
+.MainSignUpContainer .MuiSelect-root,
+.MainSignUpContainer .MuiMenuItem-root {
+  font-family: 'shabnamM' !important; /* Specify your custom font */
+  direction: rtl; /* Set direction if needed */
+}

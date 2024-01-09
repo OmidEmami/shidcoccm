@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 
 function SignUpUser() {
+  
   const customStyles = {
       
     content: {
@@ -86,8 +87,11 @@ const iranProvinces = [
     const [confirmPasswordError, setConfirmPasswordError] = useState({status:'', msg:''});
     const [receivedCode, setReceivedCode] = useState('')
     const [receivedCodeError, setReceivedCodeError] = useState({status:'', msg:''});
+    
     const [enableVerifyCodeButton, setEnableVerifyCodeButton] = useState(true)
-const receiveVerificationCode = async () =>{
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 180);
+  const receiveVerificationCode = async () =>{
 
 
 }
@@ -95,10 +99,81 @@ const sendSmsCodeVerification = async () =>{
   setShowModalCodeVerify(true)
 }
 const changeReceivedCode = async (e)=>{
+  setReceivedCode(e)
+  const fiveDigitsRegex = /^\d{5}$/;
+  const isFiveDigits = fiveDigitsRegex.test(e);
+  if (isFiveDigits){
+    setEnableVerifyCodeButton(false)
+  }
+}
+const checkBlurFullName = ()=>{
+  setNameError({status:false, msg:''})
+  if(Name=== "" || Name === null){
+    setNameError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }
+}
+const checkBlurPhoneNumber = ()=>{
+  setPhoneNumberError({status:false, msg:''})
+  if(PhoneNumber=== "" || PhoneNumber === null){
+    setPhoneNumberError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }
+}
+const checkBlurEmail = ()=>{
+  setEmailError({status:false, msg:''})
+  if(Email=== "" || Email === null){
+    setEmailError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }
+}
+const checkBlurRule = ()=>{
+  setRuleError({status:false, msg:''})
+  if(Rule === "" || Rule === null){
+    setRuleError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }
+}
+const checkBlurProvince = ()=>{
+  setProvinceError({status:false, msg:''})
+  if(Province=== "" || Province === null){
+    setProvinceError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }
+}
+const checkBlurPassword = ()=>{
+  const passwordRegex = /^(?=.*[a-zA-Z]).{5,}$/;
+  const isValid = passwordRegex.test(Password);
+  setPasswordError({status:false, msg:''})
+  if(isValid){
 
+  
+  if(Password=== "" || Password === null){
+    setPasswordError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }else{
+    setPasswordError({status:false, msg:''})
+  }
+  }else{
+    setPasswordError({status:true, msg:'رمز عبور باید شامل حداقل 5 عدد و یک حرف انگلیسی باشد'})
+}
+}
+  const checkBlurConfirmPassword = ()=>{
+    if(Password === confirmPassword){
+  const passwordRegex = /^(?=.*[a-zA-Z]).{5,}$/;
+  const isValid = passwordRegex.test(confirmPassword);
+  setConfirmPasswordError({status:false, msg:''})
+  if(isValid){
+
+  
+  if(confirmPassword=== "" || confirmPassword === null){
+    setConfirmPasswordError({status:true, msg:'لطفا این فیلد را کامل کنید'})
+  }else{
+    setConfirmPasswordError({status:false, msg:''})
+  }
+  }else{
+    setConfirmPasswordError({status:true, msg:'رمز عبور باید شامل حداقل 5 عدد و یک حرف انگلیسی باشد'})
+}
+    }else{
+      setConfirmPasswordError({status:true, msg:'تکرار رمز عبور درست نیست!'})
+    }
 }
   return (
-    <div className={styles.MainSignUpContainer}>
+    <div dir='rtl' className={styles.MainSignUpContainer}>
         <Modal
        
        isOpen={showModalCodeVerify}
@@ -108,9 +183,9 @@ const changeReceivedCode = async (e)=>{
      >
        <div className={styles.modalContainer}>
          <h3>جهت تایید شماره موبایل لطفا کد دریافت شده از طریق پیام کوتاه را وارد نمایید</h3>
-         <TextField type='number' fullWidth label="کد تایید" placeholder='کد تایید' id='VerifyCode'
-         variant='outlined' value={receivedCode} onChange={(e)=>changeReceivedCode(e.target.value)}
-         />
+         <TextField sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} type='number' fullWidth  placeholder='کد تایید' id='VerifyCode'
+         variant='outlined' value={receivedCode} onChange={(e)=>changeReceivedCode(e.target.value)}/>
+         <Button style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>
       <div className={styles.loginHeader}>
@@ -119,28 +194,43 @@ const changeReceivedCode = async (e)=>{
         </div>
       <form className={styles.formContainer} onSubmit={receiveVerificationCode}>
         <label>نام کامل</label>
-        <TextField fullWidth label='نام کامل' placeholder='نام و نام خانوادگی' id="FullName"
+        <TextField error={NameError.status} onBlur={checkBlurFullName} fullWidth placeholder='نام و نام خانوادگی' id="FullName"
             variant="outlined" type='text' value={Name} onChange={(e)=>setName(e.target.value)} />
+            {NameError.status === true && <span style={{color:"red"}}>{NameError.msg}</span>}
         <label>شماره تماس</label>
-        <TextField fullWidth label="شماره موبایل" placeholder='مثلا : 09123456789'  id="PhoneNumber"
+        <TextField onBlur={checkBlurPhoneNumber} error={PhoneNumberError.status} fullWidth  placeholder='مثلا : 09123456789'  id="PhoneNumber"
           variant="outlined" type='number' value={PhoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} />
+          {PhoneNumberError.status === true && <span style={{color:"red"}}>{PhoneNumberError.msg}</span>}
         <label>ایمیل</label>
-        <TextField  fullWidth label='آدرس ایمیل' placeholder='مثلا : mail@gmail.com' id="Email"
+        <TextField error={EmailError.status} onBlur={checkBlurEmail} fullWidth  placeholder='مثلا : mail@gmail.com' id="Email"
           variant="outlined" type='text' value={Email} onChange={(e)=>setEmail(e.target.value)} />
+          {EmailError.status === true && <span style={{color:"red"}}>{EmailError.msg}</span>}
         <label>نوع کسب وکار : </label>
         <InputLabel id="RuleSelect">نوع کسب و کار خود را انتخاب کنید:</InputLabel>
-        <Select fullWidth labelId='RuleSelect' id="RuleSelect" label="انتخاب نوع کسب و کار" value={Rule} onChange={(e)=>setRule(e.target.value)}>
+        <Select error={RuleError.status} onBlur={checkBlurRule} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='RuleSelect' id="RuleSelect" label="انتخاب نوع کسب و کار" value={Rule} onChange={(e)=>setRule(e.target.value)}>
+        
           {CustomerTypes.map((value,item)=>(
-            <MenuItem key={item} value={value.value}>{value.item}</MenuItem>
+            <MenuItem sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} key={item} value={value.value}>{value.item}</MenuItem>
           ))}
         </Select>
+        {RuleError.status === true && <span style={{color:"red"}}>{RuleError.msg}</span>}
         <label>استان: </label>
         <InputLabel id="Province">استان محل کار خود را انتخاب کنید:</InputLabel>
-        <Select fullWidth labelId='Province' id='Province' label='استان محل کار را انتخاب کنید' value={Province} onChange={(e)=>setProvince(e.target.value)}>
+        <Select error={ProvinceError.status} onBlur={checkBlurProvince} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='Province' id='Province' label='استان محل کار را انتخاب کنید' value={Province} onChange={(e)=>setProvince(e.target.value)}>
+        
           {iranProvinces.map((value,item)=>(
-            <MenuItem  key={item} value={value.name}>{value.value}</MenuItem>
+            <MenuItem  sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} key={item} value={value.name}>{value.value}</MenuItem>
           ))}
         </Select>
+        {ProvinceError.status === true && <span style={{color:"red"}}>{ProvinceError.msg}</span>}
+        <label>رمز عبور</label>
+        <TextField error={PasswordError.status} type='password' onBlur={checkBlurPassword} fullWidth  placeholder='رمز عبور شامل اعداد و حداقل یک حرف انگلیسی' id="Password"
+          variant="outlined"  value={Password} onChange={(e)=>setPassword(e.target.value)} />
+          {PasswordError.status === true && <span style={{color:"red"}}>{PasswordError.msg}</span>}
+          <label>تکرار رمز عبور</label>
+          <TextField error={confirmPasswordError.status} type='password' onBlur={checkBlurConfirmPassword} fullWidth  placeholder='تکرار رمز عبور' id="ConfirmPassword"
+          variant="outlined"  value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
+          {confirmPasswordError.status === true && <span style={{color:"red"}}>{confirmPasswordError.msg}</span>}
         <Button onClick={sendSmsCodeVerification} fullWidth variant="outlined">ثبت نام</Button>
       </form>
       
