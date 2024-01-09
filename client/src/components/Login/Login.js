@@ -5,15 +5,23 @@ import Button from '@mui/material/Button';
 import Logo from "../../assests/Logo/mainLogo.png";
 import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
-
+import MyTimer from "../timer/MyTimer"
 function Login() {
     const [loginCodeModal, setLoginCodeModal] = useState(false);
-    const [phone, setPhone] = useState('')
+    const [phone, setPhone] = useState('');
+    const [smsCode, setSmsCode] = useState('');
+    const [showPhoneTextField, setShowPhoneTextField] = useState(true);
+    const [showSmsCodeField, setShowSmsCodeField] = useState(false)
     const [userName, setUserName] = useState('');
     const [password,setPassword] = useState('');
     const [userNameError, setUserNameError] = useState({status : '', msg:''});
     const [passwordError, setPasswordError] = useState({status : '', msg:''});
-    const [phoneError, setPhoneError] = useState({status:'',msg:''})
+    const [smsCodeError, setSmsCodeError] = useState({status:'', msg:''})
+    const [phoneError, setPhoneError] = useState({status:'',msg:''});
+    const [receivedCode, setReceivedCode] = useState('');
+    const [enableFinalCodeButton, setEnableFinalCodeButton] = useState(true)
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 180);
     const customStyles = {
       
       content: {
@@ -28,6 +36,20 @@ function Login() {
       },
       overlay: {zIndex: 1000}
     };
+    const sendPhoneNumberToCode = async ()=>{
+      setShowPhoneTextField(false);
+   
+        setShowSmsCodeField(true)
+      
+    };
+    const setReceivedCodeAndButtonStatus = async(e)=>{
+      setReceivedCode(e)
+      const fiveDigitsRegex = /^\d{5}$/;
+      const isFiveDigits = fiveDigitsRegex.test(e);
+      if (isFiveDigits){
+        setEnableFinalCodeButton(false)
+      }
+    }
     
     const loginFunction = async (e)=>{
         e.preventDefault();
@@ -40,6 +62,9 @@ function Login() {
         }
         
     }
+    const loginWithCode = async()=>{
+
+    }
   return (
     <div className={styles.loginMainContainer}>
        <Modal
@@ -47,12 +72,29 @@ function Login() {
         isOpen={loginCodeModal}
         onRequestClose={()=>setLoginCodeModal(false)}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="Code Verification Sms"
       >
         <div className={styles.modalContainer}>
-          <label>شماره موبایل</label>
-        <TextField  className={styles.modalContainer} value={phone} onChange={(e)=>setPhone(e.target.value)} fullWidth error={phoneError.status} type='text'  id="phone" label="شماره موبایل" variant="outlined" />
-        <Button fullWidth variant="outlined">دریافت کد یکبارمصرف</Button>
+          {showPhoneTextField &&(
+            <div className={styles.textField}>
+            <label>شماره موبایل</label>
+            <TextField placeholder='09123456789 : مثلا  '  value={phone} onChange={(e)=>setPhone(e.target.value)} fullWidth 
+            error={phoneError.status} type='text'  id="phone" label="شماره موبایل" variant="outlined" />
+            <Button onClick={sendPhoneNumberToCode} fullWidth variant="outlined">دریافت کد یکبارمصرف</Button>
+            </div>
+          )}
+          {showSmsCodeField &&(
+            <div className={styles.textField}>
+            <label>کد دریافت شده از طریق SMS</label>
+            <TextField value={receivedCode} onChange={(e)=>setReceivedCodeAndButtonStatus(e.target.value)} fullWidth
+            error={smsCodeError.status} type='number' id='smsCode' label="کد دریافت شده" variant='outlined'
+            />
+            <Button disabled={enableFinalCodeButton} onClick={loginWithCode} fullWidth variant="outlined">ورود - <MyTimer expiryTimestamp={time} /></Button>
+            </div>
+          )}
+          
+        
+        
         </div>
       </Modal>
         <div className={styles.loginHeader}>
