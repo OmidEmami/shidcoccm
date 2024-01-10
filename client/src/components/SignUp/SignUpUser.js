@@ -10,7 +10,7 @@ import MyTimer from "../timer/MyTimer";
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
-function SignUpUser() {
+const SignUpUser = () => {
   
   const customStyles = {
       
@@ -102,9 +102,17 @@ const iranProvinces = [
         Province:Province,
         Password:Password
       })
+      console.log(response)
       if(response.data === "ok"){
         setShowModalCodeVerify(false)
         notify("ثبت نام با موفقیت انجام شد",'success')
+        
+      }else if(response.data === "notOk"){
+        notify("کد وارد شده صحیح نیست",'error')
+        setReceivedCodeError({status:true, msg:'کد وارد شده صحیح نیست!'})
+      }else if(response.data.msg === 'already registered'){
+        setShowModalCodeVerify(false)
+        notify('این کاربر قبلا ثبت نام کرده است')
       }
     }catch(error){
 
@@ -236,8 +244,9 @@ const checkBlurPassword = ()=>{
      >
        <div className={styles.modalContainer}>
          <h3>جهت تایید شماره موبایل لطفا کد دریافت شده از طریق پیام کوتاه را وارد نمایید</h3>
-         <TextField sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} type='number' fullWidth  placeholder='کد تایید' id='VerifyCode'
+         <TextField error={receivedCodeError.status} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} type='number' fullWidth  placeholder='کد تایید' id='VerifyCode'
          variant='outlined' value={receivedCode} onChange={(e)=>changeReceivedCode(e.target.value)}/>
+         {receivedCodeError && <span style={{color:"red"}}>{receivedCodeError.msg}</span>}
          <Button onClick={receiveVerificationCode} style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>

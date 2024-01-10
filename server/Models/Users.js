@@ -20,6 +20,9 @@ const Users = db.define('Users',{
     Rule:{
         type :DataTypes.TEXT
     },
+    IsConfirmed:{
+        type: DataTypes.TEXT
+    },
     Province:{
         type: DataTypes.TEXT
     },

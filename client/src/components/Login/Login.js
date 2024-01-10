@@ -6,6 +6,7 @@ import Logo from "../../assests/Logo/mainLogo.png";
 import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer"
+import axios from 'axios';
 function Login() {
     const [loginCodeModal, setLoginCodeModal] = useState(false);
     const [phone, setPhone] = useState('');
@@ -63,7 +64,10 @@ function Login() {
         
     }
     const loginWithCode = async()=>{
-
+      const response = await axios.post("http://localhost:3001/loginwithcode",{
+        UserName : userName,
+        password : password
+      })
     }
   return (
     <div className={styles.loginMainContainer}>
