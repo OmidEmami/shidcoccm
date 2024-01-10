@@ -1,0 +1,13 @@
+font-face {
+    font-family: 'shabnamM'; /* Choose a suitable name for your font */
+    src: url('./assests/fonts/shabnamMedium.ttf') format('truetype');
+    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
+  }
+.app{
+    direction:"rtl";
+    font-family:"shabnamM"
+}
+*{
+    font-family: 'shabnamM';
+    direction: rtl;
+}

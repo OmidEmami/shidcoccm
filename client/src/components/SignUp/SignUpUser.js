@@ -9,7 +9,7 @@ import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer";
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-
+import axios from 'axios';
 function SignUpUser() {
   
   const customStyles = {
@@ -92,11 +92,64 @@ const iranProvinces = [
     const time = new Date();
     time.setSeconds(time.getSeconds() + 180);
   const receiveVerificationCode = async () =>{
+    try{
+      const response = await axios.post('http://localhost:3001/checkverificationcode',{
+        Code : receivedCode,
+        PhoneNumber: PhoneNumber,
+        FullName:Name,
+        Email:Email,
+        Rule:Rule,
+        Province:Province,
+        Password:Password
+      })
+      if(response.data === "ok"){
+        setShowModalCodeVerify(false)
+        notify("ثبت نام با موفقیت انجام شد",'success')
+      }
+    }catch(error){
 
+    }
 
 }
 const sendSmsCodeVerification = async () =>{
-  setShowModalCodeVerify(true)
+  if(NameError.status === true || PhoneNumberError.status === true
+     || EmailError.status === true || RuleError.status === true ||
+     ProvinceError.status === true || PasswordError.status === true ||
+     confirmPasswordError.status === true || Name === '' || PhoneNumber === '' ||
+     Email === '' || Rule === '' || Province === '' || Password === '' ||
+     confirmPassword === ''
+      ){
+        if(NameError.status === true || Name === ''){
+          setNameError({status : true, msg :"لطفا این قسمت را کامل کنید!"})
+        }else if(PhoneNumberError.status === true || PhoneNumber === ''){
+          setPhoneNumberError({status:true,msg:"لطفا این قسمت را کامل کنید!"})
+        }else if(EmailError.status === true || Email === ''){
+          setEmailError({status:true, msg:"لطفا این قسمت را کامل کنید!"})
+        }else if(RuleError.status === true || Rule === ''){
+          setRuleError({status:true, msg:"لطفا این قسمت را کامل کنید!"})
+        }else if(ProvinceError.status === true || Province === ''){
+          setProvinceError({status:true, msg:'لطفا این قسمت را کامل کنید!'})
+        }else if(PasswordError.status === true || Password === ''){
+          setPasswordError({status:true , msg:'لطفا این قسمت را کامل کنید!'})
+        }else if(confirmPasswordError.status === true || confirmPassword === ''){
+          setConfirmPasswordError({status:true, msg:'لطفا این قسمت را کامل کنید!'})
+        }
+        notify( "لطفا همه موارد را به درستی تکمیل کنید", "error")
+  }else{
+    setShowModalCodeVerify(true)
+    try{
+      const response = await axios.post('http://localhost:3001/getverificationcode',{
+        PhoneNumber : PhoneNumber,
+        Access : 'SignUp'
+      })
+      if(response.status === 200){
+        notify( "پیامک کد تایید تا لحظاتی دیگر پیامک می شود", "success")
+      }
+    }catch(error){
+  
+    }
+  }
+ 
 }
 const changeReceivedCode = async (e)=>{
   setReceivedCode(e)
@@ -177,7 +230,7 @@ const checkBlurPassword = ()=>{
         <Modal
        
        isOpen={showModalCodeVerify}
-       onRequestClose={()=>showModalCodeVerify(false)}
+       onRequestClose={()=>setShowModalCodeVerify(false)}
        style={customStyles}
        contentLabel="Code Verification Sms"
      >
@@ -185,14 +238,14 @@ const checkBlurPassword = ()=>{
          <h3>جهت تایید شماره موبایل لطفا کد دریافت شده از طریق پیام کوتاه را وارد نمایید</h3>
          <TextField sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} type='number' fullWidth  placeholder='کد تایید' id='VerifyCode'
          variant='outlined' value={receivedCode} onChange={(e)=>changeReceivedCode(e.target.value)}/>
-         <Button style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
+         <Button onClick={receiveVerificationCode} style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>
       <div className={styles.loginHeader}>
             <h3>ثبت نام مشتریان</h3>
             <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
         </div>
-      <form className={styles.formContainer} onSubmit={receiveVerificationCode}>
+      <form className={styles.formContainer} >
         <label>نام کامل</label>
         <TextField error={NameError.status} onBlur={checkBlurFullName} fullWidth placeholder='نام و نام خانوادگی' id="FullName"
             variant="outlined" type='text' value={Name} onChange={(e)=>setName(e.target.value)} />

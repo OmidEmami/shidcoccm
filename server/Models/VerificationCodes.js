@@ -14,6 +14,9 @@ const VerificationCodes = db.define('VerificationCodes',{
     isExpired:{
         type: DataTypes.TEXT,
     },
+    CreatedDate:{
+        type:DataTypes.TEXT
+    }
     
     
     
