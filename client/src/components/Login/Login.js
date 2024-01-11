@@ -38,15 +38,35 @@ function Login() {
       overlay: {zIndex: 1000}
     };
     const sendPhoneNumberToCode = async ()=>{
-      setShowPhoneTextField(false);
+      try{
+        const response = await axios.post('http://localhost:3001/sendloginverifycode',{
+          PhoneNumber: phone
+        })
+        
+        if(response.data.msg === 'phoneNotFound'){
+          setPhoneError({status:true, msg :'کابری با این شماره یافت نشد'})
+          notify("کاربری با این شماره یافت نشد",'error')
+        }else if(response.data.msg === "codeSent"){
+          setPhoneError({status:false, msg :''})
+          
+          setShowPhoneTextField(false);
    
-        setShowSmsCodeField(true)
+    
+          setShowSmsCodeField(true)
+          
+        }
+      }catch(error){
+        notify("ارتباط با سرور برقرار نیست!",'error')
+      }
+    
+
       
     };
     const setReceivedCodeAndButtonStatus = async(e)=>{
       setReceivedCode(e)
       const fiveDigitsRegex = /^\d{5}$/;
       const isFiveDigits = fiveDigitsRegex.test(e);
+      setSmsCodeError({status:false, msg :''})
       if (isFiveDigits){
         setEnableFinalCodeButton(false)
       }
@@ -64,10 +84,25 @@ function Login() {
         
     }
     const loginWithCode = async()=>{
+      try{
+
+      
       const response = await axios.post("http://localhost:3001/loginwithcode",{
-        UserName : userName,
-        password : password
+        PhoneNumber : phone,
+        VerifyCode : receivedCode
       })
+      
+    
+      if(response.data.msg === "verified"){
+        setLoginCodeModal(false)
+        notify("ورود موفق", 'success')
+      }else if(response.data.msg === "notverified"){
+        notify("کد وارد شده صحیح نیست",'error')
+        setSmsCodeError({status : true, msg:'کد وارد شده صحیح نیست'})
+      }
+      }catch{
+        notify("خطا", 'error')
+      }
     }
   return (
     <div className={styles.loginMainContainer}>
@@ -84,6 +119,7 @@ function Login() {
             <label>شماره موبایل</label>
             <TextField placeholder='09123456789 : مثلا  '  value={phone} onChange={(e)=>setPhone(e.target.value)} fullWidth 
             error={phoneError.status} type='text'  id="phone" label="شماره موبایل" variant="outlined" />
+            {phoneError.status && <span style={{color:'red'}}>{phoneError.msg}</span>}
             <Button onClick={sendPhoneNumberToCode} fullWidth variant="outlined">دریافت کد یکبارمصرف</Button>
             </div>
           )}
@@ -93,6 +129,7 @@ function Login() {
             <TextField value={receivedCode} onChange={(e)=>setReceivedCodeAndButtonStatus(e.target.value)} fullWidth
             error={smsCodeError.status} type='number' id='smsCode' label="کد دریافت شده" variant='outlined'
             />
+          {smsCodeError && <span style={{color:'red'}}>{smsCodeError.msg}</span>}
             <Button disabled={enableFinalCodeButton} onClick={loginWithCode} fullWidth variant="outlined">ورود - <MyTimer expiryTimestamp={time} /></Button>
             </div>
           )}

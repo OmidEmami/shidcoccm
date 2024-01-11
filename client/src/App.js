@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
-import SignUpUser from "./components/Signup/SignUpUser";
+import SignUpUser from "./components/SignUp/SignUpUser";
 import styles from "./App.module.css"
 function App() {
   return (

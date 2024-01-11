@@ -73,7 +73,7 @@ export const checkVerificationCode = async(req,res)=>{
                 }
             })
             
-            if(checkRegistrant.length !== 0 ? (checkRegistrant[0].dataValues === req.body.Email || checkRegistrant[0].dataValues.Phone === req.body.PhoneNumber) : false){
+            if(checkRegistrant.length !== 0 ? (checkRegistrant[0].dataValues.Email === req.body.Email || checkRegistrant[0].dataValues.Phone === req.body.PhoneNumber) : false){
                 res.json({msg:"already registered"}).status(400)
             }else{
             const signUpNewUser = await Users.create({
@@ -83,34 +83,106 @@ export const checkVerificationCode = async(req,res)=>{
                 Email:req.body.Email,
                 Rule:req.body.Rule,
                 Province:req.body.Province,
-                Password:hashPassword
+                Password:hashPassword,
+                IsConfirmed: false,
+                Type:'Customer'
             })          
         
             res.json("ok")
         }
         }else{
-            res.status(400).json({msg:"not ok"})
+            res.json({msg:"not ok"}).status(400)
         }
     }else{
-        res.status(400).json({msg:"not ok"})
+            res.json({msg:"not ok"}).status(400)
     }
 
     }catch(error){
         console.log(error)
     }
 }
-export const loginWithCode = async (req,res) =>{
-    const user = req.body.UserName;
-    const pass = req.body.Password;
-    const responseEmail = await Users.findAll({
-        where:{
-            Email :req.body.UserName
+export const sendLoginVerifyCode = async (req,res) =>{
+    const randomCode = Math.floor(Math.random() * 100000);
+    const realRandomCode = randomCode.toString().padStart(5, '0');
+    try{
+        const response = await Users.findAll({
+            where:{
+                Phone:req.body.PhoneNumber,
+                isConfirmed : true
+            }
+        })
+        if(response.length !== 0 && response[0].dataValues.Phone === req.body.PhoneNumber){
+            const newVerify = await VerificationCodes.create({
+                PhoneNumber: req.body.PhoneNumber,
+                isExpired:false,
+                VerifyCode:realRandomCode
+
+            })
+            const expireVerifyCode = async()=>{
+                try{
+                    const expireResponse = await VerificationCodes.update({
+                        isExpired : true
+                    },{
+                        where:{
+                            PhoneNumber : req.body.PhoneNumber,
+                            VerifyCode : realRandomCode,
+                            isExpired:false
+                        }
+                    })
+                }catch(error){
+    
+                }
+                
+            }
+            setTimeout(expireVerifyCode, 180000);
+            res.json({msg:'codeSent'})
+        }else{
+            res.json({msg:"phoneNotFound"}).status(400)
         }
-    })
-    console.log(responseEmail)
-    if(responseEmail.length !== 0){
-        const match = await bcrypt.compare(pass, responseEmail[0].Password);
+    }catch(error){
+            res.status(400).json({msg:"noConnection"})
     }
+}
+export const loginWithCode = async (req,res) =>{
+    // const user = req.body.UserName;
+    // const pass = req.body.Password;
+    // const responseEmail = await Users.findAll({
+    //     where:{
+    //         Email :req.body.UserName
+    //     }
+    // })
+    // console.log(responseEmail)
+    // if(responseEmail.length !== 0){
+    //     const match = await bcrypt.compare(pass, responseEmail[0].Password);
+    // }
+    try{
+        const findCode = await VerificationCodes.findAll({
+            where:{
+                PhoneNumber: req.body.PhoneNumber,
+                isExpired:false,
+                VerifyCode:req.body.VerifyCode
+                
+            }
+        })
+        if(findCode.length !== 0 && findCode[0].dataValues.VerifyCode === req.body.VerifyCode && findCode[0].dataValues.PhoneNumber === req.body.PhoneNumber){
+            const expireCode = await VerificationCodes.update({
+                isExpired : true
+            },{
+                where:{
+                    PhoneNumber: req.body.PhoneNumber,
+                isExpired:false,
+                VerifyCode:req.body.VerifyCode
+                }
+            })
+            res.json({msg:"verified"})
+        }else{
+            res.json({msg:"notverified"})
+        }
+        
+    }catch(error){
+        res.status(400).json({msg:"notverified"})
+    }
+
 }
 // export const loginUser = async(req,res) =>{
    

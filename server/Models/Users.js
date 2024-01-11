@@ -26,6 +26,9 @@ const Users = db.define('Users',{
     Province:{
         type: DataTypes.TEXT
     },
+    Type:{
+        type: DataTypes.TEXT
+    },
     Address:{
         type: DataTypes.TEXT
     },
