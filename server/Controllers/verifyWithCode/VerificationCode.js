@@ -2,7 +2,7 @@ import Users from "../../Models/Users.js";
 import VerificationCodes from "../../Models/VerificationCodes.js";
 import moment from 'jalali-moment' ;
 import bcrypt,{compare} from "bcrypt"
-import { constants } from "fs/promises";
+
 
 export const verifyPhoneNumber = async(req,res)=>{
     const randomCode = Math.floor(Math.random() * 100000);
@@ -12,7 +12,8 @@ export const verifyPhoneNumber = async(req,res)=>{
             isExpired : true
         },{
             where:{
-                PhoneNumber : req.body.PhoneNumber
+                PhoneNumber : req.body.PhoneNumber,
+                isExpired:false
             }
         })
         const response = await VerificationCodes.create({
@@ -112,10 +113,19 @@ export const sendLoginVerifyCode = async (req,res) =>{
             }
         })
         if(response.length !== 0 && response[0].dataValues.Phone === req.body.PhoneNumber){
+            const expirePastCodes = await VerificationCodes.update({
+                isExpired: true
+            },{
+                where:{
+                    PhoneNumber: req.body.PhoneNumber,
+                    isExpired:false,
+                }
+            })
             const newVerify = await VerificationCodes.create({
                 PhoneNumber: req.body.PhoneNumber,
                 isExpired:false,
-                VerifyCode:realRandomCode
+                VerifyCode:realRandomCode,
+                CreatedDate : moment().locale('fa').format('YYYY-MM-DD HH:mm:ss')
 
             })
             const expireVerifyCode = async()=>{

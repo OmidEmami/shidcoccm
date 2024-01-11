@@ -20,7 +20,8 @@ function Login() {
     const [smsCodeError, setSmsCodeError] = useState({status:'', msg:''})
     const [phoneError, setPhoneError] = useState({status:'',msg:''});
     const [receivedCode, setReceivedCode] = useState('');
-    const [enableFinalCodeButton, setEnableFinalCodeButton] = useState(true)
+    const [enableFinalCodeButton, setEnableFinalCodeButton] = useState(true);
+    const [showTryReceiveCodeButton, setShowTryReceiveCodeButton] = useState(false)
     const time = new Date();
     time.setSeconds(time.getSeconds() + 180);
     const customStyles = {
@@ -53,7 +54,14 @@ function Login() {
    
     
           setShowSmsCodeField(true)
-          
+          notify('کد ورود پیامک شد','success')
+          function expireVerifyCode (){
+            setShowPhoneTextField(true);
+   
+    
+          setShowSmsCodeField(false)
+          }
+          setTimeout(expireVerifyCode, 180000);
         }
       }catch(error){
         notify("ارتباط با سرور برقرار نیست!",'error')
