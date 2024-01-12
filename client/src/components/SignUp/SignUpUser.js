@@ -102,20 +102,23 @@ const iranProvinces = [
         Province:Province,
         Password:Password
       })
-      console.log(response)
-      if(response.data === "ok"){
+      
+      if(response.data ?(response.data === "ok"): false){
         setShowModalCodeVerify(false)
         notify("ثبت نام با موفقیت انجام شد",'success')
         
-      }else if(response.data === "notOk"){
-        notify("کد وارد شده صحیح نیست",'error')
-        setReceivedCodeError({status:true, msg:'کد وارد شده صحیح نیست!'})
-      }else if(response.data.msg === 'already registered'){
-        setShowModalCodeVerify(false)
-        notify('این کاربر قبلا ثبت نام کرده است')
+      }else{
+        notify("خطا",'error')
       }
     }catch(error){
-
+      
+      if(error.response.data.msg === "already registered"){
+        setShowModalCodeVerify(false)
+        notify('این کاربر قبلا ثبت نام کرده است')
+      }else if(error.response.data.msg === "not ok"){
+        notify("کد وارد شده صحیح نیست",'error')
+        setReceivedCodeError({status:true, msg:'کد وارد شده صحیح نیست!'})
+      }
     }
 
 }

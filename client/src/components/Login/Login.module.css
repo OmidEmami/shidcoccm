@@ -63,6 +63,16 @@
 .modalContainer label{
     font-family: 'shabnamM';
 }
+.fromContainer Button{
+    font-family: "shabnamM";
+    font-size: 1rem;
+}
+.formContainer input{
+    font-family: 'shabnamM' !important;
+}
+.fromContainer label{
+    font-family: 'shabnamM';
+}
   
   .textField {
     display: flex;

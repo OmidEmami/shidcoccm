@@ -44,10 +44,7 @@ function Login() {
           PhoneNumber: phone
         })
         
-        if(response.data.msg === 'phoneNotFound'){
-          setPhoneError({status:true, msg :'کابری با این شماره یافت نشد'})
-          notify("کاربری با این شماره یافت نشد",'error')
-        }else if(response.data.msg === "codeSent"){
+        if(response.data.msg === "codeSent"){
           setPhoneError({status:false, msg :''})
           
           setShowPhoneTextField(false);
@@ -64,7 +61,12 @@ function Login() {
           setTimeout(expireVerifyCode, 180000);
         }
       }catch(error){
+        if(error.response.data.msg === 'phoneNotFound'){
+          setPhoneError({status:true, msg :'کابری با این شماره یافت نشد'})
+          notify("کاربری با این شماره یافت نشد",'error')
+        }else if(error.response.data.msg === 'noConnection'){
         notify("ارتباط با سرور برقرار نیست!",'error')
+      }
       }
     
 
@@ -88,6 +90,30 @@ function Login() {
             setUserNameError({status:true, msg:"این قسمت الزامی است"})
         }else if(password === '' || password === null){
             setPasswordError({status:true, msg:"این فیلد الزامی است"})
+        }else{
+          try{
+            const response = await axios.post("http://localhost:3001/loginnormal",{
+              UserName : userName,
+              Password:password
+            })
+            setPasswordError({status:false, msg:''})
+            setUserNameError({status:false, msg:''})
+            console.log(response)
+            if(response.data ? (response.data === "ok"):false){
+              notify('ورود موفق','success')
+            }
+          }catch(error){
+            if(error.response.data.msg === 'Wrong Password'){
+              notify('رمز عبور اشتباه است','error')
+              setPasswordError({status:true, msg:'رمز عبور اشتباه است!'})
+            }else if(error.response.data.msg === 'user not found'){
+              notify('کاربری با این مشخصات یافت نشد!','error')
+              setUserNameError({status:true,msg:'کاربری با این مشخصات یافت نشد!'})
+            }else{
+              notify('ارتباط با سرور برقرار نیست!','error')
+            }
+            
+          }
         }
         
     }
@@ -152,10 +178,10 @@ function Login() {
         </div>
       <form className={styles.formContainer} onSubmit={loginFunction}>
         <label>نام کاربری</label>
-      <TextField value={userName} onChange={(e)=>setUserName(e.target.value)} fullWidth error={userNameError.status} type='text'  id="userName" label="نام کاربری" variant="outlined" />
+      <TextField value={userName} onChange={(e)=>setUserName(e.target.value)} fullWidth error={userNameError.status} type='text'  id="userName" placeholder="نام کاربری" variant="outlined" />
       {userNameError.status && <span style={{color:"red"}}>{userNameError.msg}</span>}
       <label>رمز عبور</label>
-      <TextField value={password} onChange={(e)=>setPassword(e.target.value)} fullWidth type='password' error={passwordError.status}  id="password" label="رمز عبور" variant='outlined' />
+      <TextField value={password} onChange={(e)=>setPassword(e.target.value)} fullWidth type='password' error={passwordError.status}  id="password" placeholder="رمز عبور" variant='outlined' />
       {passwordError.status && <span style={{color:"red"}}>{passwordError.msg}</span>}
       <div className={styles.formButtonContainer}>
       <Button type='submit' variant="outlined">ورود</Button>

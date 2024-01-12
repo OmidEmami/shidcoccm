@@ -67,15 +67,19 @@ export const checkVerificationCode = async(req,res)=>{
                 VerifyCode: req.body.Code,
              
             }})
-            const checkRegistrant = await Users.findAll({
+            const checkRegistrantEmail = await Users.findAll({
                 where:{
-                    Phone : req.body.PhoneNumber,
                     Email : req.body.Email
                 }
             })
+            const checkRegistrantPhone = await Users.findAll({
+                where:{
+                    Phone : req.body.PhoneNumber,
+                }
+            })
             
-            if(checkRegistrant.length !== 0 ? (checkRegistrant[0].dataValues.Email === req.body.Email || checkRegistrant[0].dataValues.Phone === req.body.PhoneNumber) : false){
-                res.json({msg:"already registered"}).status(400)
+            if(checkRegistrantEmail.length !== 0 || checkRegistrantPhone.length !== 0){
+                res.status(400).json({msg:"already registered"})
             }else{
             const signUpNewUser = await Users.create({
                 
@@ -92,10 +96,10 @@ export const checkVerificationCode = async(req,res)=>{
             res.json("ok")
         }
         }else{
-            res.json({msg:"not ok"}).status(400)
+            res.status(400).json({msg:"not ok"})
         }
     }else{
-            res.json({msg:"not ok"}).status(400)
+            res.status(400).json({msg:"not ok"})
     }
 
     }catch(error){
@@ -147,7 +151,7 @@ export const sendLoginVerifyCode = async (req,res) =>{
             setTimeout(expireVerifyCode, 180000);
             res.json({msg:'codeSent'})
         }else{
-            res.json({msg:"phoneNotFound"}).status(400)
+            res.status(400).json({msg:"phoneNotFound"})
         }
     }catch(error){
             res.status(400).json({msg:"noConnection"})
