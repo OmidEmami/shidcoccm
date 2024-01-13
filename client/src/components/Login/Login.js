@@ -7,7 +7,9 @@ import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer"
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 function Login() {
+    const history = useHistory();
     const [loginCodeModal, setLoginCodeModal] = useState(false);
     const [phone, setPhone] = useState('');
     const [smsCode, setSmsCode] = useState('');
@@ -99,8 +101,9 @@ function Login() {
             setPasswordError({status:false, msg:''})
             setUserNameError({status:false, msg:''})
             console.log(response)
-            if(response.data ? (response.data === "ok"):false){
+            if(response.data ? (response.data.msg === "ok"):false){
               notify('ورود موفق','success')
+              history.push('/sdash')
             }
           }catch(error){
             if(error.response.data.msg === 'Wrong Password'){
@@ -130,6 +133,7 @@ function Login() {
       if(response.data.msg === "verified"){
         setLoginCodeModal(false)
         notify("ورود موفق", 'success')
+        history.push('/sdash')
       }else if(response.data.msg === "notverified"){
         notify("کد وارد شده صحیح نیست",'error')
         setSmsCodeError({status : true, msg:'کد وارد شده صحیح نیست'})

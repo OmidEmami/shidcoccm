@@ -7,6 +7,9 @@
     font-family:"shabnamM";
 
 }
+.loginMainContainer h3{
+    color:black
+}
 .formContainer{
     display: flex;
     flex-direction: column;
