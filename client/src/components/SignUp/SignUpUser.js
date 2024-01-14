@@ -246,7 +246,7 @@ const checkBlurPassword = ()=>{
        contentLabel="Code Verification Sms"
      >
        <div className={styles.modalContainer}>
-         <h3>جهت تایید شماره موبایل لطفا کد دریافت شده از طریق پیام کوتاه را وارد نمایید</h3>
+         <h3 style={{color:'black'}}>جهت تایید شماره موبایل لطفا کد دریافت شده از طریق پیام کوتاه را وارد نمایید</h3>
          <TextField error={receivedCodeError.status} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} type='number' fullWidth  placeholder='کد تایید' id='VerifyCode'
          variant='outlined' value={receivedCode} onChange={(e)=>changeReceivedCode(e.target.value)}/>
          {receivedCodeError && <span style={{color:"red"}}>{receivedCodeError.msg}</span>}
@@ -254,7 +254,7 @@ const checkBlurPassword = ()=>{
        </div>
      </Modal>
       <div className={styles.loginHeader}>
-            <h3>ثبت نام مشتریان</h3>
+            <h3 style={{color:"black"}}>ثبت نام مشتریان</h3>
             <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
         </div>
       <form className={styles.formContainer} >

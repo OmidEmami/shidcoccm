@@ -189,7 +189,7 @@ function Login() {
       {passwordError.status && <span style={{color:"red"}}>{passwordError.msg}</span>}
       <div className={styles.formButtonContainer}>
       <Button type='submit' variant="outlined">ورود</Button>
-      <Button variant="outlined">حساب ندارم، ثبت نام میکنم</Button>
+      <Button onClick={()=>history.push('/usersignup')} variant="outlined">حساب ندارم، ثبت نام میکنم</Button>
       </div>
       <Button onClick={()=>setLoginCodeModal(true)} fullWidth variant="outlined">ورود با کد یکبار مصرف</Button>
       </form>

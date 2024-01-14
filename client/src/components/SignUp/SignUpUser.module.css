@@ -8,6 +8,12 @@
    
     font-family: 'shabnamM';
 }
+.MainSignUpContainer h3{
+  color:'black'
+}
+.MainSignUpContainer h4{
+  color:'black'
+}
 .loginHeader{
     display: flex;
     flex-direction: row;
