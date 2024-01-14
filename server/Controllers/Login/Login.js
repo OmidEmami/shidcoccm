@@ -9,12 +9,14 @@ export const loginNormal = async (req,res)=>{
     try{
         const findEmail = await Users.findAll({
             where:{
-                Email : req.body.UserName
+                Email : req.body.UserName,
+                IsConfirmed: true
             }
         })
         const findPhone = await Users.findAll({
             where:{
-                Phone : req.body.UserName
+                Phone : req.body.UserName,
+                IsConfirmed: true
             }
         })
         
@@ -49,7 +51,7 @@ export const loginNormal = async (req,res)=>{
             });
             
             
-            res.json({access: accessToken, msg:"ok" });
+            res.json({access: accessToken, msg:"ok", user:findEmail });
         }else if(findPhone.length >0){
             const match = await bcrypt.compare(req.body.Password, findPhone[0].Password);
             if(!match) return res.status(400).json({msg: "Wrong Password"});
@@ -60,7 +62,7 @@ export const loginNormal = async (req,res)=>{
             const type = findPhone[0].Type;
             const rule = findPhone[0].Rule
             const province = findPhone[0].Province;
-            const password = findPhone[0].Password
+            
             const accessToken = jwt.sign({userId, name, email,phone, type,rule,province}, process.env.ACCESS_TOKEN_SECRET,{
                 expiresIn: '15s'
             });
@@ -80,7 +82,7 @@ export const loginNormal = async (req,res)=>{
             });
             
          
-            res.json({access: accessToken, msg:"ok" });
+            res.json({access: accessToken, msg:"ok",user:findPhone });
         }else{
             res.status(400).json({msg: "user not found"});
         }

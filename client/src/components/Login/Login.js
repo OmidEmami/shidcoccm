@@ -103,7 +103,12 @@ function Login() {
             console.log(response)
             if(response.data ? (response.data.msg === "ok"):false){
               notify('ورود موفق','success')
+              console.log(response)
+              if(response.data.user[0].Type === "Staff"){
               history.push('/sdash')
+              }else if(response.data.user[0].Type === "Customer"){
+                history.push('/cdash')
+              }
             }
           }catch(error){
             if(error.response.data.msg === 'Wrong Password'){

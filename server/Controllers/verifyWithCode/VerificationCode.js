@@ -3,7 +3,7 @@ import VerificationCodes from "../../Models/VerificationCodes.js";
 import moment from 'jalali-moment' ;
 import bcrypt,{compare} from "bcrypt"
 
-
+import jwt from "jsonwebtoken";
 export const verifyPhoneNumber = async(req,res)=>{
     const randomCode = Math.floor(Math.random() * 100000);
     const realRandomCode = randomCode.toString().padStart(5, '0');
@@ -90,7 +90,7 @@ export const checkVerificationCode = async(req,res)=>{
                 Province:req.body.Province,
                 Password:hashPassword,
                 IsConfirmed: false,
-                Type:'Customer'
+                Type:req.body.Type
             })          
         
             res.json("ok")
@@ -158,17 +158,7 @@ export const sendLoginVerifyCode = async (req,res) =>{
     }
 }
 export const loginWithCode = async (req,res) =>{
-    // const user = req.body.UserName;
-    // const pass = req.body.Password;
-    // const responseEmail = await Users.findAll({
-    //     where:{
-    //         Email :req.body.UserName
-    //     }
-    // })
-    // console.log(responseEmail)
-    // if(responseEmail.length !== 0){
-    //     const match = await bcrypt.compare(pass, responseEmail[0].Password);
-    // }
+    
     try{
         const findCode = await VerificationCodes.findAll({
             where:{
@@ -183,12 +173,47 @@ export const loginWithCode = async (req,res) =>{
                 isExpired : true
             },{
                 where:{
-                    PhoneNumber: req.body.PhoneNumber,
+                PhoneNumber: req.body.PhoneNumber,
                 isExpired:false,
                 VerifyCode:req.body.VerifyCode
                 }
             })
-            res.json({msg:"verified"})
+            const findUserToSign = await Users.findAll({
+                where:{
+                    Phone : req.body.PhoneNumber,
+                    IsConfirmed: true
+                }
+            })
+            const userId = findUserToSign[0].id;
+            const name = findUserToSign[0].FullName;
+            const email = findUserToSign[0].Email;
+            const phone = findUserToSign[0].Phone
+            const type = findUserToSign[0].Type;
+            const rule = findUserToSign[0].Rule;
+            const province = findUserToSign[0].Province;
+            
+            const accessToken = jwt.sign({userId, name, email,phone, type,rule,province}, process.env.ACCESS_TOKEN_SECRET,{
+                expiresIn: '15s'
+            });
+            
+            const refreshToken = jwt.sign({userId, name, email,phone, type,rule,province}, process.env.REFRESH_TOKEN_SECRET,{
+                expiresIn: '1d'
+            });
+            
+            await Users.update({RefreshToken: refreshToken},{
+                where:{
+                    id: userId
+                }
+            });
+            
+            res.cookie('refreshToken', refreshToken,{
+                httpOnly: true,
+                maxAge: 24 * 60 * 60 * 1000
+            });
+            
+            
+            
+            res.json({access: accessToken, msg:"verified", user:findUserToSign})
         }else{
             res.json({msg:"notverified"})
         }

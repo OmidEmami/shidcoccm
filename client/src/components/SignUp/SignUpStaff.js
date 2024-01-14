@@ -12,8 +12,8 @@ import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-const SignUpUser = () => {
-  const history = useHistory();
+const SignUpStaff = () => {
+    const history = useHistory();
   const customStyles = {
       
     content: {
@@ -28,50 +28,14 @@ const SignUpUser = () => {
     },
     overlay: {zIndex: 1000}
   };
-    const CustomerTypes = [
-  {value:'StationaryWholeSaler', item:'بنکدار لوازم التحریر'},
-  {value:'ManufacturerAndSeller', item:'تولید کننده و فروشنده'},
-  {value:'StationaryStore', item:'فروشگاه لوازم التحریر'},
-  {value:'StationeryAndOfficeFurnitureStore', item:'فروشگاه لوازم التحریر و مبلمان اداری'},
-  {value:'OfficeFurnitureStore', item:'فروشگاه مبلمان اداری'},
-  {value:'CommercialCompany', item: 'شرکت بازرگانی'},
-  {value:'EducationalCentersAndUniversities', item:'مراکز آموزشی و دانشگاه ها'},
-  {value:'Consumer', item:'مصرف کننده'},
-  {value:'Supplier', item:'تامین کننده'},
-  {value:'OnlineShop',item:'فروشگاه آنلاین'}
+    const StaffTypes = [
+  {value:'Sale', item:'فروش'},
+  {value:'Acc', item:'حسابداری'},
+  {value:'Receivable', item:'وصول مطالبات'},
+  {value:'Manufacturing', item:'واحد تولید'},
+  {value:'Shiping', item:'انبار و ارسال'},
 ]
-const iranProvinces = [
-  { name: 'East Azerbaijan', value: 'آذربایجان شرقی' },
-  { name: 'West Azerbaijan', value: 'آذربایجان غربی' },
-  { name: 'Ardabil', value: 'اردبیل' },
-  { name: 'Isfahan', value: 'اصفهان' },
-  { name: 'Ilam', value: 'ایلام' },
-  { name: 'Bushehr', value: 'بوشهر' },
-  { name: 'Tehran', value: 'تهران' },
-  { name: 'Chaharmahal and Bakhtiari', value: 'چهارمحال و بختیاری' },
-  { name: 'South Khorasan', value: 'خراسان جنوبی' },
-  { name: 'Razavi Khorasan', value: 'خراسان رضوی' },
-  { name: 'North Khorasan', value: 'خراسان شمالی' },
-  { name: 'Khuzestan', value: 'خوزستان' },
-  { name: 'Zanjan', value: 'زنجان' },
-  { name: 'Semnan', value: 'سمنان' },
-  { name: 'Sistan and Baluchestan', value: 'سیستان و بلوچستان' },
-  { name: 'Fars', value: 'فارس' },
-  { name: 'Qazvin', value: 'قزوین' },
-  { name: 'Qom', value: 'قم' },
-  { name: 'Kurdistan', value: 'کردستان' },
-  { name: 'Kerman', value: 'کرمان' },
-  { name: 'Kermanshah', value: 'کرمانشاه' },
-  { name: 'Kohgiluyeh and Boyer-Ahmad', value: 'کهگیلویه و بویراحمد' },
-  { name: 'Golestan', value: 'گلستان' },
-  { name: 'Gilan', value: 'گیلان' },
-  { name: 'Lorestan', value: 'لرستان' },
-  { name: 'Mazandaran', value: 'مازندران' },
-  { name: 'Markazi', value: 'مرکزی' },
-  { name: 'Hormozgan', value: 'هرمزگان' },
-  { name: 'Hamadan', value: 'همدان' },
-  { name: 'Yazd', value: 'یزد' }
-];
+
     const [showModalCodeVerify, setShowModalCodeVerify] = useState(false)
     const [Name, setName] = useState('');
     const [NameError, setNameError] = useState({status:'', msg:''});
@@ -103,7 +67,7 @@ const iranProvinces = [
         Rule:Rule,
         Province:Province,
         Password:Password,
-        Type:'Customer'
+        Type:'Staff'
       })
       
       if(response.data ?(response.data === "ok"): false){
@@ -128,9 +92,9 @@ const iranProvinces = [
 const sendSmsCodeVerification = async () =>{
   if(NameError.status === true || PhoneNumberError.status === true
      || EmailError.status === true || RuleError.status === true ||
-     ProvinceError.status === true || PasswordError.status === true ||
+     PasswordError.status === true ||
      confirmPasswordError.status === true || Name === '' || PhoneNumber === '' ||
-     Email === '' || Rule === '' || Province === '' || Password === '' ||
+     Email === '' || Rule === '' || Password === '' ||
      confirmPassword === ''
       ){
         if(NameError.status === true || Name === ''){
@@ -141,8 +105,6 @@ const sendSmsCodeVerification = async () =>{
           setEmailError({status:true, msg:"لطفا این قسمت را کامل کنید!"})
         }else if(RuleError.status === true || Rule === ''){
           setRuleError({status:true, msg:"لطفا این قسمت را کامل کنید!"})
-        }else if(ProvinceError.status === true || Province === ''){
-          setProvinceError({status:true, msg:'لطفا این قسمت را کامل کنید!'})
         }else if(PasswordError.status === true || Password === ''){
           setPasswordError({status:true , msg:'لطفا این قسمت را کامل کنید!'})
         }else if(confirmPasswordError.status === true || confirmPassword === ''){
@@ -197,12 +159,7 @@ const checkBlurRule = ()=>{
     setRuleError({status:true, msg:'لطفا این فیلد را کامل کنید'})
   }
 }
-const checkBlurProvince = ()=>{
-  setProvinceError({status:false, msg:''})
-  if(Province=== "" || Province === null){
-    setProvinceError({status:true, msg:'لطفا این فیلد را کامل کنید'})
-  }
-}
+
 const checkBlurPassword = ()=>{
   const passwordRegex = /^(?=.*[a-zA-Z]).{5,}$/;
   const isValid = passwordRegex.test(Password);
@@ -257,7 +214,7 @@ const checkBlurPassword = ()=>{
        </div>
      </Modal>
       <div className={styles.loginHeader}>
-            <h3 style={{color:"black"}}>ثبت نام مشتریان</h3>
+            <h3 style={{color:"black"}}>ثبت نام کارمندان</h3>
             <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
         </div>
       <form className={styles.formContainer} >
@@ -273,24 +230,16 @@ const checkBlurPassword = ()=>{
         <TextField error={EmailError.status} onBlur={checkBlurEmail} fullWidth  placeholder='مثلا : mail@gmail.com' id="Email"
           variant="outlined" type='text' value={Email} onChange={(e)=>setEmail(e.target.value)} />
           {EmailError.status === true && <span style={{color:"red"}}>{EmailError.msg}</span>}
-        <label>نوع کسب وکار : </label>
-        <InputLabel id="RuleSelect">نوع کسب و کار خود را انتخاب کنید:</InputLabel>
+        <label>در کدام واحد فعالیت می کنید؟</label>
+        
         <Select error={RuleError.status} onBlur={checkBlurRule} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='RuleSelect' id="RuleSelect" label="انتخاب نوع کسب و کار" value={Rule} onChange={(e)=>setRule(e.target.value)}>
         
-          {CustomerTypes.map((value,item)=>(
+          {StaffTypes.map((value,item)=>(
             <MenuItem sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} key={item} value={value.value}>{value.item}</MenuItem>
           ))}
         </Select>
         {RuleError.status === true && <span style={{color:"red"}}>{RuleError.msg}</span>}
-        <label>استان: </label>
-        <InputLabel id="Province">استان محل کار خود را انتخاب کنید:</InputLabel>
-        <Select error={ProvinceError.status} onBlur={checkBlurProvince} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='Province' id='Province' label='استان محل کار را انتخاب کنید' value={Province} onChange={(e)=>setProvince(e.target.value)}>
         
-          {iranProvinces.map((value,item)=>(
-            <MenuItem  sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} key={item} value={value.name}>{value.value}</MenuItem>
-          ))}
-        </Select>
-        {ProvinceError.status === true && <span style={{color:"red"}}>{ProvinceError.msg}</span>}
         <label>رمز عبور</label>
         <TextField error={PasswordError.status} type='password' onBlur={checkBlurPassword} fullWidth  placeholder='رمز عبور شامل اعداد و حداقل یک حرف انگلیسی' id="Password"
           variant="outlined"  value={Password} onChange={(e)=>setPassword(e.target.value)} />
@@ -306,4 +255,4 @@ const checkBlurPassword = ()=>{
   )
 }
 
-export default SignUpUser
+export default SignUpStaff
