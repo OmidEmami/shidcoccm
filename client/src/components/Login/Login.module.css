@@ -20,6 +20,7 @@
     background-color: rgba(0, 153, 255, 0.144);
     padding: 2rem;
     border-radius: 15px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
 }
 .formContainer label {
     font-family:"shabnamM";

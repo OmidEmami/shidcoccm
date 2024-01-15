@@ -20,7 +20,7 @@
    flex-direction: row;
    justify-content: space-around;
     align-items: center;
-    
+    box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
 }
 .headerContainer img{
     width:20vw
@@ -43,6 +43,7 @@ h4{
   margin: 1vw;
   column-gap: 1vw;
   position: relative; /* Set relative positioning on the bodyContainer */
+  
 }
 .contentContainer{
     width: 85%;
@@ -64,6 +65,7 @@ h4{
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
 }
 ul {
     list-style: none;
@@ -98,6 +100,7 @@ ul {
     border-radius: 10px;
     padding: 1vw;
     /* Remove margin-left */
+    box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
   }
   .contentContainer input{
     font-family: 'shabnamM';

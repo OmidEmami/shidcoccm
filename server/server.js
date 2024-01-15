@@ -16,7 +16,8 @@ import {MongoClient} from "mongodb"
 import Users from "./Models/Users.js";
 
 
-import { Sequelize } from "sequelize";
+import { Sequelize, col } from "sequelize";
+const app = express();
 const corsOptions = {
   origin: ['http://localhost:3000','http://localhost:3001','http://localhost:3001/socket.io'],
      // Replace with your frontend domain
@@ -24,7 +25,7 @@ const corsOptions = {
     credentials: true, // If you're using cookies or sessions
   };
   
-  const app = express();
+  
   app.use(cors(corsOptions));
   dotenv.config();
 const server = http.createServer(app);
@@ -59,28 +60,78 @@ async function main(){
 const MessageSchema = new mongoose.Schema({
   username: String,
   message: String,
-  name :String
+  name :String,
+  UserID:String
 });
 
 const Message = mongoose.model('Message', MessageSchema);
-const UserSchema = new mongoose.Schema({
-  Email: String
-})
+
 // const Users = mongoose.model('Users', UserSchema);
 // const Users = mongoose.model('Message', MessageSchema);
 io.on('connection', (socket) => {
-  socket.on('send_message', (data) => {
-    
-    const message = new Message(data);
+  socket.on('send_message', async(data) => {
     console.log(data)
-    message.save().then(() => {
-      io.emit('new_message', data);
-    });
+    // const message = new Message(data);
+    // console.log(data)
+    const collectionName = data.username + 's';
+
+  try {
+    // MongoDB connection
+    const db = mongoose.connection.db; // Access the underlying MongoDB database object
+    const collections = await db.listCollections().toArray();
+    //const collectionExists = collections.some(collection => collection.name === collectionName);
+
+   
+      
+
+      // Mongoose connection
+
+      // Define schema
+      const ChatUserSchema = new mongoose.Schema({
+        username: String,
+        message: String,
+        name: String
+      });
+
+      // Create a model based on the schema
+      const ChatUser = mongoose.models[collectionName] || mongoose.model(collectionName, ChatUserSchema);
+
+      // Create a new instance of the model with the data you want to add
+      const newData = new ChatUser(data);
+      const { username, message } = data;
+      // Save the new data to the database
+      await newData.save().then(() => {
+        io.emit('new_message', data);
+        io.to(username).emit('new_message', { senderId: socket.id, message });
+      });
+      console.log('Data added successfully');
+
+      // Close Mongoose connection
+      // await mongoose.connection.close();
+    
+
+    // Close MongoDB connection
+    // await client.close();
+// response.json("send")
+    // res.json("send");
+  } catch (error) {
+    console.error('Error:', error);
+    // response.status(500).json({ error: 'Internal Server Error' });
+  }
+    // message.save()
   });
 });
 app.post('/messages', async (req, res) => {
   try {
-    const messages = await Message.find({username : req.body.user});
+    const ChatUserSchema = new mongoose.Schema({
+      username: String,
+      message: String,
+      name: String
+    })
+    const collName = req.body.user + 's'
+    const OmidUser =mongoose.models[collName] || mongoose.model(collName, ChatUserSchema);
+    console.log(mongoose.models[collName]);
+    const messages = await OmidUser.find({username : req.body.user});
     res.status(200).json(messages);
   } catch (err) {
     console.log(err);

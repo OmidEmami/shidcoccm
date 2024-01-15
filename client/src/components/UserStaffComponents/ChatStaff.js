@@ -70,20 +70,21 @@ const [selectedChat,setSelectedChat] = useState('')
 
   const sendMessage = async () => {
     //console.log(decoded.email);
-    const response = await axios.post('http://localhost:3001/newChat', {
-      data: {
-        username: decoded.email,
-        message: input,
-        name: decoded.name
-      },
-      collectionName: decoded.email
-    });
+    // const response = await axios.post('http://localhost:3001/newChat', {
+    //   data: {
+    //     username: decoded.email,
+    //     message: input,
+    //     name: decoded.name
+    //   },
+    //   collectionName: decoded.email
+    // });
     // console.log(response.data);
     // console.log(decoded.email);
     socket.emit('send_message', {
       username: decoded.email,
       name: decoded.name,
-      message: input
+      message: input,
+      UserID:decoded.email
     });
     setInput('');
   };
@@ -95,24 +96,7 @@ const [selectedChat,setSelectedChat] = useState('')
       ))}
       <input value={input} onChange={e => setInput(e.target.value)} />
       <button onClick={sendMessage}>Send</button>
-      {/* <input
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      /> */}
-      {/* <select value={selectedChat} onChange={(e)=>setSelectedChat(e.target.value)}>
-        {searchResults.map((result)=>(
-          <option key={result.id} value={result.Email}>{result.FullName}</option>
-        ))}
-      </select> */}
-      {/* <ul>
-  {searchResults.map((result) => (
-    <li key={result.id}>
-      <p>{result.FullName}</p>
-    </li>
-  ))}
-</ul> */}
+      
  <Select
  inputValue={searchQuery}
  onInputChange={(e)=>setSearchQuery(e)}
