@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
-import SignUpUser from "./components/Signup/SignUpUser";
+import SignUpUser from "./components/SignUp/SignUpUser";
 import styles from "./App.module.css"
 import MainDashboardStaff from "./components/Dashboard/MainDashboardStaff";
 import MainDashboardCustomer from "./components/Dashboard/MainDashboardCustomer";
-import SignUpStaff from "./components/Signup/SignUpStaff";
+import SignUpStaff from "./components/SignUp/SignUpStaff";
 function App() {
   return (
     <div className={styles.app}>
