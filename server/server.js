@@ -69,6 +69,10 @@ const Message = mongoose.model('Message', MessageSchema);
 // const Users = mongoose.model('Users', UserSchema);
 // const Users = mongoose.model('Message', MessageSchema);
 io.on('connection', (socket) => {
+  socket.on('join_room', (data) => {
+    // Join the room named after the user's username
+    socket.join(data.username);
+  });
   socket.on('send_message', async(data) => {
     console.log(data)
     // const message = new Message(data);
@@ -101,8 +105,8 @@ io.on('connection', (socket) => {
       const { username, message } = data;
       // Save the new data to the database
       await newData.save().then(() => {
-        io.emit('new_message', data);
-        io.to(username).emit('new_message', { senderId: socket.id, message });
+        // io.emit('new_message', data);
+        io.to(username).emit('new_message', data);
       });
       console.log('Data added successfully');
 

@@ -8,6 +8,7 @@ import { result } from 'lodash';
 import Select from 'react-select';
 function ChatStaff() {
   const socket = io('http://localhost:3001');
+ 
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -15,6 +16,7 @@ function ChatStaff() {
   const [input, setInput] = useState('');
   const realToken = useSelector((state) => state.tokenReducer.token);
   const decoded = jwtDecode(realToken.realToken);
+  socket.emit('join_room', { username: decoded.email });
   const isMounted = useRef(true);
 const [selectedChat,setSelectedChat] = useState('')
   const debouncedFetchData = useRef(_debounce(async (query) => {
@@ -46,13 +48,20 @@ const [selectedChat,setSelectedChat] = useState('')
         setMessages(prevMessages => [...prevMessages, message]);
       }
     });
-
+  
+    // Listen for the join_room event
+    socket.on('join_room', (data) => {
+      // Join the room named after the user's username
+      socket.join(data.username);
+    });
+  
     // Cleanup the socket listener when the component unmounts
     return () => {
       isMounted.current = false;
       socket.off('new_message');
+      socket.off('join_room');
     };
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  }, []);
   useEffect(() => {
     // Call the debounced function when the searchQuery changes
     console.log(searchQuery)
@@ -68,7 +77,7 @@ const [selectedChat,setSelectedChat] = useState('')
     };
   }, [searchQuery, debouncedFetchData]);
 
-  const sendMessage = async () => {
+
     //console.log(decoded.email);
     // const response = await axios.post('http://localhost:3001/newChat', {
     //   data: {
@@ -80,14 +89,16 @@ const [selectedChat,setSelectedChat] = useState('')
     // });
     // console.log(response.data);
     // console.log(decoded.email);
-    socket.emit('send_message', {
-      username: decoded.email,
-      name: decoded.name,
-      message: input,
-      UserID:decoded.email
-    });
-    setInput('');
-  };
+    const sendMessage = async () => {
+      socket.emit('send_message', {
+        username: decoded.email,
+        name: decoded.name,
+        message: input,
+        UserID: decoded.email
+      });
+      setInput('');
+    };
+  
 
   return (
     <div>
