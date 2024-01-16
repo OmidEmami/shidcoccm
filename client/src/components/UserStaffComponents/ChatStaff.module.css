@@ -1,0 +1,52 @@
+.ChatContainer{
+    display: flex;
+    flex-direction: row;
+    direction:rtl;
+    justify-content: center;
+    align-items: center;
+    column-gap: 7vw;
+}
+.ChatSend{
+    display: flex;
+    flex-direction: row;
+    direction:rtl;
+    justify-content: center;
+    align-items: center;
+    column-gap: 1vw;
+    width: 50%;
+}
+.selectBox{
+    width:  100%;
+}
+.ContactsContent{
+    display: flex;
+    flex-direction: column;
+    direction:rtl;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 1vw;
+    
+}
+.chatScreen{
+    display: flex;
+    flex-direction: column;
+    direction:rtl;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1vw;
+    width: 100%;
+}
+.rightMessage{
+    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
+    direction:rtl;
+    margin-right: 20rem;
+}
+.leftMessage{
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    direction:rtl;
+    margin-left:20rem
+}

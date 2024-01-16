@@ -17,19 +17,22 @@ import Users from "./Models/Users.js";
 
 
 import { Sequelize, col } from "sequelize";
-const app = express();
 const corsOptions = {
   origin: ['http://localhost:3000','http://localhost:3001','http://localhost:3001/socket.io'],
      // Replace with your frontend domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // If you're using cookies or sessions
   };
-  
-  
-  app.use(cors(corsOptions));
-  dotenv.config();
+const app = express();
+app.use(cors(corsOptions));
 const server = http.createServer(app);
-const io = new Server(server); // Add this
+const io = new Server(server);
+
+  
+  
+ 
+  dotenv.config();
+ // Add this
 
 
 app.use(cookieParser());
@@ -47,149 +50,88 @@ async function main(){
     const db = mongoose.connection;
     const userCollection = db.collection("Shidcoccm");
     const respond = await userCollection.find({}).toArray();
-    console.log(respond)
+
 }
-// async function main(){
-//   await mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-//   console.log("connected to mongodb");
-//   const db = mongoose.connection;
-//   const userCollection = db.collection("Shidcoccm");
-//   const respond = await userCollection.find({}).toArray();
-//   console.log(respond)
-// }
-const MessageSchema = new mongoose.Schema({
-  username: String,
-  message: String,
-  name :String,
-  UserID:String
-});
 
-const Message = mongoose.model('Message', MessageSchema);
 
-// const Users = mongoose.model('Users', UserSchema);
-// const Users = mongoose.model('Message', MessageSchema);
+
+
 io.on('connection', (socket) => {
   socket.on('join_room', (data) => {
     // Join the room named after the user's username
     socket.join(data.username);
   });
   socket.on('send_message', async(data) => {
-    console.log(data)
+  
     // const message = new Message(data);
     // console.log(data)
-    const collectionName = data.username + 's';
+    const collectionName = data.sender + 's';
+    const collectionNameNd = data.receiver + 's';
+    
 
   try {
     // MongoDB connection
     const db = mongoose.connection.db; // Access the underlying MongoDB database object
-    const collections = await db.listCollections().toArray();
-    //const collectionExists = collections.some(collection => collection.name === collectionName);
-
-   
-      
-
-      // Mongoose connection
-
-      // Define schema
       const ChatUserSchema = new mongoose.Schema({
-        username: String,
+        sender: String,
+        receiver:String,
+        sendername: String,
+        receivername : String,
+        date:Date,
         message: String,
-        name: String
       });
-
-      // Create a model based on the schema
+      const ChatUserSchemaNd = new mongoose.Schema({
+        sender: String,
+        receiver:String,
+        sendername: String,
+        receivername : String,
+        date:Date,
+        message: String,
+      })
       const ChatUser = mongoose.models[collectionName] || mongoose.model(collectionName, ChatUserSchema);
-
-      // Create a new instance of the model with the data you want to add
+      const ChatUserNd = mongoose.models[collectionNameNd] || mongoose.model(collectionNameNd, ChatUserSchemaNd);
       const newData = new ChatUser(data);
-      const { username, message } = data;
-      // Save the new data to the database
+      const newDataNd = new ChatUserNd(data)
+      const { sender, receiver } = data;
       await newData.save().then(() => {
-        // io.emit('new_message', data);
-        io.to(username).emit('new_message', data);
+         newDataNd.save()
+          io.to(sender).emit('new_message', data);
+          io.to(receiver).emit('new_message', data);
+        
+       
       });
       console.log('Data added successfully');
 
-      // Close Mongoose connection
-      // await mongoose.connection.close();
-    
 
-    // Close MongoDB connection
-    // await client.close();
-// response.json("send")
-    // res.json("send");
   } catch (error) {
     console.error('Error:', error);
-    // response.status(500).json({ error: 'Internal Server Error' });
+   
   }
-    // message.save()
+
   });
 });
 app.post('/messages', async (req, res) => {
   try {
     const ChatUserSchema = new mongoose.Schema({
-      username: String,
+      sender: String,
+      receiver:String,
+      sendername: String,
+      receivername : String,
+      date:Date,
       message: String,
-      name: String
     })
     const collName = req.body.user + 's'
+    
     const OmidUser =mongoose.models[collName] || mongoose.model(collName, ChatUserSchema);
-    console.log(mongoose.models[collName]);
-    const messages = await OmidUser.find({username : req.body.user});
+    
+    const messages = await OmidUser.find({});
     res.status(200).json(messages);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
   }
 });
-app.post('/newChat', async (req, res) => {
-  const collectionName = req.body.collectionName + 's';
 
-  try {
-    // MongoDB connection
-    const db = mongoose.connection.db; // Access the underlying MongoDB database object
-    const collections = await db.listCollections().toArray();
-    const collectionExists = collections.some(collection => collection.name === collectionName);
-
-   
-      
-
-      // Mongoose connection
-
-      // Define schema
-      const ChatUserSchema = new mongoose.Schema({
-        username: String,
-        message: String,
-        name: String
-      });
-
-      // Create a model based on the schema
-      const ChatUser = mongoose.models[collectionName] || mongoose.model(collectionName, ChatUserSchema);
-
-      // Create a new instance of the model with the data you want to add
-      const newData = new ChatUser({
-        username: req.body.data.username,
-        message: req.body.data.message,
-        name: req.body.data.name
-      });
-
-      // Save the new data to the database
-      await newData.save();
-      console.log('Data added successfully');
-
-      // Close Mongoose connection
-      // await mongoose.connection.close();
-    
-
-    // Close MongoDB connection
-    // await client.close();
-
-    res.json("send");
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 app.get('/api/search', async(req, res) => {
   const query = req.query.query.toLowerCase();
