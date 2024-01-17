@@ -7,9 +7,11 @@ import { jwtDecode } from "jwt-decode";
 import {notify} from "../toast/toast"
 // import bcrypt from "bcrypt";
 import LoadingComp from '../Loading/LoadingComp';
-import styles from "./Profile.module.css"
+import styles from "./Profile.module.css";
+
 function Profile() {
   const [fullName, setFullName] = useState('');
+  const [avatar, setAvatar] = useState(null);
   const [fullNameError, setFullNameError] = useState({status:false, msg:''});
   const [phone, setPhone] = useState('');
   const [phoneError, setPhoneError] = useState({status:false , msg:''});
@@ -25,7 +27,29 @@ function Profile() {
   const [PasswordError ,setPasswordError] = useState({status:false , msg:''});
   const [confirmPassword, setConfirmPassword] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState({status:false, msg:''});
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('user',email)
+      await axios.post('http://localhost:3001/uploadavatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      alert('Image uploaded successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Error uploading image');
+    }
+  };
+
 const realToken = useSelector((state) => state.tokenReducer.token);
   useEffect(() => {
     // refreshToken();
@@ -36,7 +60,19 @@ const realToken = useSelector((state) => state.tokenReducer.token);
     setRule(decoded.rule);
     setType(decoded.type);
     setProvince(decoded.province);
+    const user = decoded.email; // Replace with the actual user identifier
     
+    // Fetch image data
+    axios.get(`http://localhost:3001/getavatar/${user}`, { responseType: 'arraybuffer' })
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'image/jpeg' });
+        const imageUrl = URL.createObjectURL(blob);
+        console.log(response)
+        setAvatar(imageUrl);
+      })
+      .catch(error => {
+        console.error('Error fetching image:', error);
+      });
 }, []);
 const fullNameBlur = () =>{
   setFullNameError({status:false, msg:''})
@@ -140,7 +176,9 @@ const editProfile = async(e)=>{
     <div className={styles.MainContainer}>
       {isLoading && <LoadingComp />}
       <div className={styles.ProfileContent}>
-       
+      {avatar && <img src={avatar} alt="User Avatar" />}
+      <input type="file" accept="image/*" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
         <label>نام کامل</label>
         <TextField  onBlur={fullNameBlur}  placeholder='نام کامل' fullWidth
         variant="outlined" type='text' value={fullName}

@@ -14,8 +14,6 @@ import mongoose from 'mongoose'; // Add this
 import { Server } from "socket.io"; // Add this
 import {MongoClient} from "mongodb"
 import Users from "./Models/Users.js";
-
-
 import { Sequelize, col } from "sequelize";
 const corsOptions = {
   origin: ['http://localhost:3000','http://localhost:3001','http://localhost:3001/socket.io'],
@@ -40,7 +38,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);
 // mongoose.connect('mongodb://localhost:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const DB_URL = "mongodb://127.0.0.1:27017/Shidcoccm";
 const DB_NAME = "Shidcoccm";
 const client = new MongoClient(DB_URL);
@@ -113,6 +112,14 @@ io.on('connection', (socket) => {
 
   });
 });
+const imageSchema = new mongoose.Schema({
+  user: String,
+  avatar: {
+    type: Buffer,
+  },
+});
+
+const Image = mongoose.models['Image'] || mongoose.model('Image', imageSchema);
 app.post('/messages', async (req, res) => {
   try {
     const ChatUserSchema = new mongoose.Schema({
@@ -128,7 +135,8 @@ app.post('/messages', async (req, res) => {
     const OmidUser =mongoose.models[collName] || mongoose.model(collName, ChatUserSchema);
     
     const messages = await OmidUser.find({});
-    res.status(200).json(messages);
+    
+    res.status(200).json({messages});
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
@@ -157,6 +165,68 @@ app.get('/api/search', async(req, res) => {
   }
 
   
+});
+
+app.post('/uploadavatar', upload.single('image'), async (req, res) => {
+  console.log(req.file);
+
+  try {
+    const userEmail = req.body.user;
+    
+    // Find the existing image for the user
+    const existingImage = await Image.findOne({ user: userEmail });
+
+    // If there's an existing image, delete it
+    if (existingImage) {
+      await existingImage.deleteOne();
+    }
+
+    // Create a new image with the uploaded file
+    const newImage = new Image({
+      avatar: req.file.buffer,
+      user: userEmail,
+    });
+
+    // Save the new image
+    await newImage.save();
+
+    res.status(201).send('Image uploaded successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+app.get('/getavatarall', async (req, res) => {
+  try {
+    
+    const image = await Image.find({});
+
+    if (!image) {
+      return res.status(404).send('Image not found');
+    }
+
+    res.set('Content-Type', 'image/jpeg');
+    res.send(image);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+app.get('/getavatar/:user', async (req, res) => {
+  try {
+    const user = req.params.user;
+    const image = await Image.findOne({ user: user });
+
+    if (!image) {
+      return res.status(404).send('Image not found');
+    }
+
+    res.set('Content-Type', 'image/jpeg');
+    res.send(image.avatar);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 const PORT = process.env.PORT || 3001;
 

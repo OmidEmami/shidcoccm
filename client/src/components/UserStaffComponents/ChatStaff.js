@@ -4,13 +4,12 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import _debounce from 'lodash/debounce';
-import { result } from 'lodash';
 import Select from 'react-select';
 import moment from 'jalali-moment' ;
 import TextField from '@mui/material/TextField';
 import styles from "./ChatStaff.module.css";
-import { useDispatch } from "react-redux";
-import { addMessage } from '../../Redux/action';
+
+
 
 
 import { IoSend } from "react-icons/io5";
@@ -18,10 +17,8 @@ import { IoSend } from "react-icons/io5";
 function ChatStaff() {
 
 
-  const dispatch = useDispatch();
-
-  const uniqueValues = new Set();
-  const ReduxMessages = useSelector((state) => state.addMessageReducer.messages);
+  
+  //const ReduxMessages = useSelector((state) => state.addMessageReducer.messages);
   const socket = io('http://localhost:3001');
   const [displaySend, setDisplaySend] = useState('none')
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
@@ -33,11 +30,11 @@ function ChatStaff() {
   const realToken = useSelector((state) => state.tokenReducer.token);
   const decoded = jwtDecode(realToken.realToken);
   socket.emit('join_room', { username: decoded.email });
-  // const isMounted = useRef(true);
-
-  const [showChatContentContact, setShowChatContentContact] = useState({status:false, data:'',chatPartner:''})
-const [selectedChat,setSelectedChat] = useState('');
-const [showMessages, setShowMessages] = useState(false);
+  const [contacts, setContacts] = useState([{}])
+  const [showChatContentContact, setShowChatContentContact] = useState('')
+  const [selectedChat,setSelectedChat] = useState('');
+  const [showMessages, setShowMessages] = useState(false);
+  const [avatars, setAvatars] = useState([])
   const debouncedFetchData = useRef(_debounce(async (query) => {
     try {
       
@@ -53,35 +50,63 @@ const [showMessages, setShowMessages] = useState(false);
   }, 300)).current;
 
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.post('http://localhost:3001/messages', {
-            user: decoded.email
-          });
-    
-          setMessages(response.data);
-    
-          for (let i = 0; i < response.data.length; i++) {
-            dispatch(addMessage(response.data[i]));
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/messages', {
+        user: decoded.email
+      });
+
+      setContacts((prevContacts) => {
+        const uniqueContacts = new Map(prevContacts.map(contact => [contact.name, contact]));
+        
+        // Add new contacts to the map
+        response.data.messages.forEach((message) => {
+          if (
+            message.receivername !== decoded.name &&
+            !uniqueContacts.has(message.receivername)
+          ) {
+            uniqueContacts.set(message.receivername, { name: message.receivername, user: message.receiver });
+          } else if (
+            message.sendername !== decoded.name &&
+            !uniqueContacts.has(message.sendername)
+          ) {
+            
+            console.log("happen")
+            uniqueContacts.set(message.sendername, { name: message.sendername, user: message.sender });
           }
-        } catch (error) {
-          console.error('Error fetching messages:', error);
-        }
-      };
+        });
+
+        // Convert map values back to an array
+        return Array.from(uniqueContacts.values());
+      });
+
+      setMessages(response.data.messages);
+
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
     
       fetchData();
-    
+      
       socket.on('new_message', (message) => {
-        dispatch(addMessage(message));
+        setMessages((prevMessages) => [...prevMessages, message]);
+      
+        const senderName = message.sendername;
+      
+        setContacts((prevContacts) => {
+          // Ensure you're working with the latest state
+          const uniqueContacts = new Map(prevContacts.map(contact => [contact.name, contact]));
     
-        setShowChatContentContact((prevState) => {
-          const updatedMessages = [...ReduxMessages];
+          // Check if senderName is not in contacts and it's not the current user's name
+          if (!uniqueContacts.has(senderName) && senderName !== decoded.name) {
+            uniqueContacts.set(senderName, { name: senderName, user: message.sender });
+            
+          }
     
-          return {
-            ...prevState,
-            data: updatedMessages,
-          };
+          // Convert map values back to an array
+          return Array.from(uniqueContacts.values());
         });
       });
     
@@ -92,7 +117,25 @@ const [showMessages, setShowMessages] = useState(false);
       return () => {
         socket.off('join_room');
       };
-    }, [dispatch]);
+    }, []);
+    useEffect(() => {
+      const fetchAvatars = async () => {
+        const newAvatars = [];
+        for (let i = 1; i < contacts.length; i++) {
+          const response = await axios.get(`http://localhost:3001/getavatar/${contacts[i].user}`, { responseType: 'arraybuffer' });
+          const blob = new Blob([response.data], { type: 'image/jpeg' });
+          const imageUrl = URL.createObjectURL(blob);
+          const obj = { image: imageUrl, user: contacts[i].user };
+          newAvatars.push(obj);
+        }
+    
+        setAvatars(newAvatars);
+      };
+    
+      if (contacts.length > 1) {
+        fetchAvatars();
+      }
+    }, [contacts]);
   useEffect(() => {
     
     
@@ -110,7 +153,7 @@ const [showMessages, setShowMessages] = useState(false);
 
 
     const sendMessage = async () => {
-      
+      console.log(selectedChat)
       if(selectedChat !== ''){
         if(input !== ''){
       socket.emit('send_message', {
@@ -122,6 +165,14 @@ const [showMessages, setShowMessages] = useState(false);
         message: input,
         
       });
+      if (!contacts.some(contact => contact.user === selectedChat.value)) {
+        
+        // If the name does not exist, add it to contacts
+        setContacts(prevContacts => [
+          ...prevContacts,
+          { name: selectedChat.label, user: selectedChat.value } // Replace 'someUserValue' with the appropriate user value
+        ]);
+      }
     }else{
       setMessageError({status:true, msg:"پیام نمی تواند خالی باشد!"})
     }
@@ -150,69 +201,79 @@ const blurChatInput = () =>{
 }
 
 const showChaterContact = (item) =>{
-  setShowMessages(false)
-  if(item.sendername !== decoded.name){
-    setShowChatContentContact({status:true, data:ReduxMessages,chatPartner : item.sendername})
-    setSelectedChat({label:item.sendername ,value:item.sender})
-    
-    setShowMessages(true)
-  }else if(item.receivername !== decoded.name){
-    setShowChatContentContact({status:true, data:ReduxMessages,chatPartner : item.receivername})
-    
-    setSelectedChat({label:item.receivername ,value:item.receiver})
-    setShowMessages(true)
-  }
+  setShowChatContentContact(item.name)
+  setSelectedChat({value:item.user, label:item.name})
+
+  setShowMessages(true)
+
   
+}
+const selectedChatOnScreen = (option)=>{
+  setSelectedChat(option)
+  setShowChatContentContact(option.label)
+  setShowMessages(true)
 }
   return (
     <div className={styles.ChatContainer}>
-      {console.log(ReduxMessages)}
+    {/* {avatars !== [] && console.log(avatars)} */}
+    {console.log(contacts)}
       <div className={styles.ContactsContent}>
       <Select
        className={styles.selectBox}
         inputValue={searchQuery}
         onInputChange={(e)=>setSearchQuery(e)}
         value={selectedChat}
-        onChange={(option) => setSelectedChat(option)}
+        onChange={(option) => selectedChatOnScreen(option)}
         options={searchResults.map(result => ({ label: result.FullName, value: result.Email }))}
         isSearchable
         placeholder="جست و جوی کاربر..."
       />
-      {ReduxMessages.map((item) => {
+      {contacts.length > 0 && contacts.map((item,index)=>(
+        <>
         
-        if (!uniqueValues.has(item.receivername) && item.receivername !== decoded.name) {
-          uniqueValues.add(item.receivername);
-          
-          return (
-            <div onClick={()=>showChaterContact(item)} key={item.date}>
-              
-              {item.receivername}
-            </div>
-          );
-        }else if(!uniqueValues.has(item.sendername) && item.sendername !== decoded.name){
-          uniqueValues.add(item.sendername);
-          return (
-            <div onClick={()=>showChaterContact(item)} key={item.date}>
-              
-              {item.sendername}
-            </div>
-          );
-        }
+
+        {avatars.length > 0 && avatars.map((data,key)=>(
+          <>
+          {data.user === item.user && <div className={styles.contanctContainerFinal} onClick={()=>showChaterContact(item)} key={index}>
+          <img alt='omid' src={data.image} />
+            <h3>{item.name}</h3>
         
+        </div>}
+        
+        </>
+        )) }
+         
+        
+        </>
+        
+      ))}
+{/*         
+           
+         
        
-      })}
+      })} */}
       
       </div>
       <div className={styles.chatScreen}>
-        {showMessages && <div style={{display:"flex", flexDirection:"column", rowGap:"20px"}}>
-          {showChatContentContact.data.map((item,value)=>(
-            <div className={item.sendername === decoded.name ? styles.rightMessage : styles.leftMessage} key={value}>
-              {item.sendername === decoded.name && item.receivername === showChatContentContact.chatPartner
-              || item.receivername === decoded.name && item.sendername === showChatContentContact.chatPartner
-              ?  <>{item.message} : {item.sendername}</> : <></>}
-              </div>
-          ))}
-          </div>}
+      {showMessages && (
+  <div style={{ display: 'flex', flexDirection: 'column', rowGap: '20px' }}>
+    {messages
+      .filter((item) => {
+        return (
+          (item.sendername === decoded.name && item.receivername === showChatContentContact) ||
+          (item.receivername === decoded.name && item.sendername === showChatContentContact)
+        );
+      })
+      .map((item, value) => (
+        <div
+          className={item.sendername === decoded.name ? styles.rightMessage : styles.leftMessage}
+          key={value}
+        >
+          {item.sendername === decoded.name ? <div className={styles.finalMessage}>{item.message} : {item.sendername}<span className={styles.blueDot}></span></div> : <div><span className={styles.redDot}></span>{item.sendername} : {item.message}</div>}
+        </div>
+      ))}
+  </div>
+)}
       <div className={styles.ChatSend}><IoSend onClick={sendMessage} display={displaySend} color='blue'/>
       <TextField fullWidth error={messageError.status} onBlur={blurChatInput} value={input} onChange={e => setSendMessage(e.target.value)} variant="standard" placeholder='پیام خود را بنویسید...' />
       </div>

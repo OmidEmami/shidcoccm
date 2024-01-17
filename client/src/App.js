@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
-import SignUpUser from "./components/SignUp/SignUpUser";
+import SignUpUser from "./components/SignUpUserCustomer/SignUpUser";
 import styles from "./App.module.css"
 import MainDashboardStaff from "./components/Dashboard/MainDashboardStaff";
 import MainDashboardCustomer from "./components/Dashboard/MainDashboardCustomer";
-import SignUpStaff from './components/SignUp/SignUpStaff'
+import SignUpStaff from './components/SignUpUserCustomer/SignUpStaff'
 
 function App() {
   return (
