@@ -61,6 +61,9 @@ io.on('connection', (socket) => {
     // Join the room named after the user's username
     socket.join(data.username);
   });
+  socket.on('sendTestMessage', async(data)=>{
+    io.emit('receiveMessage',data)
+  })
   socket.on('send_message', async(data) => {
   
     // const message = new Message(data);
