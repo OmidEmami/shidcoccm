@@ -20,6 +20,8 @@ import GroupNotifications from "../UserStaffComponents/GroupNotification"
 import AllUserManagement from "../UserStaffComponents/AllUserManagement"
 import AllCustomerManagement from "../UserStaffComponents/AllCustomerManagement";
 import { IoMdExit } from "react-icons/io";
+import { ImMakeGroup } from "react-icons/im";
+import ProductManagement from '../UserStaffComponents/ProductManagement';
 
 const  MainDashboardStaff =()=> {
   const history = useHistory();
@@ -114,7 +116,10 @@ const logoutSystem = () =>{
                 <div onClick={()=>showItem(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>بررسی سفارشات</h5></div>
                 <div onClick={()=>showItem(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اطلاع رسانی گروهی</h5></div>
                 <div onClick={()=>showItem(5)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineManageAccounts  size='2vw' /><h5>مدیریت کاربران شیدکو</h5></div>
+                
+                
                 <div onClick={()=>showItem(6)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdManageAccounts size='2vw' /><h5>مدیریت مشتریان</h5></div>
+                <div onClick={()=>showItem(7)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><ImMakeGroup size='2vw' /><h5>مدیریت محصولات</h5></div>
                 <div onClick={logoutSystem} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><IoMdExit size='2vw'/><h5>خروج از سیستم</h5></div>
             </div>
             <div className={styles.contentContainer}>
@@ -124,6 +129,7 @@ const logoutSystem = () =>{
               {item === 4 ? <GroupNotifications /> : null}
               {item === 5 ? <AllUserManagement /> : null}
               {item === 6 ? <AllCustomerManagement /> : null}
+              {item === 7 ? <ProductManagement /> : null}
             </div>
         </div>
       
