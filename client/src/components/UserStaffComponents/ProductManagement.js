@@ -8,7 +8,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 import { notify } from '../toast/toast';
+import { useHistory } from 'react-router-dom';
 function ProductManagement() {
+    const history = useHistory();
     const [addProductModal, setAddProductModal] = useState(false)
     const [productName, setProductName] = useState('')
     const [productCategory, setProductCategory] = useState('')
@@ -122,8 +124,9 @@ function ProductManagement() {
                     <div className={styles.productContainer} key={product._id}>
                         {product.image && <img onClick={()=>setProductPreview({status:true, image:product.image})}  src={product.image}
                          alt={product.productName} style={{ width: '10rem', cursor:"pointer"}} />}
-                        <h3>محصول: {product.productName}</h3>
-                        <p>دست بندی : {product.productCategory}</p>
+                        <p>محصول: {product.productName}</p>
+                        <p style={{fontSize:"0.8rem"}}>دست بندی : {product.productCategory}</p>
+                        <Button onClick={()=>window.open(`/product?productcat=${product.productCategory}&product=${product.productName}`, '_blank')}>اطلاعات بیشتر</Button>
                         </div>
                 ))}
         <div onClick={()=>setAddProductModal(!addProductModal)} className={styles.PlusContainer}>

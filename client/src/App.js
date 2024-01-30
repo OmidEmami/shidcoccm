@@ -6,11 +6,19 @@ import MainDashboardStaff from "./components/Dashboard/MainDashboardStaff";
 import MainDashboardCustomer from "./components/Dashboard/MainDashboardCustomer";
 import SignUpStaff from './components/SignUpUserCustomer/SignUpStaff'
 
+import ProductDetailStaff from "./components/UserStaffComponents/ProductDetailStaff";
+
 function App() {
   return (
     <div className={styles.app}>
       <BrowserRouter>
       <Switch>
+        <Route exact path="/product">
+
+        <ProductDetailStaff />
+        </Route>
+      
+      
         <Route exact path="/login">
           <Login/>
         </Route>
