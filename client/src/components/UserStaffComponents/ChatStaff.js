@@ -17,9 +17,9 @@ import { IoSend } from "react-icons/io5";
 function ChatStaff() {
 
 
-  
+  const [socket, setSocket] = useState(null);
   //const ReduxMessages = useSelector((state) => state.addMessageReducer.messages);
-  const socket = io('http://localhost:3001');
+  
   const [displaySend, setDisplaySend] = useState('none')
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,7 +29,7 @@ function ChatStaff() {
   const [messageError, setMessageError] = useState({status:false, msg:''})
   const realToken = useSelector((state) => state.tokenReducer.token);
   const decoded = jwtDecode(realToken.realToken);
-  socket.emit('join_room', { username: decoded.email });
+
   const [contacts, setContacts] = useState([{}])
   const [showChatContentContact, setShowChatContentContact] = useState('')
   const [selectedChat,setSelectedChat] = useState('');
@@ -51,6 +51,9 @@ function ChatStaff() {
 
 
   useEffect(() => {
+    const newSocket = io('http://localhost:3001');
+    setSocket(newSocket);
+    newSocket.emit('join_room', { username: decoded.email });
     const fetchData = async () => {
     try {
       const response = await axios.post('http://localhost:3001/messages', {
@@ -72,7 +75,7 @@ function ChatStaff() {
             !uniqueContacts.has(message.sendername)
           ) {
             
-            console.log("happen")
+            
             uniqueContacts.set(message.sendername, { name: message.sendername, user: message.sender });
           }
         });
@@ -90,7 +93,7 @@ function ChatStaff() {
     
       fetchData();
       
-      socket.on('new_message', (message) => {
+      newSocket.on('new_message', (message) => {
         setMessages((prevMessages) => [...prevMessages, message]);
       
         const senderName = message.sendername;
@@ -110,12 +113,12 @@ function ChatStaff() {
         });
       });
     
-      socket.on('join_room', (data) => {
+      newSocket.on('join_room', (data) => {
         socket.join(data.username);
       });
     
       return () => {
-        socket.off('join_room');
+        newSocket.close();
       };
     }, []);
     useEffect(() => {
@@ -153,7 +156,7 @@ function ChatStaff() {
 
 
     const sendMessage = async () => {
-      console.log(selectedChat)
+     
       if(selectedChat !== ''){
         if(input !== ''){
       socket.emit('send_message', {
@@ -215,8 +218,8 @@ const selectedChatOnScreen = (option)=>{
 }
   return (
     <div className={styles.ChatContainer}>
-    {/* {avatars !== [] && console.log(avatars)} */}
-    {console.log(contacts)}
+    
+    
       <div className={styles.ContactsContent}>
       <Select
        className={styles.selectBox}

@@ -3,8 +3,13 @@ import express from "express";
 import { checkVerificationCode, loginWithCode, sendLoginVerifyCode, verifyPhoneNumber } from "../Controllers/verifyWithCode/VerificationCode.js";
 import { loginNormal } from "../Controllers/Login/Login.js";
 import { refreshToken } from "../TokenManager/RefreshToken.js";
-import { editProfile } from "../Controllers/editProfile/EditProfile.js";
-// import { newChat } from "../Controllers/Chat/NewChat.js";
+import { editProfile, uploadAvatar } from "../Controllers/editProfile/EditProfile.js";
+import { createProduct } from "../Controllers/ProductController/CreateMotherProduct.js";
+import { getAllProducts } from "../Controllers/ProductController/GetAllProducts.js";
+import { findUser, getAllAvatar, getAvatarUser } from "../Controllers/Chat/FindUser.js";
+import multer from 'multer';
+import { getMessages } from "../Controllers/Chat/GetMessages.js";
+const upload = multer({ storage: multer.memoryStorage() })
 const router = express.Router();
 router.post('/getverificationcode', verifyPhoneNumber)
 router.post('/checkverificationcode', checkVerificationCode)
@@ -13,5 +18,11 @@ router.post('/sendloginverifycode',sendLoginVerifyCode)
 router.post('/loginnormal', loginNormal);
 router.get('/token', refreshToken)
 router.post('/editprofile',editProfile);
-// router.post('/newChat', newChat)
+router.post('/uploadProduct', createProduct)
+router.get('/products', getAllProducts)
+router.get('/api/search',findUser)
+router.post('/uploadavatar', upload.single('image'), uploadAvatar);
+router.get('/getavatarall',getAllAvatar)
+router.get('/getavatar/:user', getAvatarUser);
+router.post('/messages',getMessages)
 export default router;
