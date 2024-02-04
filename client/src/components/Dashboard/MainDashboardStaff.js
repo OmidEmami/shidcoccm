@@ -22,7 +22,8 @@ import AllCustomerManagement from "../UserStaffComponents/AllCustomerManagement"
 import { IoMdExit } from "react-icons/io";
 import { ImMakeGroup } from "react-icons/im";
 import ProductManagement from '../UserStaffComponents/ProductManagement';
-
+import { useDashboard } from './DashboardContext';
+import ProductDetailStaff from '../UserStaffComponents/ProductDetailStaff';
 const  MainDashboardStaff =()=> {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ const  MainDashboardStaff =()=> {
   const [expire, setExpire] = useState('');
   const [type, setType] = useState('');
   const [rule, setRule] = useState('')
-  const [item, setItem] = useState(false);
+  // const [item, setItem] = useState(false);
+  const { showItem,item } = useDashboard();
   useEffect(() => {
     refreshToken();
     
@@ -94,8 +96,8 @@ axiosJWT.interceptors.request.use(async (config) => {
     Promise.reject(error); 
     return
 });
-const showItem = (e) => {
-  setItem(e)
+const showItemB = (e) => {
+ showItem(e)
 }
 const logoutSystem = () =>{
 
@@ -111,15 +113,15 @@ const logoutSystem = () =>{
         </div>
         <div className={styles.bodyContainer}>
             <div className={styles.menuRightContainer}>
-                <div onClick={()=>showItem(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
-                <div onClick={()=>showItem(2)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><BsChatDots size='2vw' /><h5>پیامرسان</h5></div>
-                <div onClick={()=>showItem(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>بررسی سفارشات</h5></div>
-                <div onClick={()=>showItem(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اطلاع رسانی گروهی</h5></div>
-                <div onClick={()=>showItem(5)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineManageAccounts  size='2vw' /><h5>مدیریت کاربران شیدکو</h5></div>
+                <div onClick={()=>showItemB(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
+                <div onClick={()=>showItemB(2)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><BsChatDots size='2vw' /><h5>پیامرسان</h5></div>
+                <div onClick={()=>showItemB(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>بررسی سفارشات</h5></div>
+                <div onClick={()=>showItemB(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اطلاع رسانی گروهی</h5></div>
+                <div onClick={()=>showItemB(5)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineManageAccounts  size='2vw' /><h5>مدیریت کاربران شیدکو</h5></div>
                 
                 
-                <div onClick={()=>showItem(6)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdManageAccounts size='2vw' /><h5>مدیریت مشتریان</h5></div>
-                <div onClick={()=>showItem(7)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><ImMakeGroup size='2vw' /><h5>مدیریت محصولات</h5></div>
+                <div onClick={()=>showItemB(6)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdManageAccounts size='2vw' /><h5>مدیریت مشتریان</h5></div>
+                <div onClick={()=>showItemB(7)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><ImMakeGroup size='2vw' /><h5>مدیریت محصولات</h5></div>
                 <div onClick={logoutSystem} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><IoMdExit size='2vw'/><h5>خروج از سیستم</h5></div>
             </div>
             <div className={styles.contentContainer}>
@@ -130,6 +132,7 @@ const logoutSystem = () =>{
               {item === 5 ? <AllUserManagement /> : null}
               {item === 6 ? <AllCustomerManagement /> : null}
               {item === 7 ? <ProductManagement /> : null}
+              {item === 8 ? <ProductDetailStaff /> : null}
             </div>
         </div>
       

@@ -7,9 +7,10 @@ import MainDashboardCustomer from "./components/Dashboard/MainDashboardCustomer"
 import SignUpStaff from './components/SignUpUserCustomer/SignUpStaff'
 
 import ProductDetailStaff from "./components/UserStaffComponents/ProductDetailStaff";
-
+import { DashboardProvider } from "./components/Dashboard/DashboardContext";
 function App() {
   return (
+    <DashboardProvider>
     <div className={styles.app}>
       <BrowserRouter>
       <Switch>
@@ -38,6 +39,7 @@ function App() {
         </Switch>
         </BrowserRouter>
     </div>
+    </DashboardProvider>
   );
 }
 

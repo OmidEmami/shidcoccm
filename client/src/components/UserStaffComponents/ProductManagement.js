@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 import { notify } from '../toast/toast';
 import { useHistory } from 'react-router-dom';
+import { useDashboard } from '../Dashboard/DashboardContext';
 function ProductManagement() {
     const history = useHistory();
     const [addProductModal, setAddProductModal] = useState(false)
@@ -18,7 +19,13 @@ function ProductManagement() {
     const productCategoryList = ['صندلی ها','وایت برد ها','پایه متحرک وایت برد','ماژیک','تابلو اعلانات','میز های مهندسی','تریبون']
     const [products, setProducts] = useState([]);
     const [previousModalState, setPreviousModalState] = useState(addProductModal);
-    const [productPreview, setProductPreview] = useState({status:false, image:''})
+    const [productPreview, setProductPreview] = useState({status:false, image:''});
+    const { showItem } = useDashboard();
+
+  const handleSwitchComponent = (product) => {
+    
+    showItem(8, product); // Pass the data as the second argument
+  };
     useEffect(() => {
         
        const fetchData = async()=>{
@@ -126,7 +133,7 @@ function ProductManagement() {
                          alt={product.productName} style={{ width: '10rem', cursor:"pointer"}} />}
                         <p>محصول: {product.productName}</p>
                         <p style={{fontSize:"0.8rem"}}>دست بندی : {product.productCategory}</p>
-                        <Button onClick={()=>window.open(`/product?productcat=${product.productCategory}&product=${product.productName}`, '_blank')}>اطلاعات بیشتر</Button>
+                        <Button onClick={()=>handleSwitchComponent(product)}>اطلاعات بیشتر</Button>
                         </div>
                 ))}
         <div onClick={()=>setAddProductModal(!addProductModal)} className={styles.PlusContainer}>
