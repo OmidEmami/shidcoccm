@@ -56,6 +56,7 @@ function ProductManagement() {
       };
       const createNewProduct = async (e) => {
         e.preventDefault();
+        
         const formData = new FormData();
         formData.append('image', fileHolder); // Use 'image' as the key for the file
         formData.append('productName', productName);

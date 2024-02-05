@@ -1,3 +1,29 @@
+@font-face {
+    font-family: 'shabnamM'; /* Choose a suitable name for your font */
+    src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
+    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
+  }
 .mainContainer h3{
     color:black;
+    font-size: 1rem;
+}
+.mainContainer h4{
+    color:black;
+    font-size: 1.5rem;
+}
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+}
+.formContainer input{
+    font-family: "shabnamM";
+}
+.formContainer Button{
+    font-family: "shabnamM";
+}
+.formContainer span{
+    font-family: "shabnamM";
 }
