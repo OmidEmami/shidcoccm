@@ -3,9 +3,16 @@
     src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
     /* Add more font formats (e.g., woff, woff2) for cross-browser support */
   }
+  .mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 .mainContainer h3{
     color:black;
     font-size: 1rem;
+    
 }
 .mainContainer h4{
     color:black;
@@ -26,4 +33,10 @@
 }
 .formContainer span{
     font-family: "shabnamM";
+}
+.variantDivider{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

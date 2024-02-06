@@ -130,6 +130,7 @@ function ProductManagement() {
      <div className={styles.wholeProductContainer}>
      {products.length > 0 && products.map(product => (
                     <div className={styles.productContainer} key={product._id}>
+                     
                         {product.image && <img onClick={()=>setProductPreview({status:true, image:product.image})}  src={product.image}
                          alt={product.productName} style={{ width: '10rem', cursor:"pointer"}} />}
                         <p>محصول: {product.productName}</p>
@@ -150,6 +151,7 @@ function ProductManagement() {
        contentLabel="Image Preview"
      >
        <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+        
          <img alt='product preview' src={productPreview.image} style={{width:"80%",borderRadius:"10px"}} />
        </div>
      </Modal>

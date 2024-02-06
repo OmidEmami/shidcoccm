@@ -8,6 +8,27 @@ import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import axios from "axios";
 function ProductDetailStaff() {
+  useEffect(() => {
+        
+    const fetchData = async()=>{
+     try{
+         const response = await axios.post('http://localhost:3001/getProductVariants',{
+          ProductName :data.productName,
+          ProductCategory : data.productCategory
+         })
+         setProductsVariant(response.data)
+         setProductsVariant((prevVariant)=>[...prevVariant,response.data])
+         
+         console.log(response)
+     }catch(error){
+
+     }
+     
+     
+    }
+    fetchData();
+ // eslint-disable-next-line no-use-before-define
+ }, []);
   const customStyles = {
       
     content: {
@@ -22,15 +43,17 @@ function ProductDetailStaff() {
     },
     overlay: {zIndex: 1000}
   };
+  const [productVariants,setProductsVariant] = useState([])
   const { data } = useDashboard();
   const [showModalVariant,setShowModalVariant] = useState(false);
   const [variantName, setVariantName] = useState('');
   const [variantDescription, setVariantDescription] = useState('');
   const [variantImages, setVariantImages] = useState([]);
   const [finalVariantImages, setFinalVariantImages] = useState([])
-  const [productColor, setProductColor] = useState('')
+  const [productColor, setProductColor] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0)
   const handleImageChange = (e) => {
-    console.log(e.target.files)
+    // console.log(e.target.files)
     if (e.target.files.length > 0) {
       for(let i = 0 ; i < e.target.files.length ; i++){
         const file = e.target.files[i]
@@ -64,7 +87,7 @@ function ProductDetailStaff() {
   };
   const saveNewVariant = async(e)=>{
     e.preventDefault();
-    console.log(finalVariantImages)
+    
     const formData = new FormData();
     finalVariantImages.forEach((file) => {
       formData.append('images', file); // Correct for multiple files
@@ -84,14 +107,54 @@ function ProductDetailStaff() {
       console.log(error)
     }
   }
+  const goToPrevious = (index) => {
+    const isFirstImage = currentIndex === 0;
+    const newIndex = isFirstImage ? productVariants[index].images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = (index) => {
+    const isLastImage = currentIndex === productVariants[index].images.length - 1;
+    const newIndex = isLastImage ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
   return (
     <div className={styles.mainContainer}>
       <img src={data.image} alt={data.productName} width="200vw" />
       <h3>نام محصول : {data.productName}</h3>
       <h3>دسته بندی : {data.productCategory}</h3>
+      <div style={{
+      height: '1px', // Thickness of the divider line
+      width: '100%', // Length of the divider line
+      backgroundColor: '#000', // Color of the divider line
+    }}></div>
       <h4>تنوع های این محصول</h4>
-      <GrAddCircle onClick={()=>setShowModalVariant(!showModalVariant)} size="4vw" />
+<div className={styles.variantDivider}>
+  {productVariants.length > 0 && (
+    <div>
+      {productVariants.map((value, index) => (
+        <div key={index}>
+          {value.images && value.images.length > 0 && (
+            <>
+           
+              {console.log(value.images)}
+                
+                {/* <img width="150rem" key={i} src={image} alt={`variant-${index}-${i}`} /> */}
+                <button onClick={()=>goToPrevious(index)}>Previous</button>
+      <img width="150rem" src={value.images[currentIndex]} alt={index} />
+      <button onClick={()=>goToNext(index)}>Next</button>
+     
+              
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+  <GrAddCircle onClick={()=>setShowModalVariant(!showModalVariant)} size="4vw" />
       <h3>اضافه کردن تنوع جدید</h3>
+</div>
+      
       <Modal
        
        isOpen={showModalVariant}

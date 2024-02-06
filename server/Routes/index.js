@@ -10,6 +10,7 @@ import { findUser, getAllAvatar, getAvatarUser } from "../Controllers/Chat/FindU
 import multer from 'multer';
 import { getMessages } from "../Controllers/Chat/GetMessages.js";
 import { createVariant } from "../Controllers/ProductController/AddProductVariant.js";
+import { getProductsVariants } from "../Controllers/ProductController/GetProductsVariants.js";
 const upload = multer({ storage: multer.memoryStorage() })
 const router = express.Router();
 router.post('/getverificationcode', verifyPhoneNumber)
@@ -27,4 +28,5 @@ router.get('/getavatarall',getAllAvatar)
 router.get('/getavatar/:user', getAvatarUser);
 router.post('/messages',getMessages)
 router.post('/addVariantProduct',createVariant)
+router.post('/getProductVariants', getProductsVariants)
 export default router;
