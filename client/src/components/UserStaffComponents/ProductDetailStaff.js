@@ -7,28 +7,49 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import axios from "axios";
+import { BiSolidRightArrow } from "react-icons/bi";
+import { BiSolidLeftArrow } from "react-icons/bi";
+import LoadingComp from "../Loading/LoadingComp";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { notify } from '../toast/toast';
 function ProductDetailStaff() {
+  const [productVariants,setProductsVariant] = useState([])
+  const { data } = useDashboard();
+  const [showModalVariant,setShowModalVariant] = useState(false);
+  const [variantName, setVariantName] = useState('');
+  const [variantDescription, setVariantDescription] = useState('');
+  const [variantImages, setVariantImages] = useState([]);
+  const [finalVariantImages, setFinalVariantImages] = useState([])
+  const [productColor, setProductColor] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
+  const [isDataFetched, setIsDataFetched] = useState(false);
   useEffect(() => {
         
     const fetchData = async()=>{
+      setIsLoading(true)
      try{
          const response = await axios.post('http://localhost:3001/getProductVariants',{
           ProductName :data.productName,
           ProductCategory : data.productCategory
          })
-         setProductsVariant(response.data)
-         setProductsVariant((prevVariant)=>[...prevVariant,response.data])
+         const variantsWithIndex = response.data.map(variant => ({ ...variant, currentIndex: 0 }));
+        setProductsVariant(variantsWithIndex);
          
-         console.log(response)
+         setIsLoading(false)
+         setIsDataFetched(true);
      }catch(error){
-
+      setIsLoading(false)
      }
      
      
     }
-    fetchData();
+    if(showModalVariant === false){
+      fetchData();
+    }
+    
  // eslint-disable-next-line no-use-before-define
- }, []);
+ }, [showModalVariant]);
   const customStyles = {
       
     content: {
@@ -43,15 +64,7 @@ function ProductDetailStaff() {
     },
     overlay: {zIndex: 1000}
   };
-  const [productVariants,setProductsVariant] = useState([])
-  const { data } = useDashboard();
-  const [showModalVariant,setShowModalVariant] = useState(false);
-  const [variantName, setVariantName] = useState('');
-  const [variantDescription, setVariantDescription] = useState('');
-  const [variantImages, setVariantImages] = useState([]);
-  const [finalVariantImages, setFinalVariantImages] = useState([])
-  const [productColor, setProductColor] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0)
+  
   const handleImageChange = (e) => {
     // console.log(e.target.files)
     if (e.target.files.length > 0) {
@@ -86,15 +99,16 @@ function ProductDetailStaff() {
     ));
   };
   const saveNewVariant = async(e)=>{
+    setIsLoading(true)
     e.preventDefault();
     
     const formData = new FormData();
     finalVariantImages.forEach((file) => {
       formData.append('images', file); // Correct for multiple files
   });// Use 'image' as the key for the file
-        formData.append('variantName', variantName);
-        formData.append('variantColor', productColor);
-        formData.append('variantDescription', variantDescription)
+        formData.append('VariantName', variantName);
+        formData.append('VariantColor', productColor);
+        formData.append('VariantDescription', variantDescription)
         formData.append('productName',data.productName)
         formData.append('productCategory',data.productCategory)
     try{
@@ -103,23 +117,45 @@ function ProductDetailStaff() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+          setIsLoading(false)
+          setShowModalVariant(false)
+          notify("تنوع محصول جدید اضافه شد",'success')
     }catch(error){
-      console.log(error)
+      console.log(error.response.data)
+      if(error.response.data.message === 'A product with this name already exists.'){
+        notify('این تنوع قبلا اضافه شده است','error')
+        setIsLoading(false)
+      }else{
+        notify("خطا",'error')
+        setIsLoading(false)
+      }
     }
   }
-  const goToPrevious = (index) => {
-    const isFirstImage = currentIndex === 0;
-    const newIndex = isFirstImage ? productVariants[index].images.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+  const goToPrevious = (variantIndex) => {
+    setProductsVariant(currentVariants => currentVariants.map((variant, index) => {
+      if (index === variantIndex) {
+        const isFirstImage = variant.currentIndex === 0;
+        const newIndex = isFirstImage ? variant.images.length - 1 : variant.currentIndex - 1;
+        return { ...variant, currentIndex: newIndex };
+      }
+      return variant;
+    }));
   };
-
-  const goToNext = (index) => {
-    const isLastImage = currentIndex === productVariants[index].images.length - 1;
-    const newIndex = isLastImage ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+  
+  const goToNext = (variantIndex) => {
+    setProductsVariant(currentVariants => currentVariants.map((variant, index) => {
+      if (index === variantIndex) {
+        const isLastImage = variant.currentIndex === variant.images.length - 1;
+        const newIndex = isLastImage ? 0 : variant.currentIndex + 1;
+        return { ...variant, currentIndex: newIndex };
+      }
+      return variant;
+    }));
   };
   return (
     <div className={styles.mainContainer}>
+      {isLoading && <LoadingComp />}
+      
       <img src={data.image} alt={data.productName} width="200vw" />
       <h3>نام محصول : {data.productName}</h3>
       <h3>دسته بندی : {data.productCategory}</h3>
@@ -130,27 +166,41 @@ function ProductDetailStaff() {
     }}></div>
       <h4>تنوع های این محصول</h4>
 <div className={styles.variantDivider}>
-  {productVariants.length > 0 && (
-    <div>
-      {productVariants.map((value, index) => (
-        <div key={index}>
-          {value.images && value.images.length > 0 && (
-            <>
-           
-              {console.log(value.images)}
-                
-                {/* <img width="150rem" key={i} src={image} alt={`variant-${index}-${i}`} /> */}
-                <button onClick={()=>goToPrevious(index)}>Previous</button>
-      <img width="150rem" src={value.images[currentIndex]} alt={index} />
-      <button onClick={()=>goToNext(index)}>Next</button>
-     
-              
-            </>
-          )}
-        </div>
-      ))}
-    </div>
-  )}
+{!isLoading && isDataFetched && productVariants.length === 0 && (
+      <div>برای این محصول هیچ تنوعی تعریف نشده است</div>
+    )}
+{!isLoading && productVariants.length > 0 ? (
+  <div className={styles.variantContainer}>
+    {productVariants.map((value, index) => (
+      <div key={index}>
+        {value.images && value.images.length > 0 ? (
+          <div className={styles.productVariantContainer}>
+            <div className={styles.contentVariantContainer}>
+              <BiSolidRightArrow className={styles.icon} color='blue' size="2rem" onClick={() => goToPrevious(index)} />
+              <img width="170rem" src={value.images[value.currentIndex]} alt={index} />
+              <BiSolidLeftArrow className={styles.icon} color='blue' size="2rem" onClick={() => goToNext(index)} />
+            </div>
+            <h3>{value.VariantName}</h3>
+            <Button variant="contained" fullWidth>افزودن به سبد سفارش</Button>
+          </div>
+        ) : (
+          // Render Skeletons while loading
+          <>
+            <Skeleton height={170} width={170} />
+            <Skeleton width={100} />
+          </>
+        )}
+      </div>
+    ))}
+  </div>
+) : (
+  <></>
+  // Render Skeletons if productVariants array is empty and data is loading
+  // <>
+  //   <Skeleton count={5} height={200} width={200} style={{ marginBottom: '10px' }} />
+  //   <Skeleton count={5} width={150} style={{ marginBottom: '6px' }} />
+  // </>
+)}
   <GrAddCircle onClick={()=>setShowModalVariant(!showModalVariant)} size="4vw" />
       <h3>اضافه کردن تنوع جدید</h3>
 </div>

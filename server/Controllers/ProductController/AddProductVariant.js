@@ -36,27 +36,32 @@ export const createVariant = async (req, res) => {
 
         // Proceed with your existing logic here, req.files contains the uploaded files
         try {
-            const { variantName,
-                variantColor,
-                variantDescriptio,
+            const { VariantName,
+                VariantColor,
+                VariantDescription,
                 productName,
                 productCategory } = req.body;
-            const existingProduct = await ProductsVariant.findOne({ productName: productName, variantName : variantName });
-
+                
+            const existingProduct = await ProductsVariant.findOne({ VariantName : req.body.VariantName });
+                
             if (existingProduct) {
                 return res.status(400).json({ message: "A product with this name already exists." });
             }
 
             // Assuming your Products model can handle an array of images
             const images = req.files.map(file => file.buffer);
-            const newProduct = new ProductsVariant({ variantName,
-                variantColor,
-                variantDescriptio,
+            console.log(VariantName)
+            const newProductVariant = new ProductsVariant({ 
                 productName,
-                productCategory,images});
-            await newProduct.save();
+                productCategory,
+                images,
+                VariantName,
+                VariantColor,
+                VariantDescription,
+            });
+            await newProductVariant.save();
 
-            res.status(201).json({ message: "Product uploaded successfully!", newProduct });
+            res.status(201).json({ message: "Product uploaded successfully!", newProductVariant });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error uploading product');

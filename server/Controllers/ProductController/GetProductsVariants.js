@@ -1,7 +1,7 @@
 import ProductsVariant from "../../Models/ProductsVariant.js";
 export const getProductsVariants = async(req,res)=>{
     try{
-       console.log(req.body)
+       
         const products = await ProductsVariant.find({productName : req.body.ProductName ,
              productCategory : req.body.ProductCategory});
              const productsWithImages = products.map(product => {

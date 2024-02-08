@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const productVariantSchema = new mongoose.Schema({
-    productName: { type: String},
+    productName:String,
     productCategory: String,
     VariantName:String,
     VariantColor:String,
