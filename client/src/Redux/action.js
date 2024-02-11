@@ -8,3 +8,18 @@ export const addToken = (token) => ({
   })
 
 
+export function addToCart(cartItems) {
+  return {
+    type: 'ADD_TO_CART',
+    payload: cartItems
+  };
+}
+export function cartModifier(variantId,quantity){
+  return{
+    type: 'UPDATE_CART_QUANTITY',
+    payload: {
+      variantId, // Include the variantId to identify the cart item
+      quantity   // Include the new quantity to update the cart item with
+    }
+  }
+}

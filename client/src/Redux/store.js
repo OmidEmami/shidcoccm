@@ -2,9 +2,11 @@
 import { createStore ,combineReducers} from "redux";
 import tokenReducer from "./tokenReducer";
 import addMessageReducer from "./addMessageReducer";
+import cartReducer from "./cartReducer";
 const rootReducer = combineReducers({
     tokenReducer,
-    addMessageReducer
+    addMessageReducer,
+    cartReducer
     
   });
   const store = createStore(rootReducer);

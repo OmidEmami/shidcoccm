@@ -13,7 +13,10 @@ import LoadingComp from "../Loading/LoadingComp";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { notify } from '../toast/toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, cartModifier } from '../../Redux/action';
 function ProductDetailStaff() {
+  const dispatch = useDispatch();
   const [productVariants,setProductsVariant] = useState([])
   const { data } = useDashboard();
   const [showModalVariant,setShowModalVariant] = useState(false);
@@ -24,6 +27,15 @@ function ProductDetailStaff() {
   const [productColor, setProductColor] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const [variantQuantities, setVariantQuantities] = useState({});
+
+  const cartItems = useSelector(state => state.cartReducer.cartItems);
+  const handleQuantityChange = (variantId, newQuantity) => {
+    setVariantQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [variantId]: newQuantity
+    }));
+  };
   useEffect(() => {
         
     const fetchData = async()=>{
@@ -160,6 +172,15 @@ function ProductDetailStaff() {
     setShowModalVariant(!showModalVariant)
     setVariantImages([])
   }
+  const addProductVariantToCart =async(value)=>{
+    dispatch(addToCart(value));
+    console.log(cartItems)
+  }
+  const updateCartItemQuantity = (variantId, quantity) => {
+    if (quantity >= 1) { // Check to ensure quantity is valid
+      dispatch(cartModifier(variantId, quantity));
+    }
+  };
   return (
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
@@ -189,7 +210,22 @@ function ProductDetailStaff() {
               <BiSolidLeftArrow className={styles.icon} color='blue' size="2rem" onClick={() => goToNext(index)} />
             </div>
             <h3>{value.VariantName}</h3>
-            <Button variant="contained" fullWidth>افزودن به سبد سفارش</Button>
+           {/* Check if the variant exists in the cart */}
+        {cartItems.find(item => item._id === value._id) ? (
+          // If exists, show the quantity
+          <div>Quantity: 
+          <input
+  type='number'
+  min='1'
+  value={variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity}
+  onChange={(e) => handleQuantityChange(value._id, parseInt(e.target.value))}
+  onBlur={() => updateCartItemQuantity(value._id, variantQuantities[value._id])}
+/>{cartItems.find(item => item._id === value._id).quantity}</div>
+        ) : (
+          // If not, show the "Add to Cart" button
+          <Button onClick={() => addProductVariantToCart(value)} variant="contained" fullWidth>افزودن به سبد سفارش</Button>
+        )}
+            
           </div>
         ) : (
           // Render Skeletons while loading
