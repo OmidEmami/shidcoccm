@@ -120,6 +120,10 @@ function ProductDetailStaff() {
           setIsLoading(false)
           setShowModalVariant(false)
           notify("تنوع محصول جدید اضافه شد",'success')
+          setVariantDescription('');
+          setVariantName('');
+          setProductColor('');
+          setFinalVariantImages('')
     }catch(error){
       console.log(error.response.data)
       if(error.response.data.message === 'A product with this name already exists.'){
@@ -152,6 +156,10 @@ function ProductDetailStaff() {
       return variant;
     }));
   };
+  const showModalForAddVariant = async()=>{
+    setShowModalVariant(!showModalVariant)
+    setVariantImages([])
+  }
   return (
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
@@ -201,7 +209,7 @@ function ProductDetailStaff() {
   //   <Skeleton count={5} width={150} style={{ marginBottom: '6px' }} />
   // </>
 )}
-  <GrAddCircle onClick={()=>setShowModalVariant(!showModalVariant)} size="4vw" />
+  <GrAddCircle onClick={showModalForAddVariant} size="4vw" />
       <h3>اضافه کردن تنوع جدید</h3>
 </div>
       
