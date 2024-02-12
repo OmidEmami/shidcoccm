@@ -13,6 +13,11 @@ function cartReducer(state = initialState, action) {
         : item
     )
   };
+  case 'REMOVE_FROM_CART':
+  return {
+    ...state,
+    cartItems: state.cartItems.filter(item => item._id !== action.payload),
+  };
     case 'ADD_TO_CART':
       // Check if the item is already in the cart
       const inCart = state.cartItems.find(item => item.VariantName === action.payload.VariantName);

@@ -19,7 +19,7 @@ import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
 import { IoCartOutline } from "react-icons/io5";
 
-function ProductDetailStaff() {
+function ProductDetailCustomer() {
   const dispatch = useDispatch();
   const [productVariants,setProductsVariant] = useState([])
   const { data } = useDashboard();
@@ -373,4 +373,4 @@ useEffect(() => {
   )
 }
 
-export default ProductDetailStaff
+export default ProductDetailCustomer

@@ -23,3 +23,10 @@ export function cartModifier(variantId,quantity){
     }
   }
 }
+
+export function removeFromCart(variantId) {
+  return {
+    type: 'REMOVE_FROM_CART',
+    payload: variantId,
+  };
+}
