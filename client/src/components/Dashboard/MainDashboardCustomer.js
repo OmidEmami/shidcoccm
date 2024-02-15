@@ -17,7 +17,7 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { IoMdExit } from "react-icons/io";
 import ChatCustomer from '../UserStaffComponents/ChatCustomer';
-import NewOrderCustomer from '../UserStaffComponents/NewOrderCustomer';
+import ProductDetailCustomer from "../UserCustomerComponent/ProductDetailCustomer"
 import CheckNotifsCustomer from '../UserStaffComponents/CheckNotifsCustomer';
 import FollowUpOrdersCustomer from '../UserStaffComponents/FollowUpOrdersCustomer';
 import AdverCustomer from '../UserStaffComponents/AdverCustomer';
@@ -120,7 +120,7 @@ const logoutSystem = () =>{
             <div className={styles.contentContainer}>
               {item === 1 ? <Profile /> : null}
               {item === 2 ? <ChatCustomer /> : null}
-              {item === 3 ? <NewOrderCustomer /> : null}
+              {item === 3 ? <ProductDetailCustomer /> : null}
               {item === 4 ? <CheckNotifsCustomer /> : null}
               {item === 5 ? <FollowUpOrdersCustomer /> : null}
               {item === 6 ? <AdverCustomer /> : null}

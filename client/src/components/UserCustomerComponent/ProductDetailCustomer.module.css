@@ -1,0 +1,102 @@
+@font-face {
+    font-family: 'shabnamM'; /* Choose a suitable name for your font */
+    src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
+    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
+  }
+  .mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+.mainContainer h3{
+    color:black;
+    font-size: 1rem;
+    
+}
+.mainContainer h4{
+    color:black;
+    font-size: 1.5rem;
+}
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+}
+.formContainer input{
+    font-family: "shabnamM";
+}
+.formContainer Button{
+    font-family: "shabnamM";
+}
+.formContainer span{
+    font-family: "shabnamM";
+}
+.variantDivider{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.productVariantContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:2vw;
+}
+
+  .icon:active {
+    transform: scale(0.8);
+    transition: transform 0.2s ease;
+  }
+  
+  
+  .icon {
+    transition: transform 0.3s ease;
+  }
+  .productVariantContainer img{
+    border-radius: 15px;
+  }
+  .contentVariantContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .variantContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default to 3 columns */
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+  }
+  
+  /* Adjust to 2 columns on smaller screens */
+  @media (max-width: 800px) {
+    .variantContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Adjust to 1 column on very small screens */
+  @media (max-width: 500px) {
+    .variantContainer {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  .variantQuantityContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+
+  }
+  .mainQuantityContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+  }

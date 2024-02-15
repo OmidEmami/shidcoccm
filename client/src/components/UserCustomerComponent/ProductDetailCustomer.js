@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import { useDashboard } from '../Dashboard/DashboardContext';
-import styles from "./ProductDetailStaff.module.css"
+import styles from "./ProductDetailCustomer.module.css"
 import { GrAddCircle } from "react-icons/gr";
 import Modal from 'react-modal';
 import TextField from '@mui/material/TextField';
