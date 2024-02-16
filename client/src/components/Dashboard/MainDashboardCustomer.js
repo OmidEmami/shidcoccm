@@ -1,4 +1,3 @@
-
 import React,{useState,useEffect} from 'react'
 import styles from "./MainDashboardStaff.module.css";
 import { jwtDecode } from "jwt-decode";
@@ -7,22 +6,24 @@ import { AiOutlineUser } from "react-icons/ai";
 import { BsChatDots } from "react-icons/bs";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+import {LiaShippingFastSolid} from "react-icons/lia";
+import {RiAdvertisementLine} from "react-icons/ri"
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { addToken } from '../../Redux/action';
 import LoadingComp from '../Loading/LoadingComp';
 import Profile from "../UserStaffComponents/Profile"
-import { LiaShippingFastSolid } from "react-icons/lia";
-import { RiAdvertisementLine } from "react-icons/ri";
 import { IoMdExit } from "react-icons/io";
-import ChatCustomer from '../UserStaffComponents/ChatCustomer';
-import ProductDetailCustomer from "../UserCustomerComponent/ProductDetailCustomer"
-import CheckNotifsCustomer from '../UserStaffComponents/CheckNotifsCustomer';
-import FollowUpOrdersCustomer from '../UserStaffComponents/FollowUpOrdersCustomer';
-import AdverCustomer from '../UserStaffComponents/AdverCustomer';
-function MainDashboardCustomer() {
-    const history = useHistory();
+import { useDashboard } from './DashboardContext';
+import ChatCustomer from '../UserCustomerComponent/ChatCustomer';
+import ProductManagementCustomer from '../UserCustomerComponent/ProductManagementCustomer';
+import CheckNotifsCustomer from "../UserCustomerComponent/CheckNotifsCustomer";
+import FollowUpOrdersCustomer from "../UserCustomerComponent/FollowUpOrdersCustomer";
+import AdverCustomer from "../UserCustomerComponent/AdverCustomer"
+import ProductDetailCustomer from '../UserCustomerComponent/ProductDetailCustomer';
+const  MainDashboardStaff =()=> {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState('');
@@ -32,7 +33,8 @@ function MainDashboardCustomer() {
   const [expire, setExpire] = useState('');
   const [type, setType] = useState('');
   const [rule, setRule] = useState('')
-  const [item, setItem] = useState(false);
+  // const [item, setItem] = useState(false);
+  const { showItem,item } = useDashboard();
   useEffect(() => {
     refreshToken();
     
@@ -92,8 +94,8 @@ axiosJWT.interceptors.request.use(async (config) => {
     Promise.reject(error); 
     return
 });
-const showItem = (e) => {
-  setItem(e)
+const showItemB = (e) => {
+ showItem(e)
 }
 const logoutSystem = () =>{
 
@@ -109,7 +111,7 @@ const logoutSystem = () =>{
         </div>
         <div className={styles.bodyContainer}>
             <div className={styles.menuRightContainer}>
-                <div onClick={()=>showItem(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
+            <div onClick={()=>showItem(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
                 <div onClick={()=>showItem(2)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><BsChatDots size='2vw' /><h5>پیامرسان</h5></div>
                 <div onClick={()=>showItem(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>ثبت سفارش</h5></div>
                 <div onClick={()=>showItem(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اعلانات</h5></div>
@@ -120,10 +122,11 @@ const logoutSystem = () =>{
             <div className={styles.contentContainer}>
               {item === 1 ? <Profile /> : null}
               {item === 2 ? <ChatCustomer /> : null}
-              {item === 3 ? <ProductDetailCustomer /> : null}
+              {item === 3 ? <ProductManagementCustomer /> : null}
               {item === 4 ? <CheckNotifsCustomer /> : null}
               {item === 5 ? <FollowUpOrdersCustomer /> : null}
               {item === 6 ? <AdverCustomer /> : null}
+              {item === 8 ? <ProductDetailCustomer /> : null}
             </div>
         </div>
       
@@ -131,4 +134,4 @@ const logoutSystem = () =>{
   )
 }
 
-export default MainDashboardCustomer
+export default MainDashboardStaff

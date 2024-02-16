@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'shabnamM'; /* Choose a suitable name for your font */
+    src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
+    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
+  }
+.PlusContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.PlusContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border:  2px solid transparent; /* Prepare for border color change */
+    border-radius: 10px; /* Rounded corners */
+    transition: transform 0.3s ease, border-color 0.3s ease; /* Smooth transition for transform and border */
+    padding : 1rem;
+    cursor: pointer;
+  }
+  
+  .PlusContainer:hover {
+    transform: scale(1.05); /* Slightly enlarge the container */
+    border-color: #003cff7c; /* Change border color on hover */
+  }
+  .PlusContainer h3{
+    color:black;
+    font-size: 1rem;
+  }
+.MainContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.modalContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.modalContainer h3{
+    color: black;
+    font-size: 1rem;
+}
+.modalContainer input{
+    font-family: "shabnamM";
+}
+.modalContainer label{
+    font-family: "shabnamM";
+}
+.AddProductForm Button{
+    font-family: "shabnamM";
+}
+.AddProductForm{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    direction: rtl;
+    row-gap: 1rem;
+}
+.wholeProductContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+    
+    flex-wrap: wrap; /* Allows items to wrap onto multiple lines */
+    align-items: stretch;
+   
+}
+.wholeProductContainer p{
+    max-width: 10vw; /* Adjust as needed to set the maximum width of the paragraph */
+    text-align: justify; /* Justifies the text within the paragraph */
+    overflow-wrap: break-word; 
+}
+.wholeProductContainer img{
+    border-radius: 10px;
+    
+}
+.productContainer{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #EBAB55;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    margin:1rem;
+    
+}
+.productContainer:hover {
+    transform: scale(1.05); /* Slightly enlarge the container */
+    border-color: #003cff7c; /* Change border color on hover */
+  }

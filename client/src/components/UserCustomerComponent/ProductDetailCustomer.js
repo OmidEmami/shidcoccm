@@ -1,8 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import { useDashboard } from '../Dashboard/DashboardContext';
 import styles from "./ProductDetailCustomer.module.css"
-import { GrAddCircle } from "react-icons/gr";
-import Modal from 'react-modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
@@ -17,18 +15,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
-import { IoCartOutline } from "react-icons/io5";
 
 function ProductDetailCustomer() {
   const dispatch = useDispatch();
   const [productVariants,setProductsVariant] = useState([])
   const { data } = useDashboard();
   const [showModalVariant,setShowModalVariant] = useState(false);
-  const [variantName, setVariantName] = useState('');
-  const [variantDescription, setVariantDescription] = useState('');
-  const [variantImages, setVariantImages] = useState([]);
-  const [finalVariantImages, setFinalVariantImages] = useState([])
-  const [productColor, setProductColor] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [variantQuantities, setVariantQuantities] = useState({});
@@ -97,91 +89,11 @@ useEffect(() => {
     
  // eslint-disable-next-line no-use-before-define
  }, [showModalVariant]);
-  const customStyles = {
-      
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      
-      
-    },
-    overlay: {zIndex: 1000}
-  };
   
-  const handleImageChange = (e) => {
-    // console.log(e.target.files)
-    if (e.target.files.length > 0) {
-      for(let i = 0 ; i < e.target.files.length ; i++){
-        const file = e.target.files[i]
-        if (file.size > 5 * 1024 * 1024) {
-                      alert('فایل باید کمتر از 2MB باشد.');
-                      return; // Exit the function if the file is too large
-                  }
-          if (file.type !== 'image/jpeg') {
-                        alert('فقط فایل‌های JPEG مجاز هستند.');
-                        return; // Exit the function if the file is not a JPEG
-                    }
-                    setFinalVariantImages((prevImages)=>[...prevImages,file])
-      }
-      
-      const filesArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-
-     
-      setVariantImages((prevImages) => prevImages.concat(filesArray));
-      // setFinalVariantImages((prevImages)=>prevImages.concat(file))
-      // setMyArray(prevArray => [...prevArray, newItem]);
-    }
   
-
-  }
-  const renderImages = () => {
-    return variantImages.map((image, index) => (
-      <img key={index} src={image} alt={`upload-${index}`}  style={{ width: "8rem",padding:"2px" }} />
-    ));
-  };
-  const saveNewVariant = async(e)=>{
-    setIsLoading(true)
-    e.preventDefault();
-    
-    const formData = new FormData();
-    finalVariantImages.forEach((file) => {
-      formData.append('images', file); // Correct for multiple files
-  });// Use 'image' as the key for the file
-        formData.append('VariantName', variantName);
-        formData.append('VariantColor', productColor);
-        formData.append('VariantDescription', variantDescription)
-        formData.append('productName',data.productName)
-        formData.append('productCategory',data.productCategory)
-    try{
-      const response = await axios.post('http://localhost:3001/addVariantProduct', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-          setIsLoading(false)
-          setShowModalVariant(false)
-          notify("تنوع محصول جدید اضافه شد",'success')
-          setVariantDescription('');
-          setVariantName('');
-          setProductColor('');
-          setFinalVariantImages('')
-    }catch(error){
-      console.log(error.response.data)
-      if(error.response.data.message === 'A product with this name already exists.'){
-        notify('این تنوع قبلا اضافه شده است','error')
-        setIsLoading(false)
-      }else{
-        notify("خطا",'error')
-        setIsLoading(false)
-      }
-    }
-  }
+ 
+  
+ 
   const goToPrevious = (variantIndex) => {
     setProductsVariant(currentVariants => currentVariants.map((variant, index) => {
       if (index === variantIndex) {
@@ -203,10 +115,7 @@ useEffect(() => {
       return variant;
     }));
   };
-  const showModalForAddVariant = async()=>{
-    setShowModalVariant(!showModalVariant)
-    setVariantImages([])
-  }
+  
   const addProductVariantToCart = async (value) => {
     // Check if the item is already in the cart
     const isItemInCart = cartItems.some(item => item._id === value._id);
@@ -305,13 +214,13 @@ useEffect(() => {
 
             </div>
         ) : (
-          // If not, show the "Add to Cart" button
+          
           <Button onClick={() => addProductVariantToCart(value)} variant="contained" fullWidth>افزودن به سبد سفارش</Button>
         )}
             
           </div>
         ) : (
-          // Render Skeletons while loading
+          
           <>
             <Skeleton height={170} width={170} />
             <Skeleton width={100} />
@@ -322,53 +231,12 @@ useEffect(() => {
   </div>
 ) : (
   <></>
-  // Render Skeletons if productVariants array is empty and data is loading
-  // <>
-  //   <Skeleton count={5} height={200} width={200} style={{ marginBottom: '10px' }} />
-  //   <Skeleton count={5} width={150} style={{ marginBottom: '6px' }} />
-  // </>
+  
 )}
-  <GrAddCircle onClick={showModalForAddVariant} size="4vw" />
-      <h3>اضافه کردن تنوع جدید</h3>
+
 </div>
       
-      <Modal
-       
-       isOpen={showModalVariant}
-       onRequestClose={()=>setShowModalVariant(false)}
-       style={customStyles}
-       contentLabel="add variant modal"
-     >
-       <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
-         <form onSubmit={saveNewVariant} className={styles.formContainer}>
-          <h1 style={{fontSize:"1.5rem"}}>اضافه کردن تنوع جدید</h1>
-          <label>نام تنوع محصول</label>
-         <TextField value={variantName} onChange={(e)=>setVariantName(e.target.value)} fullWidth placeholder='نام تنوع'  variant='outlined' />
-         <label>توضیحات تنوع</label>
-         <TextareaAutosize minRows={3} value={variantDescription}
-          onChange={(e)=>setVariantDescription(e.target.value)}
-          style={{height:"5vw", width:"20vw"}}
-          fullWidth placeholder='توضیحات تنوع' variant='outlined' />
-         <input
-        accept="image/*"
-        style={{ display: 'none' }}
-        id="raised-button-file"
-        multiple
-        type="file"
-        onChange={handleImageChange}
-      />
-      <label htmlFor="raised-button-file">
-        <Button style={{backgroundColor:"#EBAB55"}} variant="contained" component="span">
-          انتخاب تصویر (حداقل 3 تصویر)
-        </Button>
-      </label>
-      <div>{renderImages()}</div>
-      <label>رنگ محصول</label>
-      <TextField value={productColor} onChange={(e)=>setProductColor(e.target.value)} fullWidth placeholder='رنگ محصول'  variant='outlined' />
-      <Button variant="contained" fullWidth type='submit' >ذخیره</Button>
-         </form>
-       </div>
-     </Modal>
+      
     </div>
   )
 }
