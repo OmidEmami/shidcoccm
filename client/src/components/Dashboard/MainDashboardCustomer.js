@@ -9,7 +9,6 @@ import { MdOutlineNotificationsActive } from "react-icons/md";
 import {LiaShippingFastSolid} from "react-icons/lia";
 import {RiAdvertisementLine} from "react-icons/ri"
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { addToken } from '../../Redux/action';
 import LoadingComp from '../Loading/LoadingComp';
@@ -22,7 +21,13 @@ import CheckNotifsCustomer from "../UserCustomerComponent/CheckNotifsCustomer";
 import FollowUpOrdersCustomer from "../UserCustomerComponent/FollowUpOrdersCustomer";
 import AdverCustomer from "../UserCustomerComponent/AdverCustomer"
 import ProductDetailCustomer from '../UserCustomerComponent/ProductDetailCustomer';
+import { MdOutlineShoppingCart } from "react-icons/md";
+import { useDispatch, useSelector } from 'react-redux';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 const  MainDashboardStaff =()=> {
+  const cartItems = useSelector(state => state.cartReducer.cartItems);
   const history = useHistory();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -94,9 +99,7 @@ axiosJWT.interceptors.request.use(async (config) => {
     Promise.reject(error); 
     return
 });
-const showItemB = (e) => {
- showItem(e)
-}
+
 const logoutSystem = () =>{
 
 }
@@ -108,6 +111,20 @@ const logoutSystem = () =>{
         <h3>سیستم مدیریت ارتباط با مشتریان شیدکو</h3>
         <h4>داشبورد مشتریان شیدکو</h4>
         <h4>کاربر : {name}</h4>
+        <div style={{display:"flex", flexDirection:"row",justifyContent: 'center', alignItems: 'center',columnGap:"1rem"}}>
+          
+          <h4>سبد خرید</h4>
+          <Badge badgeContent={cartItems.length} 
+            sx={{
+                    '& .MuiBadge-badge': { // Targeting the badge style
+                        backgroundColor: '#ff5722', // Custom color for the badge
+                        color: 'white' // Optional: change the text color inside the badge
+                    }
+                }}>
+                <ShoppingCartIcon sx={{color:"white", size:"2vw"}} />
+            </Badge>
+        </div>
+        
         </div>
         <div className={styles.bodyContainer}>
             <div className={styles.menuRightContainer}>
