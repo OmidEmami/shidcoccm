@@ -25,8 +25,9 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import Modal from 'react-modal';
 const  MainDashboardStaff =()=> {
+  const [showModalCart, setShowModalCart] = useState(false)
   const cartItems = useSelector(state => state.cartReducer.cartItems);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -103,16 +104,43 @@ axiosJWT.interceptors.request.use(async (config) => {
 const logoutSystem = () =>{
 
 }
+const customStyles = {
+      
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    
+    
+  },
+  overlay: {zIndex: 1000}
+};
   return (
     <div className={styles.mainContainer}>
+      <Modal
+       
+       isOpen={showModalCart}
+       onRequestClose={()=>setShowModalCart(false)}
+       style={customStyles}
+       contentLabel="add variant modal"
+     >
+       <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+         {cartItems.length > 0 && cartItems.map((value,index)=>(
+          <img alt='variant' style={{width:"9vw"}} src={value.images[0]}/>
+         ))}
+       </div>
+     </Modal>
       {isLoading && <LoadingComp />}
         <div className={styles.headerContainer}>
         <img alt='لوگو شیدکو' src={Logo} />
         <h3>سیستم مدیریت ارتباط با مشتریان شیدکو</h3>
         <h4>داشبورد مشتریان شیدکو</h4>
         <h4>کاربر : {name}</h4>
-        <div style={{display:"flex", flexDirection:"row",justifyContent: 'center', alignItems: 'center',columnGap:"1rem"}}>
-          
+        <div onClick={()=>setShowModalCart(true)} style={{cursor:"pointer",display:"flex", flexDirection:"row",justifyContent: 'center', alignItems: 'center',columnGap:"1rem"}}>
+        
           <h4>سبد خرید</h4>
           <Badge badgeContent={cartItems.length} 
             sx={{

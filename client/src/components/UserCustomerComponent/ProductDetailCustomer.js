@@ -27,24 +27,17 @@ function ProductDetailCustomer() {
   const [debouncedQuantityUpdate, setDebouncedQuantityUpdate] = useState(null);
   const cartItems = useSelector(state => state.cartReducer.cartItems);
   const handleQuantityChange = (variantId, newQuantity) => {
-    // Directly use newQuantity without setting it to 0 for empty strings
-    const quantity = parseInt(newQuantity, 10);
+    const quantity = newQuantity === '' ? 0 : parseInt(newQuantity, 10);
 
-    if (!isNaN(quantity)) {
-        setVariantQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [variantId]: quantity
-        }));
+    const newQuantities = {
+        ...variantQuantities,
+        [variantId]: !isNaN(quantity) ? quantity : 0,
+    };
 
-        // Update debounced quantity for Redux store update
-        setDebouncedQuantityUpdate({ variantId, quantity });
-    } else if (newQuantity === '') {
-        // If the field is cleared, keep it in the local state to allow re-typing
-        setVariantQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [variantId]: newQuantity
-        }));
-    }
+    setVariantQuantities(newQuantities);
+
+    // Save to local storage
+    localStorage.setItem('variantQuantities', JSON.stringify(newQuantities));
 };
 
   
@@ -52,7 +45,13 @@ function ProductDetailCustomer() {
   
   
   
-  
+useEffect(() => {
+  const savedQuantities = localStorage.getItem('variantQuantities');
+  if (savedQuantities) {
+      setVariantQuantities(JSON.parse(savedQuantities));
+  }
+}, []);
+
 
 useEffect(() => {
   if (debouncedQuantityUpdate !== null) {
