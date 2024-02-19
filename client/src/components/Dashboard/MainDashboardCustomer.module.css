@@ -110,4 +110,12 @@
     .contentContainer label{
       font-family: 'shabnamM';
     }
-    
+    .variantModalContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .variantModalContainer h3{
+      color: black;
+    }

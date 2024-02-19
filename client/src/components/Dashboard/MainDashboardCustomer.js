@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import styles from "./MainDashboardStaff.module.css";
+import styles from "./MainDashboardCustomer.module.css";
 import { jwtDecode } from "jwt-decode";
 import Logo from "../../assests/Logo/mainLogoWhite.png";
 import { AiOutlineUser } from "react-icons/ai";
@@ -21,7 +21,6 @@ import CheckNotifsCustomer from "../UserCustomerComponent/CheckNotifsCustomer";
 import FollowUpOrdersCustomer from "../UserCustomerComponent/FollowUpOrdersCustomer";
 import AdverCustomer from "../UserCustomerComponent/AdverCustomer"
 import ProductDetailCustomer from '../UserCustomerComponent/ProductDetailCustomer';
-import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -127,9 +126,17 @@ const customStyles = {
        style={customStyles}
        contentLabel="add variant modal"
      >
-       <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", columnGap:"1vw"}}>
          {cartItems.length > 0 && cartItems.map((value,index)=>(
-          <img alt='variant' style={{width:"9vw"}} src={value.images[0]}/>
+          <div className={styles.variantModalContainer}>
+          <img alt='variant' style={{width:"15vw"}} src={value.images[0]}/>
+          <h3>نام محصول</h3>
+          <p>{value.VariantName}</p>
+          <h3>نام دسته بندی</h3>
+           <p>{value.productCategory}</p>
+           <h3>تعداد در سبد  : </h3>
+           <p>{value.quantity}  عدد</p>
+          </div>
          ))}
        </div>
      </Modal>
