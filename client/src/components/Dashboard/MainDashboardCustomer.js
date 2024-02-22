@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Modal from 'react-modal';
+import { FaRegSquarePlus } from "react-icons/fa6";
+import { FaRegSquareMinus } from "react-icons/fa6";
 const  MainDashboardStaff =()=> {
   const [showModalCart, setShowModalCart] = useState(false)
   const cartItems = useSelector(state => state.cartReducer.cartItems);
@@ -104,7 +106,6 @@ const logoutSystem = () =>{
 
 }
 const customStyles = {
-      
   content: {
     top: '50%',
     left: '50%',
@@ -112,10 +113,13 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    
-    
+    maxWidth: '90vw', // Limit the width to 90% of the viewport width
+    maxHeight: '90vh', // Limit the height to 90% of the viewport height
+    overflow: 'auto', // Add scrollbars if content overflows
   },
-  overlay: {zIndex: 1000}
+  overlay: {
+    zIndex: 1000
+  }
 };
   return (
     <div className={styles.mainContainer}>
@@ -126,15 +130,20 @@ const customStyles = {
        style={customStyles}
        contentLabel="add variant modal"
      >
-       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", columnGap:"1vw"}}>
+       <div style={{ display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                columnGap: "1vw",
+  
+                  }}>
          {cartItems.length > 0 && cartItems.map((value,index)=>(
           <div className={styles.variantModalContainer}>
-          <img alt='variant' style={{width:"15vw"}} src={value.images[0]}/>
-          <h3>نام محصول</h3>
+          <img alt='variant' style={{width:"16vw"}} src={value.images[0]}/>
           <p>{value.VariantName}</p>
-          <h3>نام دسته بندی</h3>
-           <p>{value.productCategory}</p>
-           <h3>تعداد در سبد  : </h3>
+          <FaRegSquareMinus />
+          <FaRegSquarePlus />
            <p>{value.quantity}  عدد</p>
           </div>
          ))}

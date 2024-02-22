@@ -111,10 +111,16 @@
       font-family: 'shabnamM';
     }
     .variantModalContainer {
+      flex-basis: 30%; /* This ensures that only 3 items fit in one row */
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      margin: 1vw; /* Add some margin for spacing between items */
+      background-color: rgba(132, 237, 245, 0.404);
+      border-radius: 15px;
+      padding: 0.3vw;
+      
     }
     .variantModalContainer h3{
       color: black;
