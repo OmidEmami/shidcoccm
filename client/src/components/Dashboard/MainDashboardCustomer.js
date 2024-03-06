@@ -121,6 +121,12 @@ const customStyles = {
     zIndex: 1000
   }
 };
+const minusQuantity = () =>{
+
+}
+const plusQuantity = () =>{
+
+}
   return (
     <div className={styles.mainContainer}>
       <Modal
@@ -142,9 +148,13 @@ const customStyles = {
           <div className={styles.variantModalContainer}>
           <img alt='variant' style={{width:"16vw"}} src={value.images[0]}/>
           <p>{value.VariantName}</p>
-          <FaRegSquareMinus />
-          <FaRegSquarePlus />
-           <p>{value.quantity}  عدد</p>
+          <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",columnGap:"2vw"}}>
+          <FaRegSquareMinus onClick={()=>minusQuantity(value._id, value.quantity)}/>
+          <p>{value.quantity}</p>
+          <FaRegSquarePlus onClick={()=>plusQuantity(value._id, value.quantity)}/>
+          
+          </div>
+           
           </div>
          ))}
        </div>

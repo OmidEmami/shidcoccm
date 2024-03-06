@@ -38,6 +38,7 @@ function ProductDetailCustomer() {
 
     // Save to local storage
     localStorage.setItem('variantQuantities', JSON.stringify(newQuantities));
+    setDebouncedQuantityUpdate({ variantId, quantity: newQuantities[variantId] });
 };
 
   
@@ -196,6 +197,7 @@ useEffect(() => {
           // If exists, show the quantity
           <div className={styles.variantQuantityContainer}>
               <div className={styles.mainQuantityContainer}>
+                
                 <FaRegSquareMinus onClick={()=>minusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)}  size="1.5rem" />
                 <input
                 type='number'
@@ -206,7 +208,9 @@ useEffect(() => {
                 />
 
 
-                <FaRegSquarePlus onClick={()=>plusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)} size="1.5rem"/>
+                <FaRegSquarePlus 
+                onClick={()=>plusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)} 
+                size="1.5rem"/>
                 </div>
                 تعداد : {variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity} عدد
 
