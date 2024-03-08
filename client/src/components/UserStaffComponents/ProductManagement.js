@@ -110,15 +110,23 @@ function ProductManagement() {
          <h3>اضافه کردن محصول جدید</h3>
          <form className={styles.AddProductForm} onSubmit={createNewProduct}>
             <label>نام اصلی محصول</label>
-            <TextField value={productName} onChange={(e)=>setProductName(e.target.value)} fullWidth placeholder='نام اصلی محصول'  variant='outlined' />
+            <TextField required value={productName} onChange={(e)=>setProductName(e.target.value)} fullWidth placeholder='نام اصلی محصول'  variant='outlined' />
             <label>انتخاب دسته بندی محصول</label>
-            <Select sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='ProductCategory' id="ProductCategory" label='انتخاب دسته بندی محصول' value={productCategory} onChange={(e)=>setProductCategory(e.target.value)}>
+            <Select required sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='ProductCategory' id="ProductCategory" label='انتخاب دسته بندی محصول' value={productCategory} onChange={(e)=>setProductCategory(e.target.value)}>
         
           {productCategoryList.map((value,item)=>(
             <MenuItem sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} key={item} value={value}>{value}</MenuItem>
           ))}
         </Select>
-        <TextField onChange={handleFileSelect} placeholder='انتخاب عکس اصلی' type="file" accept=".jpg, .jpeg" />
+        <label>توضیحات محصول</label>
+        <TextField
+          id="outlined-multiline-static"
+          label="توضیحات محصول"
+          multiline
+          rows={4}
+          required
+        />
+        <TextField required onChange={handleFileSelect} placeholder='انتخاب عکس اصلی' type="file" accept=".jpg, .jpeg" />
       <Button type='submit' variant="contained">
         ذخیره
       </Button>

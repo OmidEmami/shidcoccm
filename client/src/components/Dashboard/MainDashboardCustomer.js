@@ -21,17 +21,18 @@ import CheckNotifsCustomer from "../UserCustomerComponent/CheckNotifsCustomer";
 import FollowUpOrdersCustomer from "../UserCustomerComponent/FollowUpOrdersCustomer";
 import AdverCustomer from "../UserCustomerComponent/AdverCustomer"
 import ProductDetailCustomer from '../UserCustomerComponent/ProductDetailCustomer';
-import { useDispatch, useSelector } from 'react-redux';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Modal from 'react-modal';
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
 const  MainDashboardStaff =()=> {
   const [showModalCart, setShowModalCart] = useState(false)
+  const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cartReducer.cartItems);
   const history = useHistory();
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState('');
   const [name, setName] = useState('');
@@ -121,11 +122,21 @@ const customStyles = {
     zIndex: 1000
   }
 };
-const minusQuantity = () =>{
-
+const minusQuantity = (variantId, quantity) =>{
+ 
+  if(quantity > 0){
+    if(quantity - 1 === 0){
+      dispatch(removeFromCart(variantId));
+    }else{
+  dispatch(cartModifier(variantId, quantity - 1));
 }
-const plusQuantity = () =>{
-
+  }else{
+    dispatch(removeFromCart(variantId));
+  }
+  
+}
+const plusQuantity = (variantId, quantity) =>{
+  dispatch(cartModifier(variantId, quantity + 1));
 }
   return (
     <div className={styles.mainContainer}>
@@ -144,6 +155,7 @@ const plusQuantity = () =>{
                 columnGap: "1vw",
   
                   }}>
+                  {cartItems.length === 0 && <h3 style={{color:"black"}}>سبد سفارشات شما خالی است.</h3>}
          {cartItems.length > 0 && cartItems.map((value,index)=>(
           <div className={styles.variantModalContainer}>
           <img alt='variant' style={{width:"16vw"}} src={value.images[0]}/>

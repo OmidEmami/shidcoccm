@@ -166,10 +166,17 @@ useEffect(() => {
   return (
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
-      
+      <div className={styles.MainProductTopContainer}>
+        <div className={styles.initialDetailsMainProduct}>
       <img src={data.image} alt={data.productName} width="200vw" />
       <h3>نام محصول : {data.productName}</h3>
       <h3>دسته بندی : {data.productCategory}</h3>
+      </div>
+      <div className={styles.secondarMainProductDesc}>
+      <h4>{data.productName}</h4>
+      <p>{data.productDesc}</p>
+      </div>
+      </div>
       <div style={{
       height: '1px', // Thickness of the divider line
       width: '100%', // Length of the divider line

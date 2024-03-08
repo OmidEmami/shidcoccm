@@ -100,3 +100,19 @@
     justify-content: center;
     align-items: start;
   }
+  .MainProductTopContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+  }
+  .initialDetailsMainProduct{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin: 3vw;
+  }
+  .secondarMainProductDesc{
+    margin: 3vw;
+  }

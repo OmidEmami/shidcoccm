@@ -37,7 +37,7 @@ export const createProduct = async (req,res) => {
   
         // Proceed with your existing logic here, req.file is the uploaded file
         try {
-            const { productName, productCategory } = req.body;
+            const { productName, productCategory,productDesc } = req.body;
             const existingProduct = await Products.findOne({ productName: productName });
   
             if (existingProduct) {
@@ -45,7 +45,7 @@ export const createProduct = async (req,res) => {
             }
   
             const image = req.file.buffer;
-            const newProduct = new Products({ productName, productCategory, image });
+            const newProduct = new Products({ productName, productCategory,productDesc, image });
             await newProduct.save();
   
             res.status(201).json({ message: "Product uploaded successfully!", newProduct });
