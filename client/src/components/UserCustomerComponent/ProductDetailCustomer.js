@@ -246,7 +246,7 @@ useEffect(() => {
 
 </div>
       
-      
+{cartItems.length > 0 && <Button sx={{fontFamily:"shabnamM",backgroundColor:"#1975D1",color:"white"}}  fullWidth variant="outlined">تکمیل سفارش</Button>}
     </div>
   )
 }

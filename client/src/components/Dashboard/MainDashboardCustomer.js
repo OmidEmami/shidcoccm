@@ -24,10 +24,12 @@ import ProductDetailCustomer from '../UserCustomerComponent/ProductDetailCustome
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Modal from 'react-modal';
+import Button from '@mui/material/Button';
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
+import { finalizeOrder } from '../UserCustomerComponent/FinalizeOrder';
 const  MainDashboardStaff =()=> {
   const [showModalCart, setShowModalCart] = useState(false)
   const dispatch = useDispatch();
@@ -62,7 +64,8 @@ const refreshToken = async () => {
         setName(decoded.name);
         
         setEmail(decoded.email);
-        setPhone(decoded.phone)
+        setPhone(decoded.phoneNumber);
+        
         setExpire(decoded.exp);
         setType(decoded.type);
         setRule(decoded.rule)
@@ -138,6 +141,10 @@ const minusQuantity = (variantId, quantity) =>{
 const plusQuantity = (variantId, quantity) =>{
   dispatch(cartModifier(variantId, quantity + 1));
 }
+const orderFinalCall = async()=>{
+  
+  finalizeOrder(cartItems,email,phone)
+}
   return (
     <div className={styles.mainContainer}>
       <Modal
@@ -169,6 +176,8 @@ const plusQuantity = (variantId, quantity) =>{
            
           </div>
          ))}
+
+         {cartItems.length > 0 && <Button sx={{fontFamily:"shabnamM"}} onClick={orderFinalCall}  fullWidth variant="outlined">تکمیل سفارش</Button>}
        </div>
      </Modal>
       {isLoading && <LoadingComp />}
