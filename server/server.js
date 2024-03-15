@@ -20,8 +20,12 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
   dotenv.config();
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+
+// If you're also handling URL-encoded data, set a higher limit for that as well
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(router);
 // mongoose.connect('mongodb://localhost:27017', {useNewUrlParser: true, useUnifiedTopology: true});
 const DB_URL = "mongodb://127.0.0.1:27017/Shidcoccm";
@@ -40,8 +44,7 @@ const PORT = process.env.PORT || 3001;
 
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 server.listen(PORT,'0.0.0.0', ()=> console.log('Server running at port 3001'));
 main();
 

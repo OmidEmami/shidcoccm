@@ -1,15 +1,36 @@
 import OrderProducts from "../../Models/OrderProducts.js";
 export const regNewOrder = async(req,res)=>{
-    
-        const orderCode = generateRandomString();
+    const orderCode = generateRandomString();
+        // const orderCode = generateRandomString();
+        const {cart, UserName, PhoneNumber} = req.body
         try{
-            const newProductOrder = new OrderProducts({ productName, productCategory,productDesc, image });
-            await newProduct.save();
+          for(let i = 0 ; i < cart.length ; i++){
+            const productName = cart[i].productName;
+            const productCategory = cart[i].productCategory;
+            const VariantName = cart[i].VariantName;
+            const VariantColor = cart[i].VariantColor;
+            const VariantId = cart[i]._id;
+            const QuantityInCart = cart[i].quantity;
+            const OrderUniqueCode = orderCode;
+
+            const newProductOrder = new OrderProducts({ 
+              productName,
+              productCategory,
+              VariantName,
+              VariantColor,
+              VariantId,
+              QuantityInCart,
+              OrderUniqueCode,
+              UserName,
+              PhoneNumber
+              });
+            await newProductOrder.save();
+          }
+            res.json("ok")
         }catch(error){
-
+          console.log(error)
         }
-
-
+   
 
     function generateRandomString() {
         const allChars = "0123456789abcdefghijklmnopqrstuvwxyz";

@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 export const finalizeOrder = async (cart,username,phone)=>{
-    console.log(cart)
+  
     try{
         const response = await axios.post("http://localhost:3001/regNewOrder",
         {
@@ -10,6 +10,7 @@ export const finalizeOrder = async (cart,username,phone)=>{
             UserName:username,
             PhoneNumber:phone
         })
+    
     }catch(error){  
 
     }
