@@ -9,6 +9,8 @@ const productVariantOrderCart = new mongoose.Schema({
     OrderUniqueCode:String,
     UserName:String,
     PhoneNumber:String,
+    Time:String,
+    Status:String
     
   });
 const OrderProducts = mongoose.model('OrderProducts', productVariantOrderCart);

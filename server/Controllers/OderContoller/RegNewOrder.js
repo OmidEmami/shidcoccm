@@ -1,6 +1,9 @@
 import OrderProducts from "../../Models/OrderProducts.js";
+import moment from 'jalali-moment' ;
 export const regNewOrder = async(req,res)=>{
     const orderCode = generateRandomString();
+    const Time = moment().locale('fa').format('YYYY/MM/DD HH:mm:ss');
+    const Status = "در حال بررسی"
         // const orderCode = generateRandomString();
         const {cart, UserName, PhoneNumber} = req.body
         try{
@@ -22,7 +25,9 @@ export const regNewOrder = async(req,res)=>{
               QuantityInCart,
               OrderUniqueCode,
               UserName,
-              PhoneNumber
+              PhoneNumber,
+              Time,
+              Status
               });
             await newProductOrder.save();
           }

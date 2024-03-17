@@ -15,7 +15,7 @@ import { addToken } from '../../Redux/action';
 import LoadingComp from '../Loading/LoadingComp';
 import Profile from "../UserStaffComponents/Profile"
 import ChatStaff from '../UserStaffComponents/ChatStaff';
-import CheckOrders from "../UserStaffComponents/CheckOrders"
+import FollowUpOrdersStaff from '../UserStaffComponents/FollowUpOrdersStaff';
 import GroupNotifications from "../UserStaffComponents/GroupNotification"
 import AllUserManagement from "../UserStaffComponents/AllUserManagement"
 import AllCustomerManagement from "../UserStaffComponents/AllCustomerManagement";
@@ -127,7 +127,7 @@ const logoutSystem = () =>{
             <div className={styles.contentContainer}>
               {item === 1 ? <Profile /> : null}
               {item === 2 ? <ChatStaff /> : null}
-              {item === 3 ? <CheckOrders /> : null}
+              {item === 3 ? <FollowUpOrdersStaff /> : null}
               {item === 4 ? <GroupNotifications /> : null}
               {item === 5 ? <AllUserManagement /> : null}
               {item === 6 ? <AllCustomerManagement /> : null}
