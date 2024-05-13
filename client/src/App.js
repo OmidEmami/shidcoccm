@@ -5,6 +5,7 @@ import styles from "./App.module.css"
 import MainDashboardStaff from "./components/Dashboard/MainDashboardStaff";
 import MainDashboardCustomer from "./components/Dashboard/MainDashboardCustomer";
 import SignUpStaff from './components/SignUpUserCustomer/SignUpStaff'
+import './index.css';
 
 import ProductDetailStaff from "./components/UserStaffComponents/ProductDetailStaff";
 import { DashboardProvider } from "./components/Dashboard/DashboardContext";
