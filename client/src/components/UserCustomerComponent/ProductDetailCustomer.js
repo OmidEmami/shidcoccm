@@ -16,7 +16,14 @@ import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
 
+import { MdOutlineArrowForward } from "react-icons/md";
+
 function ProductDetailCustomer() {
+const { showItem } = useDashboard();
+const handleSwitchComponent = (product) => {
+    
+    showItem(3, product); // Pass the data as the second argument
+  };
   const dispatch = useDispatch();
   const [productVariants,setProductsVariant] = useState([])
   const { data } = useDashboard();
@@ -167,6 +174,8 @@ useEffect(() => {
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
       <div className={styles.MainProductTopContainer}>
+      <MdOutlineArrowForward size={60} onClick={handleSwitchComponent} />
+      <span>بازگشت</span>
         <div className={styles.initialDetailsMainProduct}>
       <img src={data.image} alt={data.productName} width="200vw" />
       <h3>نام محصول : {data.productName}</h3>

@@ -30,6 +30,7 @@ import { FaRegSquareMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
 import { finalizeOrder } from '../UserCustomerComponent/FinalizeOrder';
+import { notify } from '../toast/toast';
 const  MainDashboardStaff =()=> {
   const [showModalCart, setShowModalCart] = useState(false)
   const dispatch = useDispatch();
@@ -141,9 +142,20 @@ const minusQuantity = (variantId, quantity) =>{
 const plusQuantity = (variantId, quantity) =>{
   dispatch(cartModifier(variantId, quantity + 1));
 }
-const orderFinalCall = async()=>{
-  
-  finalizeOrder(cartItems,email,phone)
+const orderFinalCall = async () => {
+  setIsLoading(true);  
+  try {
+    const response = await finalizeOrder(cartItems, email, phone);
+    if (response.status === 200) {
+      dispatch({ type: 'RESET_CART' });
+      notify("سفارش با موفقیت ثبت شد", 'success');
+      setShowModalCart(false);
+    }
+  } catch (error) {
+   
+    notify("Failed to finalize the order", 'error');
+  }
+  setIsLoading(false);  
 }
   return (
     <div className={styles.mainContainer}>
@@ -177,7 +189,15 @@ const orderFinalCall = async()=>{
           </div>
          ))}
 
-         {cartItems.length > 0 && <Button sx={{fontFamily:"shabnamM"}} onClick={orderFinalCall}  fullWidth variant="outlined">تکمیل سفارش</Button>}
+         {cartItems.length > 0 && <Button
+  sx={{ fontFamily: "shabnamM" }}
+  onClick={orderFinalCall}
+  fullWidth
+  variant="outlined"
+  disabled={isLoading || cartItems.length === 0}  // Disable button if loading or cart is empty
+>
+  تکمیل سفارش
+</Button>}
        </div>
      </Modal>
       {isLoading && <LoadingComp />}

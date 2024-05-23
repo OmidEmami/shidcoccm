@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
+import { notify } from '../toast/toast';
 export const finalizeOrder = async (cart,username,phone)=>{
   
     try{
@@ -10,8 +11,8 @@ export const finalizeOrder = async (cart,username,phone)=>{
             UserName:username,
             PhoneNumber:phone
         })
-    
+        return response
     }catch(error){  
-
+        return error
     }
 }

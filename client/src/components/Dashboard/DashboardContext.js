@@ -10,7 +10,7 @@ export const DashboardProvider = ({ children }) => {
 
   const showItem = (item, data = null) => {
     setItem(item);
-    setData(data); // Set the additional data
+    setData(data); 
   };
 
   return (

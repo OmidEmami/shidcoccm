@@ -37,7 +37,9 @@ function cartReducer(state = initialState, action) {
           cartItems: [...state.cartItems, { ...action.payload, quantity: 1 }]
         };
       }
-
+      case 'RESET_CART':
+        // Reset the cart to initial state
+        return initialState;
     default:
       return state;
   }

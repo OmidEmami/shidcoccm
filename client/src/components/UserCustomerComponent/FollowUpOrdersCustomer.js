@@ -20,6 +20,7 @@ function FollowUpOrdersCustomer() {
         console.log(response)
         setData(response.data)
         setIsLoading(false)
+        console.log(response.data)
       }catch(error){
         notify('خطا در اتصال به شبکه', 'error')
         setIsLoading(false)
