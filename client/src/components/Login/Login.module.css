@@ -1,3 +1,19 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 5, 164);
+  }
+  @keyframes rotate {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
 .loginMainContainer{
     display: flex;
     flex-direction: column;
@@ -5,8 +21,49 @@
     align-items: center;
     direction: rtl;
     font-family:"shabnamM";
+    position: relative;
+    margin-top: 10rem;
+    
+    
+
 
 }
+.div1 {
+    width: 45rem;
+    height: 45rem;
+    z-index: 1; /* Lowest layer */
+    position: absolute;
+    top: 100%;
+    left:100%;
+    border-radius: 25px;
+    background-color: rgb(255, 255, 255 ,0.1);
+    transform: translate(-50%, -50%);
+  animation: rotate 15s linear infinite; 
+  
+  }
+  
+  .div2 {
+    width: 40rem;
+    height: 40rem;
+    z-index: 2; /* Middle layer */
+    margin: auto;
+    position: absolute;
+    top: 100%;
+    left:100%;
+    transform: translate(-50%, -50%);
+  animation: rotate 20s linear infinite; 
+    border-radius: 25px;
+    background-color: rgb(255, 255, 255, 0.1);
+    
+    
+  }
+  .formContainer {
+    background-color: white;
+    position: absolute;
+    top: 100%;
+    left:100%;
+    transform: translate(-50%, -50%);
+  }
 .loginMainContainer h3{
     color:black
 }
@@ -17,10 +74,13 @@
     align-items: center;
     row-gap: 1rem;
     font-family:"shabnamM";
-    background-color: rgba(0, 153, 255, 0.144);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
+    z-index: 3;
+    width:25rem;
+    height: 25rem;
+    
 }
 .formContainer label {
     font-family:"shabnamM";
@@ -63,6 +123,7 @@
 }
 .modalContainer input{
     font-family: 'shabnamM';
+    
 }
 .modalContainer label{
     font-family: 'shabnamM';

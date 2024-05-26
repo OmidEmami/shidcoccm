@@ -181,22 +181,75 @@ function Login() {
         
         </div>
       </Modal>
-        <div className={styles.loginHeader}>
-            <h3>ورود به سیستم</h3>
-            <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
-        </div>
+       
+        <div className={styles.div1}></div>
+        <div className={styles.div2}></div>
       <form className={styles.formContainer} onSubmit={loginFunction}>
-        <label>نام کاربری</label>
-      <TextField value={userName} onChange={(e)=>setUserName(e.target.value)} fullWidth error={userNameError.status} type='text'  id="userName" placeholder="نام کاربری" variant="outlined" />
+      
+        <img alt="logo" src={Logo} width="200vw" />
+      <TextField
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: '#0005a4', // Default border color
+             // Set background color to white
+          },
+          '&:hover fieldset': {
+            borderColor: '#2ecc71', // Border color when hovered
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#3498db', // Border color when focused
+          },
+        },
+        '& .MuiInputBase-input': {
+          color: 'black', // Set text color to black
+        },
+        '& .MuiInputBase-input::placeholder': {
+          color: 'black', // Set placeholder color to black
+          opacity: 1, // Ensure the placeholder color is not translucent
+        },
+      }}
+      value={userName}
+      onChange={(e) => setUserName(e.target.value)}
+      fullWidth
+      error={userNameError.status}
+      type="text"
+      id="userName"
+      placeholder="نام کاربری"
+      variant="outlined"
+    />
       {userNameError.status && <span style={{color:"red"}}>{userNameError.msg}</span>}
-      <label>رمز عبور</label>
-      <TextField value={password} onChange={(e)=>setPassword(e.target.value)} fullWidth type='password' error={passwordError.status}  id="password" placeholder="رمز عبور" variant='outlined' />
+      
+      <TextField
+       sx={{
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: '#0005a4', // Default border color
+             // Set background color to white
+          },
+          '&:hover fieldset': {
+            borderColor: '#2ecc71', // Border color when hovered
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#3498db', // Border color when focused
+          },
+        },
+        '& .MuiInputBase-input': {
+          color: 'black', // Set text color to black
+        },
+        '& .MuiInputBase-input::placeholder': {
+          color: 'black', // Set placeholder color to black
+          opacity: 1, // Ensure the placeholder color is not translucent
+        },
+      }}
+      value={password} onChange={(e)=>setPassword(e.target.value)} fullWidth type='password' error={passwordError.status}  id="password" placeholder="رمز عبور" variant='outlined' />
       {passwordError.status && <span style={{color:"red"}}>{passwordError.msg}</span>}
+      <Button style={{backgroundColor:"#0005a4", color:"white"}} fullWidth type='submit' variant="outlined">ورود</Button>
+      
       <div className={styles.formButtonContainer}>
-      <Button type='submit' variant="outlined">ورود</Button>
-      <Button onClick={()=>history.push('/usersignup')} variant="outlined">حساب ندارم، ثبت نام میکنم</Button>
+      <Button onClick={()=>setLoginCodeModal(true)}  variant="outlined">ورود با کد یکبار مصرف</Button>
+      <Button onClick={()=>history.push('/usersignup')} variant="outlined">ایجاد حساب کاربری</Button>
       </div>
-      <Button onClick={()=>setLoginCodeModal(true)} fullWidth variant="outlined">ورود با کد یکبار مصرف</Button>
       </form>
     </div>
   )
