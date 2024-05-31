@@ -1,10 +1,10 @@
 body {
     margin: 0;
-    height: 100vh;
+    
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(0, 5, 164);
+    
   }
   @keyframes rotate {
     from {
@@ -29,17 +29,15 @@ body {
 
 }
 .div1 {
-    width: 45rem;
-    height: 45rem;
-    z-index: 1; /* Lowest layer */
-    position: absolute;
-    top: 100%;
-    left:100%;
-    border-radius: 25px;
-    background-color: rgb(255, 255, 255 ,0.1);
-    transform: translate(-50%, -50%);
-  animation: rotate 15s linear infinite; 
-  
+  width: 45rem;
+  height: 45rem;
+  z-index: 1; /* Lowest layer */
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  border-radius: 25px; /* Uniformly rounded corners */
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%)rotate(30deg);
   }
   
   .div2 {
@@ -50,8 +48,7 @@ body {
     position: absolute;
     top: 100%;
     left:100%;
-    transform: translate(-50%, -50%);
-  animation: rotate 20s linear infinite; 
+    transform: translate(-50%, -50%)rotate(40deg);
     border-radius: 25px;
     background-color: rgb(255, 255, 255, 0.1);
     

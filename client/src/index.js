@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import { Provider } from "react-redux";
 import store from "../src/Redux/store";
-import axios from 'axios'
+import axios from 'axios';
 axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

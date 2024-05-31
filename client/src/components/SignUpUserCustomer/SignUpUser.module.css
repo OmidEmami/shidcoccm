@@ -1,3 +1,4 @@
+
 .MainSignUpContainer{
     display: flex;
     flex-direction: column;
@@ -19,8 +20,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin:2rem;
-    margin-bottom: 3rem;
+    
+    margin-bottom: 1rem;
 }
 @font-face {
     font-family: 'shabnamM'; /* Choose a suitable name for your font */
@@ -49,11 +50,12 @@
     align-items: center;
     row-gap: 0.5rem;
     font-family:"shabnamM";
-    background-color: rgba(0, 153, 255, 0.144);
+    background-color: rgba(255, 255, 255);
     padding: 1rem;
     border-radius: 15px;
-    width: 30%;
+    width: 100%;
     box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
+    margin: 5rem 0rem 5rem 0rem;
   }
   .modalContainer{
     font-family: "shabnamM" !important;

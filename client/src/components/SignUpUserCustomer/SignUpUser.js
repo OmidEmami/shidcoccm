@@ -256,24 +256,21 @@ const checkBlurPassword = ()=>{
          <Button onClick={receiveVerificationCode} style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>
+     
+      <form className={styles.formContainer} >
       <div className={styles.loginHeader}>
             <h3 style={{color:"black"}}>ثبت نام مشتریان</h3>
             <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
         </div>
-      <form className={styles.formContainer} >
-        <label>نام کامل</label>
         <TextField error={NameError.status} onBlur={checkBlurFullName} fullWidth placeholder='نام و نام خانوادگی' id="FullName"
             variant="outlined" type='text' value={Name} onChange={(e)=>setName(e.target.value)} />
             {NameError.status === true && <span style={{color:"red"}}>{NameError.msg}</span>}
-        <label>شماره تماس</label>
         <TextField onBlur={checkBlurPhoneNumber} error={PhoneNumberError.status} fullWidth  placeholder='مثلا : 09123456789'  id="PhoneNumber"
           variant="outlined" type='number' value={PhoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} />
           {PhoneNumberError.status === true && <span style={{color:"red"}}>{PhoneNumberError.msg}</span>}
-        <label>ایمیل</label>
         <TextField error={EmailError.status} onBlur={checkBlurEmail} fullWidth  placeholder='مثلا : mail@gmail.com' id="Email"
           variant="outlined" type='text' value={Email} onChange={(e)=>setEmail(e.target.value)} />
           {EmailError.status === true && <span style={{color:"red"}}>{EmailError.msg}</span>}
-        <label>نوع کسب وکار : </label>
         <InputLabel id="RuleSelect">نوع کسب و کار خود را انتخاب کنید:</InputLabel>
         <Select error={RuleError.status} onBlur={checkBlurRule} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='RuleSelect' id="RuleSelect" label="انتخاب نوع کسب و کار" value={Rule} onChange={(e)=>setRule(e.target.value)}>
         
@@ -282,7 +279,6 @@ const checkBlurPassword = ()=>{
           ))}
         </Select>
         {RuleError.status === true && <span style={{color:"red"}}>{RuleError.msg}</span>}
-        <label>استان: </label>
         <InputLabel id="Province">استان محل کار خود را انتخاب کنید:</InputLabel>
         <Select error={ProvinceError.status} onBlur={checkBlurProvince} sx={{ fontSize: 'large' , fontFamily:"shabnamM",direction:"rtl"}} fullWidth labelId='Province' id='Province' label='استان محل کار را انتخاب کنید' value={Province} onChange={(e)=>setProvince(e.target.value)}>
         
@@ -291,11 +287,9 @@ const checkBlurPassword = ()=>{
           ))}
         </Select>
         {ProvinceError.status === true && <span style={{color:"red"}}>{ProvinceError.msg}</span>}
-        <label>رمز عبور</label>
         <TextField error={PasswordError.status} type='password' onBlur={checkBlurPassword} fullWidth  placeholder='رمز عبور شامل اعداد و حداقل یک حرف انگلیسی' id="Password"
           variant="outlined"  value={Password} onChange={(e)=>setPassword(e.target.value)} />
           {PasswordError.status === true && <span style={{color:"red"}}>{PasswordError.msg}</span>}
-          <label>تکرار رمز عبور</label>
           <TextField error={confirmPasswordError.status} type='password' onBlur={checkBlurConfirmPassword} fullWidth  placeholder='تکرار رمز عبور' id="ConfirmPassword"
           variant="outlined"  value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
           {confirmPasswordError.status === true && <span style={{color:"red"}}>{confirmPasswordError.msg}</span>}
