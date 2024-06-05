@@ -24,6 +24,12 @@ import { ImMakeGroup } from "react-icons/im";
 import ProductManagement from '../UserStaffComponents/ProductManagement';
 import { useDashboard } from './DashboardContext';
 import ProductDetailStaff from '../UserStaffComponents/ProductDetailStaff';
+import exit from "../../assests/exit.png";
+import cart from "../../assests/cart.png";
+import user from "../../assests/user.png";
+import fShape from "../../assests/fShape.png";
+import LogoShidco from "../../assests/Logo/logoShidco.png";
+import messanger from "../../assests/messanger.png"
 const  MainDashboardStaff =()=> {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -37,6 +43,7 @@ const  MainDashboardStaff =()=> {
   const [rule, setRule] = useState('')
   // const [item, setItem] = useState(false);
   const { showItem,item } = useDashboard();
+  const [doTrans, setDoTrans] = useState(false)
   useEffect(() => {
     refreshToken();
     
@@ -98,28 +105,70 @@ axiosJWT.interceptors.request.use(async (config) => {
 });
 const showItemB = (e) => {
  showItem(e)
+ setDoTrans(true)
 }
 const logoutSystem = () =>{
 
 }
   return (
     <div className={styles.mainContainer}>
+   <div className={styles.wrapper}>
+      <div className={`${styles.circle} ${doTrans ? styles.transCircle : ''}`}>
+      <img src={fShape} alt="Shape" className={styles.centerShape} />
+
+      <div className={styles.centerText}>
+        <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
+<img src={LogoShidco}  alt="Shidco Logo" className={styles.centerImage} />
+<p style={{fontSize:"1.5rem",width:"100%",margin:"40px"}}>سیستم مدیریت ارتباط با مشتریان</p>
+      </div>
+        
+        </div>
+        <div className={styles.iconWrapper}>
+          
+          <img src={user} className={styles.icon} />
+          <img src={cart} className={styles.icon} />
+          <img src={exit} className={styles.icon} />
+        </div>
+      </div>
+      <div className={styles.centerDiv}>
+        
+      {item === 1 ? <Profile /> : null}
+              {item === 2 ? <ChatStaff /> : null}
+              {item === 3 ? <FollowUpOrdersStaff /> : null}
+              {item === 4 ? <GroupNotifications /> : null}
+              {item === 5 ? <AllUserManagement /> : null}
+              {item === 6 ? <AllCustomerManagement /> : null}
+              {item === 7 ? <ProductManagement /> : null}
+              {item === 8 ? <ProductDetailStaff /> : null}</div> {/* New center div */}
+
+      <div className={styles.circleRight}>
+      <div className={styles.columnContainer}> {/* New column container */}
+            <div onClick={()=>showItemB(1)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>پروفایل</span></div>
+            <div onClick={()=>showItemB(2)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>پیامرسان</span></div>
+            <div onClick={()=>showItemB(3)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>بررسی سفارشات</span></div>
+            <div onClick={()=>showItemB(4)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>اطلاع رسانی گروهی</span></div>
+            <div onClick={()=>showItemB(5)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>مدیریت کاربران شیدکو</span></div>
+            <div onClick={()=>showItemB(6)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>مدیریت مشتریان</span></div>
+            <div onClick={()=>showItemB(7)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>مدیریت محصولات</span></div>
+            <div onClick={()=>showItemB(7)} className={styles.columnItem}><img alt="messanger" src={messanger} /><span style={{color:"white"}}>خروج از سیستم</span></div>
+
+          </div>
+      </div>
+    </div>
       {isLoading && <LoadingComp />}
-        <div className={styles.headerContainer}>
+        {/* <div className={styles.headerContainer}>
         <img alt='لوگو شیدکو' src={Logo} />
         <h3>سیستم مدیریت ارتباط با مشتریان شیدکو</h3>
         <h4>داشبورد کارکنان شیدکو</h4>
         <h4>کاربر : {name}</h4>
-        </div>
-        <div className={styles.bodyContainer}>
+        </div> */}
+        {/* <div className={styles.bodyContainer}>
             <div className={styles.menuRightContainer}>
                 <div onClick={()=>showItemB(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
                 <div onClick={()=>showItemB(2)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><BsChatDots size='2vw' /><h5>پیامرسان</h5></div>
                 <div onClick={()=>showItemB(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>بررسی سفارشات</h5></div>
                 <div onClick={()=>showItemB(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اطلاع رسانی گروهی</h5></div>
                 <div onClick={()=>showItemB(5)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineManageAccounts  size='2vw' /><h5>مدیریت کاربران شیدکو</h5></div>
-                
-                
                 <div onClick={()=>showItemB(6)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdManageAccounts size='2vw' /><h5>مدیریت مشتریان</h5></div>
                 <div onClick={()=>showItemB(7)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><ImMakeGroup size='2vw' /><h5>مدیریت محصولات</h5></div>
                 <div onClick={logoutSystem} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><IoMdExit size='2vw'/><h5>خروج از سیستم</h5></div>
@@ -134,7 +183,7 @@ const logoutSystem = () =>{
               {item === 7 ? <ProductManagement /> : null}
               {item === 8 ? <ProductDetailStaff /> : null}
             </div>
-        </div>
+        </div> */}
       
     </div>
   )

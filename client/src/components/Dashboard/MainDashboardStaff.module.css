@@ -4,6 +4,133 @@
   src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
   /* Add more font formats (e.g., woff, woff2) for cross-browser support */
 }
+.centerDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+  z-index: 30;
+}
+.wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  direction: rtl;
+}
+.circleRight {
+  position: absolute;
+  width: 25vw; /* Diameter of the circle */
+  height: 120vw;
+  border-radius: 50%;
+  background-color: #0005A4; /* Circle color */
+  top: 50%;
+  right: -200px; /* Move half of the circle outside the viewport */
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Adjust to column to stack shape and text */
+}
+.columnContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  margin-right: 80%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.columnItem {
+  background-color: #0005A4;
+  margin: 7px;
+  padding: 7px;
+  border-radius: 10px;
+  text-align: center;
+  width: 190%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 1rem;
+  border: 1px solid white;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth effect */
+  cursor: pointer;
+}
+
+.columnItem:hover {
+  transform: translateX(-20%); /* Move to the left on hover */
+}
+.columnItem img{
+  width:20%
+}
+
+
+.circle {
+  position: absolute;
+  width: 30vw; /* Diameter of the circle */
+  height: 130vw;
+  border-radius: 50%;
+  background-color: #0005A4; /* Circle color */
+  top: 50%;
+  left: -200px; /* Move half of the circle outside the viewport */
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Adjust to column to stack shape and text */
+  transition: transform 0.3s ease-in-out;
+}
+.transCircle {
+  width: 20vw; /* Reduce the width */
+  transform: translateX(-100px) translateY(-50%);
+  
+}
+.centerShape {
+  width: 70%; /* Adjust the size of the shape as needed */
+  height: auto;
+  margin-left:90%;
+  z-index: 1;
+  
+
+}
+.centerImage {
+  width: 70%; /* Adjust the size of the image as needed */
+  height: auto;
+}
+.centerText {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center the text exactly */
+  color: rgb(0, 0, 0);
+  font-size: 2vw; /* Adjust the font size as needed */
+  text-align: center;
+  margin-left:46%;
+  z-index: 20; 
+}
+
+.iconWrapper {
+  position: absolute;
+  top: 35%;
+  left: 40%;
+  margin-left: 4.5vw;
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Space between icons */
+}
+
+.icon {
+  margin-left: 1vw;
+  width: 1vw; /* Icon size */
+}
 .mainContainer{
     display: flex;
     flex-direction: column;

@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import TextField from '@mui/material/TextField';
 import styles from "./Login.module.css";
 import Button from '@mui/material/Button';
-import Logo from "../../assests/Logo/mainLogo.png";
+import Logo from "../../assests/Logo/logoShidco.png";
 import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer"
@@ -186,7 +186,7 @@ function Login() {
         <div className={styles.div2}></div>
       <form className={styles.formContainer} onSubmit={loginFunction}>
       
-        <img alt="logo" src={Logo} width="200vw" />
+        <img style={{margin:"1rem"}} alt="logo" src={Logo} width="150vw" />
       <TextField
       sx={{
         '& .MuiOutlinedInput-root': {
@@ -247,8 +247,8 @@ function Login() {
       <Button style={{backgroundColor:"#0005a4", color:"white"}} fullWidth type='submit' variant="outlined">ورود</Button>
       
       <div className={styles.formButtonContainer}>
-      <Button onClick={()=>setLoginCodeModal(true)}  variant="outlined">ورود با کد یکبار مصرف</Button>
-      <Button onClick={()=>history.push('/usersignup')} variant="outlined">ایجاد حساب کاربری</Button>
+      <Button style={{fontSize:"1rem"}} onClick={()=>setLoginCodeModal(true)}  variant="outlined">ورود با کد یکبار مصرف</Button>
+      <Button style={{fontSize:"1rem"}} onClick={()=>history.push('/usersignup')}  variant="outlined">ایجاد حساب کاربری</Button>
       </div>
       </form>
     </div>

@@ -3,7 +3,7 @@ import styles from "./SignUpUser.module.css";
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Logo from "../../assests/Logo/mainLogo.png";
+
 import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer";
@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import Logo from "../../assests/Logo/logoShidco.png";
 
 const SignUpUser = () => {
   const history = useHistory();
@@ -242,7 +243,7 @@ const checkBlurPassword = ()=>{
   return (
     <div dir='rtl' className={styles.MainSignUpContainer}>
         <Modal
-       
+       shouldCloseOnOverlayClick={false}
        isOpen={showModalCodeVerify}
        onRequestClose={()=>setShowModalCodeVerify(false)}
        style={customStyles}
@@ -256,12 +257,11 @@ const checkBlurPassword = ()=>{
          <Button onClick={receiveVerificationCode} style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>
-     
+     <div className={styles.div1}></div>
+        <div className={styles.div2}></div>
       <form className={styles.formContainer} >
-      <div className={styles.loginHeader}>
-            <h3 style={{color:"black"}}>ثبت نام مشتریان</h3>
-            <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
-        </div>
+      <img style={{margin:"1rem"}} alt="logo" src={Logo} width="150vw" />
+
         <TextField error={NameError.status} onBlur={checkBlurFullName} fullWidth placeholder='نام و نام خانوادگی' id="FullName"
             variant="outlined" type='text' value={Name} onChange={(e)=>setName(e.target.value)} />
             {NameError.status === true && <span style={{color:"red"}}>{NameError.msg}</span>}

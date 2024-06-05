@@ -1,150 +1,142 @@
-body {
-    margin: 0;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-  @keyframes rotate {
-    from {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-  }
-.loginMainContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    direction: rtl;
-    font-family:"shabnamM";
-    position: relative;
-    margin-top: 10rem;
-    
-    
-
-
+*{
+  font-family: 'iransans';
 }
+.loginMainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  direction: rtl;
+  font-family: "shabnamM";
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  margin: 0; /* Remove any default margin */
+  position: relative;
+  background-color: #0005A4;
+}
+
+.div1, .div2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .div1 {
   width: 45rem;
   height: 45rem;
-  z-index: 1; /* Lowest layer */
-  position: absolute;
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  border-radius: 25px; /* Uniformly rounded corners */
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translate(-50%, -50%)rotate(30deg);
-  }
-  
-  .div2 {
-    width: 40rem;
-    height: 40rem;
-    z-index: 2; /* Middle layer */
-    margin: auto;
-    position: absolute;
-    top: 100%;
-    left:100%;
-    transform: translate(-50%, -50%)rotate(40deg);
-    border-radius: 25px;
-    background-color: rgb(255, 255, 255, 0.1);
-    
-    
-  }
-  .formContainer {
-    background-color: white;
-    position: absolute;
-    top: 100%;
-    left:100%;
-    transform: translate(-50%, -50%);
-  }
-.loginMainContainer h3{
-    color:black
+  z-index: 1;
+  transform: translate(-50%, -50%) rotate(25deg);
 }
-.formContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 1rem;
-    font-family:"shabnamM";
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.24);
-    z-index: 3;
-    width:25rem;
-    height: 25rem;
-    
+
+.div2 {
+  width: 40rem;
+  height: 40rem;
+  z-index: 2; /* Middle layer */
+  transform: translate(-50%, -50%) rotate(40deg);
 }
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+  padding: 2rem;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .12), 0 1px 4px rgba(0, 0, 0, .24);
+  z-index: 3;
+  width: 27rem;
+  position: relative;
+}
+
+.loginMainContainer h3 {
+  color: black;
+}
+
 .formContainer label {
-    font-family:"shabnamM";
-   
+  font-family: "shabnamM";
 }
+
 .formContainer Button {
-    font-family:"shabnamM";
+  font-family: "shabnamM";
+}
+
+@font-face {
+  font-family: 'shabnamM'; /* Choose a suitable name for your font */
+  src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
+  /* Add more font formats (e.g., woff, woff2) for cross-browser support */
 }
 @font-face {
-    font-family: 'shabnamM'; /* Choose a suitable name for your font */
-    src: url('../../assests/fonts/shabnamMedium.ttf') format('truetype');
-    /* Add more font formats (e.g., woff, woff2) for cross-browser support */
-  }
-.formButtonContainer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 1rem;
+  font-family: 'iransans'; /* Choose a suitable name for your font */
+  src: url('../../assests/fonts/iransans.ttf') format('truetype');
+  /* Add more font formats (e.g., woff, woff2) for cross-browser support */
 }
-.loginHeader{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin:2rem;
-    margin-bottom: 4rem;
+
+.formButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 1rem;
 }
-.modalContainer{
-    font-family: "shabnamM" !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 2rem;
+
+.loginHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  margin-bottom: 4rem;
 }
-.modalContainer Button{
-    font-family: "shabnamM";
-    font-size: 1rem;
+
+.modalContainer {
+  font-family: "shabnamM" !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 2rem;
 }
-.modalContainer input{
-    font-family: 'shabnamM';
-    
+
+.modalContainer Button {
+  font-family: "shabnamM";
+  font-size: 1rem;
 }
-.modalContainer label{
-    font-family: 'shabnamM';
+
+.modalContainer input {
+  font-family: 'shabnamM';
 }
-.fromContainer Button{
-    font-family: "shabnamM";
-    font-size: 1rem;
+
+.modalContainer label {
+  font-family: 'shabnamM';
 }
-.formContainer input{
-    font-family: 'shabnamM' !important;
+
+.formContainer Button {
+  font-family: "shabnamM";
+  font-size: 1rem;
 }
-.fromContainer label{
-    font-family: 'shabnamM';
+
+.formContainer input {
+  font-family: 'shabnamM' !important;
 }
-  
-  .textField {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 2rem;
-    opacity: 1; /* Initially visible */
-  }
-  
-  .textField.hidden {
-    opacity: 0; /* Hidden text field */
-  }
+
+.formContainer label {
+  font-family: 'shabnamM';
+}
+
+.textField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 2rem;
+  opacity: 1; /* Initially visible */
+}
+
+.textField.hidden {
+  opacity: 0; /* Hidden text field */
+}

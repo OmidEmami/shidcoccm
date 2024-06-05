@@ -3,7 +3,7 @@ import styles from "./SignUpUser.module.css";
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Logo from "../../assests/Logo/mainLogo.png";
+
 import { notify } from "../toast/toast.js";
 import Modal from 'react-modal';
 import MyTimer from "../timer/MyTimer";
@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import Logo from "../../assests/Logo/logoShidco.png";
 
 const SignUpStaff = () => {
     const history = useHistory();
@@ -199,7 +200,7 @@ const checkBlurPassword = ()=>{
   return (
     <div dir='rtl' className={styles.MainSignUpContainer}>
         <Modal
-       
+       shouldCloseOnOverlayClick={false}
        isOpen={showModalCodeVerify}
        onRequestClose={()=>setShowModalCodeVerify(false)}
        style={customStyles}
@@ -213,20 +214,18 @@ const checkBlurPassword = ()=>{
          <Button onClick={receiveVerificationCode} style={{direction:"rtl"}} disabled={enableVerifyCodeButton} fullWidth variant="outlined">تایید شماره تماس : <MyTimer expiryTimestamp={time} /></Button>
        </div>
      </Modal>
-      <div className={styles.loginHeader}>
-            <h3 style={{color:"black"}}>ثبت نام کارمندان</h3>
-            <img width="200vw" src={Logo} alt='کارخانه تجهیزات آموزشی شیدکو' />
-        </div>
+     <div className={styles.div1}></div>
+        <div className={styles.div2}></div>
       <form className={styles.formContainer} >
-        <label>نام کامل</label>
+      <img style={{margin:"1rem"}} alt="logo" src={Logo} width="150vw" />
         <TextField error={NameError.status} onBlur={checkBlurFullName} fullWidth placeholder='نام و نام خانوادگی' id="FullName"
             variant="outlined" type='text' value={Name} onChange={(e)=>setName(e.target.value)} />
             {NameError.status === true && <span style={{color:"red"}}>{NameError.msg}</span>}
-        <label>شماره تماس</label>
+        
         <TextField onBlur={checkBlurPhoneNumber} error={PhoneNumberError.status} fullWidth  placeholder='مثلا : 09123456789'  id="PhoneNumber"
           variant="outlined" type='number' value={PhoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} />
           {PhoneNumberError.status === true && <span style={{color:"red"}}>{PhoneNumberError.msg}</span>}
-        <label>ایمیل</label>
+        
         <TextField error={EmailError.status} onBlur={checkBlurEmail} fullWidth  placeholder='مثلا : mail@gmail.com' id="Email"
           variant="outlined" type='text' value={Email} onChange={(e)=>setEmail(e.target.value)} />
           {EmailError.status === true && <span style={{color:"red"}}>{EmailError.msg}</span>}
@@ -240,11 +239,11 @@ const checkBlurPassword = ()=>{
         </Select>
         {RuleError.status === true && <span style={{color:"red"}}>{RuleError.msg}</span>}
         
-        <label>رمز عبور</label>
+       
         <TextField error={PasswordError.status} type='password' onBlur={checkBlurPassword} fullWidth  placeholder='رمز عبور شامل اعداد و حداقل یک حرف انگلیسی' id="Password"
           variant="outlined"  value={Password} onChange={(e)=>setPassword(e.target.value)} />
           {PasswordError.status === true && <span style={{color:"red"}}>{PasswordError.msg}</span>}
-          <label>تکرار رمز عبور</label>
+          
           <TextField error={confirmPasswordError.status} type='password' onBlur={checkBlurConfirmPassword} fullWidth  placeholder='تکرار رمز عبور' id="ConfirmPassword"
           variant="outlined"  value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
           {confirmPasswordError.status === true && <span style={{color:"red"}}>{confirmPasswordError.msg}</span>}
