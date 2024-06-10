@@ -60,9 +60,9 @@ function ProductManagementCustomer() {
                      
                         {product.image && <img onClick={()=>setProductPreview({status:true, image:product.image})}  src={product.image}
                          alt={product.productName} style={{ width: '10rem', cursor:"pointer"}} />}
-                        <p>محصول: {product.productName}</p>
-                        <p style={{fontSize:"0.8rem"}}>دست بندی : {product.productCategory}</p>
-                        <Button onClick={()=>handleSwitchComponent(product)}>اطلاعات بیشتر</Button>
+                        <p style={{color:"white", margin: '0.5vw'}}>محصول: {product.productName}</p>
+                        <p style={{fontSize:"0.8rem",color:"white", margin: '0.5vw'}}>دست بندی : {product.productCategory}</p>
+                        <Button style={{color:"white",fontFamily:"iransans"}} variant='contained' onClick={()=>handleSwitchComponent(product)}>اطلاعات بیشتر</Button>
                         </div>
                 ))}
         

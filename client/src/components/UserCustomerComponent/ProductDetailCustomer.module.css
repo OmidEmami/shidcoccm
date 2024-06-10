@@ -46,6 +46,9 @@
     justify-content: center;
     align-items: center;
     margin:2vw;
+    background-color: #0005A4;
+    padding: 0.4vw;
+    border-radius: 10px;
 }
 
   .icon:active {
@@ -58,7 +61,8 @@
     transition: transform 0.3s ease;
   }
   .productVariantContainer img{
-    border-radius: 15px;
+    border-radius: 10px;
+    margin-bottom: 0.5vw;
   }
   .contentVariantContainer{
     display: flex;
@@ -112,6 +116,9 @@
     justify-content: center;
     align-items: start;
     margin: 3vw;
+    background-color: #0005A4;
+    padding: 0.8vw;
+    border-radius: 10px;
   }
   .secondarMainProductDesc{
     margin: 3vw;

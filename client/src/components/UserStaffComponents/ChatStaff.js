@@ -13,7 +13,46 @@ import styles from "./ChatStaff.module.css";
 
 
 import { IoSend } from "react-icons/io5";
+import { notify } from '../toast/toast';
+import { RxAvatar } from "react-icons/rx";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const theme = createTheme({
+  typography: {
+    fontFamily: 'iransans'
+  },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          fontFamily:"iransans",
+          backgroundColor: 'white',
+          borderColor:"blue",
+          borderRadius:"10px",
+          '& label.Mui-focused': {
+            color: 'blue',
+          },
+          '& .MuiInput-underline:after': {
+            borderBottomColor: 'blue',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'white',
+              border:"none"
+              
+            },
+            '&:hover fieldset': {
+              borderColor: 'black',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'blue',
+            },
+          },
+        },
+      },
+    },
+  },
+});
 function ChatStaff() {
 
 
@@ -29,7 +68,7 @@ function ChatStaff() {
   const [messageError, setMessageError] = useState({status:false, msg:''})
   const realToken = useSelector((state) => state.tokenReducer.token);
   const decoded = jwtDecode(realToken.realToken);
-
+  console.log(decoded)
   const [contacts, setContacts] = useState([{}])
   const [showChatContentContact, setShowChatContentContact] = useState('')
   const [selectedChat,setSelectedChat] = useState('');
@@ -125,11 +164,16 @@ function ChatStaff() {
       const fetchAvatars = async () => {
         const newAvatars = [];
         for (let i = 1; i < contacts.length; i++) {
-          const response = await axios.get(`http://localhost:3001/getavatar/${contacts[i].user}`, { responseType: 'arraybuffer' });
-          const blob = new Blob([response.data], { type: 'image/jpeg' });
-          const imageUrl = URL.createObjectURL(blob);
-          const obj = { image: imageUrl, user: contacts[i].user };
-          newAvatars.push(obj);
+          try{
+            const response = await axios.get(`http://localhost:3001/getavatar/${contacts[i].user}`, { responseType: 'arraybuffer' });
+            const blob = new Blob([response.data], { type: 'image/jpeg' });
+            const imageUrl = URL.createObjectURL(blob);
+            const obj = { image: imageUrl, user: contacts[i].user };
+            newAvatars.push(obj);
+          }catch(error){
+            console.log(error)
+          }
+          
         }
     
         setAvatars(newAvatars);
@@ -212,17 +256,39 @@ const showChaterContact = (item) =>{
   
 }
 const selectedChatOnScreen = (option)=>{
+ if(option.value === decoded.email){
+  notify('نمی توانید به خودتان پیام بدهید','error')
+ }else{
   setSelectedChat(option)
   setShowChatContentContact(option.label)
   setShowMessages(true)
+ }
+ 
 }
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter' && input.trim() !== '') {
+    e.preventDefault(); // Prevent the default action to avoid form submission or other unwanted behaviors
+    sendMessage();
+  }
+};
   return (
+    <ThemeProvider theme={theme}>
+
+    <div>
+      <div className={styles.topChatHeader}>
+        {showChatContentContact !== '' && 
+        <div style={{display:"flex", flexDirection:"row", justifyContent: 'flexStart', alignItems:"center",columnGap:"1rem", margin:"0vw 1vw 0vw 1vw"}}>
+          <RxAvatar size={40} color='white' />
+          <p style={{color:"white", fontSize:"1vw"}}>{showChatContentContact}</p>
+        </div>
+        }
+
+      </div>
     <div className={styles.ChatContainer}>
-    
     
       <div className={styles.ContactsContent}>
       <Select
-       className={styles.selectBox}
+        className={styles.selectBox}
         inputValue={searchQuery}
         onInputChange={(e)=>setSearchQuery(e)}
         value={selectedChat}
@@ -250,11 +316,7 @@ const selectedChatOnScreen = (option)=>{
         </>
         
       ))}
-{/*         
-           
-         
-       
-      })} */}
+
       
       </div>
       <div className={styles.chatScreen}>
@@ -277,13 +339,16 @@ const selectedChatOnScreen = (option)=>{
       ))}
   </div>
 )}
-      <div className={styles.ChatSend}><IoSend onClick={sendMessage} display={displaySend} color='blue'/>
-      <TextField fullWidth error={messageError.status} onBlur={blurChatInput} value={input} onChange={e => setSendMessage(e.target.value)} variant="standard" placeholder='پیام خود را بنویسید...' />
+      <div className={styles.ChatSend}><IoSend onClick={sendMessage} size={30} display={displaySend} color='blue'/>
+      <TextField onKeyDown={handleKeyDown} fullWidth error={messageError.status} onBlur={blurChatInput} value={input} onChange={e => setSendMessage(e.target.value)} variant="standard" placeholder='پیام خود را بنویسید...' />
       </div>
       {messageError.status && <span>{messageError.msg}</span>}
       </div>
       
     </div>
+    </div>
+    </ThemeProvider>
+
   );
 }
 

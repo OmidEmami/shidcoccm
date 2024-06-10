@@ -1,6 +1,12 @@
 
 
 
+.topChatHeader{
+    margin:1vw 0vw 3vw 0vw;
+    background-color: #0005A4;
+    padding:1vw 0vw 1vw 0vw;
+    border-radius: 8px;
+}
 .ChatContainer{
     display: flex;
     flex-direction: row;
@@ -16,7 +22,7 @@
     justify-content: center;
     align-items: center;
     column-gap: 1vw;
-    width: 50%;
+    width: 90%;
 }
 .selectBox{
     width:  100%;
@@ -33,6 +39,9 @@
     width: 30%; /* Adjust the width as needed */
     height: 100vh; /* Adjust the height as needed */
     overflow-y: auto; /* Add vertical scrollbar if needed */
+    border-left:1px solid rgb(129, 129, 129, 0.5);
+    padding-left: 1vw;
+    cursor: pointer;
 }
 .chatScreen{
     display: flex;
@@ -48,21 +57,21 @@
     display: flex;
     flex-direction: row-reverse;
     direction:rtl;
-    margin-right: 20rem;
+    margin-right: 15rem;
 }
 .leftMessage{
     text-align: left;
     display: flex;
     flex-direction: row;
     direction:rtl;
-    margin-left:20rem
+    margin-left:15rem
 }
 .contanctContainerFinal h3{
     color: black;
 }
 .contanctContainerFinal img{
-    width: 15%;
-    border-radius: 50%; /* Adjust the value based on how much you want to round the edges */
+    width: 30%;
+    border-radius:100%; /* Adjust the value based on how much you want to round the edges */
     border: 2px solid #3498db; /* Replace with your desired border color */
     overflow: hidden; 
 }

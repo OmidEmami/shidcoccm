@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import styles from "./MainDashboardCustomer.module.css";
+import styles from "./MainDashboardStaff.module.css";
 import { jwtDecode } from "jwt-decode";
 import Logo from "../../assests/Logo/mainLogoWhite.png";
 import { AiOutlineUser } from "react-icons/ai";
@@ -31,8 +31,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, cartModifier,removeFromCart } from '../../Redux/action';
 import { finalizeOrder } from '../UserCustomerComponent/FinalizeOrder';
 import { notify } from '../toast/toast';
+import { CgProfile } from "react-icons/cg";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { BiPurchaseTag } from "react-icons/bi";
+import { AiTwotoneNotification } from "react-icons/ai";
+import { FaUsers } from "react-icons/fa6";
+import { MdEditSquare } from "react-icons/md";
+import { AiOutlineProduct } from "react-icons/ai";
+import { HiOutlineLogout } from "react-icons/hi";
+import ChatStaff from '../UserStaffComponents/ChatStaff';
+import FollowUpOrdersStaff from '../UserStaffComponents/FollowUpOrdersStaff';
+import GroupNotifications from "../UserStaffComponents/GroupNotification"
+import AllUserManagement from "../UserStaffComponents/AllUserManagement"
+import AllCustomerManagement from "../UserStaffComponents/AllCustomerManagement";
+import { ImMakeGroup } from "react-icons/im";
+import ProductManagement from '../UserStaffComponents/ProductManagement';
+import ProductDetailStaff from '../UserStaffComponents/ProductDetailStaff';
+import exit from "../../assests/exit.png";
+import cart from "../../assests/cart.png";
+import user from "../../assests/user.png";
+import fShape from "../../assests/fShape.png";
+import LogoShidco from "../../assests/Logo/logoShidco.png";
+import messanger from "../../assests/messanger.png";
+import orderIcon from "../../assests/orderIcon.png";
 const  MainDashboardStaff =()=> {
-  const [showModalCart, setShowModalCart] = useState(false)
+  const [showModalCart, setShowModalCart] = useState(false);
+  const [doTrans, setDoTrans] = useState(false)
+
   const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cartReducer.cartItems);
   const history = useHistory();
@@ -157,7 +182,72 @@ const orderFinalCall = async () => {
   }
   setIsLoading(false);  
 }
+const showItemB = (number) =>{
+  showItem(number)
+  setDoTrans(true)
+}
   return (
+    <>
+     <div className={styles.mainContainer}>
+   <div className={styles.wrapper}>
+      <div className={`${styles.circle} ${doTrans ? styles.transCircle : ''}`}>
+      <img src={fShape} alt="Shape" className={styles.centerShape} />
+
+      <div className={styles.centerText}>
+        <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
+<img src={LogoShidco}  alt="Shidco Logo" className={styles.centerImage} />
+<p style={{fontSize:"1.5rem",width:"100%",margin:"40px"}}>سیستم مدیریت ارتباط با مشتریان</p>
+      </div>
+        
+        </div>
+        <div className={styles.iconWrapper}>
+          
+          <img alt='آیکون' src={user} className={styles.icon} />
+          <Badge style={{cursor:"pointer"}} onClick={()=>setShowModalCart(true)}
+           badgeContent={cartItems.length} 
+            sx={{
+                    '& .MuiBadge-badge': { // Targeting the badge style
+                        backgroundColor: '#ff5722', // Custom color for the badge
+                        color: 'white' // Optional: change the text color inside the badge
+                    }
+                }}>
+                  <img style={{cursor:"pointer"}} onClick={()=>setShowModalCart(true)} alt='آیکون' src={cart} className={styles.icon} />
+</Badge>
+          
+          <img alt='آیکون' src={exit} className={styles.icon} />
+        </div>
+      </div>
+      {item !== null && 
+       <div className={styles.centerDiv}>
+        
+       {item === 1 ? <Profile /> : null}
+               {item === 2 ? <ChatStaff /> : null}
+               {item === 3 ? <ProductManagementCustomer /> : null}
+               {item === 4 ? <CheckNotifsCustomer /> : null}
+               {item === 5 ? <FollowUpOrdersCustomer /> : null}
+               {item === 6 ? <AdverCustomer /> : null}
+               {item === 7 ? <ProductManagement /> : null}
+               {item === 8 ? <ProductDetailCustomer /> : null}
+               </div>
+               }
+     
+
+      <div className={styles.circleRight}>
+      <div className={styles.columnContainer}> {/* New column container */}
+            <div onClick={()=>showItemB(1)} className={styles.columnItem}><CgProfile color='white' size="2vw"/><span style={{color:"white"}}>پروفایل</span></div>
+            <div onClick={()=>showItemB(2)} className={styles.columnItem}><IoChatbubblesOutline color='white' size="2vw"/><span style={{color:"white"}}>پیامرسان</span></div>
+            <div onClick={()=>showItemB(3)} className={styles.columnItem}><BiPurchaseTag color='white' size="2vw"/><span style={{color:"white"}}>ثبت سفارش</span></div>
+            <div onClick={()=>showItemB(4)} className={styles.columnItem}><AiTwotoneNotification color='white' size="2vw"/><span style={{color:"white"}}>اعلانات</span></div>
+            <div onClick={()=>showItemB(5)} className={styles.columnItem}><FaUsers color='white' size="2vw"/><span style={{color:"white"}}>پیگیری سفارشات</span></div>
+            <div onClick={()=>showItemB(6)} className={styles.columnItem}><MdEditSquare color='white' size="2vw"/><span style={{color:"white"}}>محتوای تبلیغاتی</span></div>
+            <div onClick={()=>showItemB(7)} className={styles.columnItem}><HiOutlineLogout color='white' size="2vw"/><span style={{color:"white"}}>خروج از سیستم</span></div>
+
+          </div>
+      </div>
+    </div>
+      {isLoading && <LoadingComp />}
+      
+    </div>
     <div className={styles.mainContainer}>
       <Modal
        
@@ -200,49 +290,10 @@ const orderFinalCall = async () => {
 </Button>}
        </div>
      </Modal>
-      {isLoading && <LoadingComp />}
-        <div className={styles.headerContainer}>
-        <img alt='لوگو شیدکو' src={Logo} />
-        <h3>سیستم مدیریت ارتباط با مشتریان شیدکو</h3>
-        <h4>داشبورد مشتریان شیدکو</h4>
-        <h4>کاربر : {name}</h4>
-        <div onClick={()=>setShowModalCart(true)} style={{cursor:"pointer",display:"flex", flexDirection:"row",justifyContent: 'center', alignItems: 'center',columnGap:"1rem"}}>
-        
-          <h4>سبد خرید</h4>
-          <Badge badgeContent={cartItems.length} 
-            sx={{
-                    '& .MuiBadge-badge': { // Targeting the badge style
-                        backgroundColor: '#ff5722', // Custom color for the badge
-                        color: 'white' // Optional: change the text color inside the badge
-                    }
-                }}>
-                <ShoppingCartIcon sx={{color:"white", size:"2vw"}} />
-            </Badge>
-        </div>
-        
-        </div>
-        <div className={styles.bodyContainer}>
-            <div className={styles.menuRightContainer}>
-            <div onClick={()=>showItem(1)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><AiOutlineUser size='2vw' /><h5>مشاهده و تغییر پروفایل</h5></div>
-                <div onClick={()=>showItem(2)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><BsChatDots size='2vw' /><h5>پیامرسان</h5></div>
-                <div onClick={()=>showItem(3)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><HiOutlineShoppingCart size='2vw' /><h5>ثبت سفارش</h5></div>
-                <div onClick={()=>showItem(4)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><MdOutlineNotificationsActive size='2vw' /><h5>اعلانات</h5></div>
-                <div onClick={()=>showItem(5)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><LiaShippingFastSolid size='2vw' /><h5>پیگیری سفارشات</h5></div>
-                <div onClick={()=>showItem(6)} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><RiAdvertisementLine size='2vw' /><h5>محتوای تبلیغاتی</h5></div>
-                <div onClick={logoutSystem} className={`${styles.menuRightContents} ${styles.menuRightContentsHover}`}><IoMdExit size='2vw'/><h5>خروج از سیستم</h5></div>
-            </div>
-            <div className={styles.contentContainer}>
-              {item === 1 ? <Profile /> : null}
-              {item === 2 ? <ChatCustomer /> : null}
-              {item === 3 ? <ProductManagementCustomer /> : null}
-              {item === 4 ? <CheckNotifsCustomer /> : null}
-              {item === 5 ? <FollowUpOrdersCustomer /> : null}
-              {item === 6 ? <AdverCustomer /> : null}
-              {item === 8 ? <ProductDetailCustomer /> : null}
-            </div>
-        </div>
+      
       
     </div>
+    </>
   )
 }
 

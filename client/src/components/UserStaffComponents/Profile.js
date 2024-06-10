@@ -8,8 +8,47 @@ import {notify} from "../toast/toast"
 // import bcrypt from "bcrypt";
 import LoadingComp from '../Loading/LoadingComp';
 import styles from "./Profile.module.css";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { BiBorderRadius } from 'react-icons/bi';
 
+const theme = createTheme({
+  typography: {
+    fontFamily: 'iransans'
+  },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          fontFamily:"iransans",
+          backgroundColor: 'white',
+          borderColor:"blue",
+          borderRadius:"10px",
+          '& label.Mui-focused': {
+            color: 'blue',
+          },
+          '& .MuiInput-underline:after': {
+            borderBottomColor: 'blue',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'white',
+              border:"none"
+              
+            },
+            '&:hover fieldset': {
+              borderColor: 'black',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'blue',
+            },
+          },
+        },
+      },
+    },
+  },
+});
 function Profile() {
+  
   const [fullName, setFullName] = useState('');
   const [avatar, setAvatar] = useState(null);
   const [fullNameError, setFullNameError] = useState({status:false, msg:''});
@@ -176,40 +215,41 @@ const editProfile = async(e)=>{
     <div className={styles.MainContainer}>
       {isLoading && <LoadingComp />}
       <div className={styles.ProfileContent}>
-      {avatar && <img src={avatar} alt="User Avatar" />}
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
-        <label>نام کامل</label>
-        <TextField  onBlur={fullNameBlur}  placeholder='نام کامل' fullWidth
+      {avatar && <img style = {{borderRadius:"15px"}} width = "50%" src = {avatar} alt= "User Avatar" />}
+      <input type="file" accept="image/*" onChange={handleFileChange} placeholder='بارگذاری تصویر پروفایل' />
+      <Button style={{fontFamily:"iransans"}} variant="contained" onClick={handleUpload}>بارگذاری</Button>
+      <ThemeProvider theme={theme}>
+       
+        <TextField style={{fontFamily:"iransans"}}  onBlur={fullNameBlur}  placeholder='نام کامل' fullWidth
         variant="outlined" type='text' value={fullName}
         error={fullNameError.status} onChange={(e)=>setFullName(e.target.value)} />
         {fullNameError.status && <span style={{color:'red'}}>{fullNameError.msg}</span>}
-        <label>شماره تماس</label>
-        <TextField onBlur={phoneBlur} placeholder='شماره تماس' fullWidth
+       
+        <TextField style={{fontFamily:"iransans"}} onBlur={phoneBlur} placeholder='شماره تماس' fullWidth
         variant='outlined' type='number' value={phone}
         error={phoneError.status} onChange={(e)=>setPhone(e.target.value)} />
         {phoneError.status && <span color='red'>{phoneError.msg}</span>}
-        <label>آدرس ایمیل</label>
-        <TextField onBlur={emailBlur} placeholder='آدرس ایمیل' fullWidth
+        
+        <TextField style={{fontFamily:"iransans"}} onBlur={emailBlur} placeholder='آدرس ایمیل' fullWidth
         variant='outlined' type='text' value={email}
         error={emailError.status} onChange={(e)=>setEmail(e.target.value)} />
-        <label>نوع دسترسی</label>
-        <TextField disabled onBlur={typeBlur} placeholder='نوع دسترسی' fullWidth
-        variant='outlined' type='text' value={type} />
-        <label>نوع کاربر</label>
-        <TextField disabled onBlur={ruleBlur} placeholder='نوع کاربر' fullWidth
-        variant='outlined' type='text' value={rule} />
-        <label>استان</label>
-        <TextField disabled onBlur={provinceBlur} placeholder='استان' fullWidth
-        variant='outlined' type='text' value={province} />
-        <label>رمز عبور جدید</label>
-        <TextField onBlur={passwordBlur} placeholder='رمز عبور جدید' fullWidth
-        variant='outlined' type='text' value={password} />
-        <label>تکرار رمز عبور جدید</label>
-        <TextField onBlur={confirmPasswordBlur} placeholder='تکرار رمز عبور جدید' fullWidth
-        variant='outlined' type='text' value={confirmPassword} />
-        <Button onClick={editProfile} type='submit' fullWidth variant="outlined">ویرایش اطلاعات</Button>
         
+        <TextField style={{fontFamily:"iransans"}} disabled onBlur={typeBlur} placeholder='نوع دسترسی' fullWidth
+        variant='outlined' type='text' value={type} />
+        
+        <TextField style={{fontFamily:"iransans"}} disabled onBlur={ruleBlur} placeholder='نوع کاربر' fullWidth
+        variant='outlined' type='text' value={rule} />
+        
+        <TextField style={{fontFamily:"iransans"}} disabled onBlur={provinceBlur} placeholder='استان' fullWidth
+        variant='outlined' type='text' value={province} />
+        
+        <TextField style={{fontFamily:"iransans"}} onBlur={passwordBlur} placeholder='رمز عبور جدید' fullWidth
+        variant='outlined' type='text' value={password} />
+        
+        <TextField style={{fontFamily:"iransans"}} onBlur={confirmPasswordBlur} placeholder='تکرار رمز عبور جدید' fullWidth
+        variant='outlined' type='text' value={confirmPassword} />
+        <Button style={{fontFamily:"iransans"}} onClick={editProfile} type='submit' fullWidth variant="contained">ویرایش اطلاعات</Button>
+        </ThemeProvider>
       </div>
 
 

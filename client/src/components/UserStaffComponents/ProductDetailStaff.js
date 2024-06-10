@@ -257,16 +257,19 @@ useEffect(() => {
   return (
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
-      
-      <img src={data.image} alt={data.productName} width="200vw" />
+      <div style={{display:"flex", flexDirection:"row", alignItems:"center",justifyContent:"center", margin:"1vw",backgroundColor:"#9292922e",width:"100%", padding:"1vw", borderRadius:"10px"}}>
+      <img src={data.image} alt={data.productName} width="200vw" style={{borderRadius:"10px"}} />
+      <div style={{display:"flex", flexDirection:"column", alignItems:"flexStart",justifyContent:"center", marginRight:"1vw"}}>
       <h3>نام محصول : {data.productName}</h3>
       <h3>دسته بندی : {data.productCategory}</h3>
+      </div>
+      </div>
       <div style={{
       height: '1px', // Thickness of the divider line
       width: '100%', // Length of the divider line
       backgroundColor: '#000', // Color of the divider line
     }}></div>
-      <h4>تنوع های این محصول</h4>
+      <h4 style={{margin: '1vw'}}>تنوع های این محصول</h4>
 <div className={styles.variantDivider}>
 {!isLoading && isDataFetched && productVariants.length === 0 && (
       <div>برای این محصول هیچ تنوعی تعریف نشده است</div>
@@ -282,7 +285,7 @@ useEffect(() => {
               <img width="170rem" src={value.images[value.currentIndex]} alt={index} />
               <BiSolidLeftArrow className={styles.icon} color='blue' size="2rem" onClick={() => goToNext(index)} />
             </div>
-            <h3>{value.VariantName}</h3>
+            <h3 style={{marginTop:"1vw", color :"white"}}>{value.VariantName}</h3>
            {/* Check if the variant exists in the cart */}
         {cartItems.find(item => item._id === value._id) ? (
           // If exists, show the quantity
@@ -306,7 +309,7 @@ useEffect(() => {
             </div>
         ) : (
           // If not, show the "Add to Cart" button
-          <Button onClick={() => addProductVariantToCart(value)} variant="contained" fullWidth>افزودن به سبد سفارش</Button>
+          null
         )}
             
           </div>
@@ -328,8 +331,10 @@ useEffect(() => {
   //   <Skeleton count={5} width={150} style={{ marginBottom: '6px' }} />
   // </>
 )}
-  <GrAddCircle onClick={showModalForAddVariant} size="4vw" />
-      <h3>اضافه کردن تنوع جدید</h3>
+<div style={{margin:"2vw", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+  <GrAddCircle onClick={showModalForAddVariant} size="3vw" />
+      <h3 style={{fontSize:"1vw"}}>اضافه کردن تنوع جدید</h3>
+      </div>
 </div>
       
       <Modal

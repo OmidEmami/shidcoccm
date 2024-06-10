@@ -7,14 +7,19 @@
 .centerDiv {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 48%;
   transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.1);
   z-index: 30;
+  width: 50%;
+  max-height: 90vh; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scroll */
 }
+
 .wrapper {
   position: relative;
   width: 100vw;
@@ -89,10 +94,11 @@
   transition: transform 0.3s ease-in-out;
 }
 .transCircle {
-  width: 20vw; /* Reduce the width */
+  /* width: 20vw;  */
   transform: translateX(-100px) translateY(-50%);
   
 }
+
 .centerShape {
   width: 70%; /* Adjust the size of the shape as needed */
   height: auto;
@@ -121,7 +127,7 @@
   position: absolute;
   top: 35%;
   left: 40%;
-  margin-left: 4.5vw;
+  margin-left: 7.5vw;
   display: flex;
   flex-direction: row;
   gap: 10px; /* Space between icons */

@@ -173,13 +173,20 @@ useEffect(() => {
   return (
     <div className={styles.mainContainer}>
       {isLoading && <LoadingComp />}
+      
+      <div style={{cursor:"pointer",display:"flex",flexDirection:"row", justifyContent:"flexStart",alignItems:"center", backgroundColor:"blue",width:"100%",borderRadius:"10px"}}>
+        <MdOutlineArrowForward color='white' size={50} onClick={handleSwitchComponent} />
+      <span style={{color:"white"}}>بازگشت</span> 
+      </div>
       <div className={styles.MainProductTopContainer}>
-      <MdOutlineArrowForward size={60} onClick={handleSwitchComponent} />
-      <span>بازگشت</span>
+     
         <div className={styles.initialDetailsMainProduct}>
-      <img src={data.image} alt={data.productName} width="200vw" />
-      <h3>نام محصول : {data.productName}</h3>
-      <h3>دسته بندی : {data.productCategory}</h3>
+
+      <img style={{borderRadius:"10px"}} src={data.image} alt={data.productName} width="200vw" />
+      <div style={{marginTop:"1vw"}}>
+      <h3 style={{color:"white"}}>نام محصول : {data.productName}</h3>
+      <h3 style={{color:"white"}}>دسته بندی : {data.productCategory}</h3>
+      </div>
       </div>
       <div className={styles.secondarMainProductDesc}>
       <h4>{data.productName}</h4>
@@ -191,7 +198,7 @@ useEffect(() => {
       width: '100%', // Length of the divider line
       backgroundColor: '#000', // Color of the divider line
     }}></div>
-      <h4>تنوع های این محصول</h4>
+      <h4 style={{margin:"1vw"}}>تنوع های این محصول</h4>
 <div className={styles.variantDivider}>
 {!isLoading && isDataFetched && productVariants.length === 0 && (
       <div>برای این محصول هیچ تنوعی تعریف نشده است</div>
@@ -207,15 +214,16 @@ useEffect(() => {
               <img width="170rem" src={value.images[value.currentIndex]} alt={index} />
               <BiSolidLeftArrow className={styles.icon} color='blue' size="2rem" onClick={() => goToNext(index)} />
             </div>
-            <h3>{value.VariantName}</h3>
+            <h3 style={{margin:"0.5vw", color:"white"}}>{value.VariantName}</h3>
            {/* Check if the variant exists in the cart */}
         {cartItems.find(item => item._id === value._id) ? (
           // If exists, show the quantity
           <div className={styles.variantQuantityContainer}>
               <div className={styles.mainQuantityContainer}>
                 
-                <FaRegSquareMinus onClick={()=>minusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)}  size="1.5rem" />
+                <FaRegSquareMinus color="white" onClick={()=>minusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)}  size="1.5rem" />
                 <input
+               style={{ width:"20%", margin:"0vw 1vw 0vw 1vw", borderRadius:"5px"}}
                 type='number'
                 min='0'
                 value={variantQuantities[value._id] ?? ''}
@@ -225,16 +233,22 @@ useEffect(() => {
 
 
                 <FaRegSquarePlus 
+                color="white"
                 onClick={()=>plusQuantity(value._id, variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity)} 
                 size="1.5rem"/>
                 </div>
-                تعداد : {variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity} عدد
+                <span color="white">
+                  <p style={{color:"white"}}>                
+                    تعداد : {variantQuantities[value._id] ?? cartItems.find(item => item._id === value._id)?.quantity} عدد
+                  </p>
 
+                </span>
+               
 
             </div>
         ) : (
           
-          <Button onClick={() => addProductVariantToCart(value)} variant="contained" fullWidth>افزودن به سبد سفارش</Button>
+          <Button style={{fontFamily:"iransans", fontSize:"0.7vw"}} onClick={() => addProductVariantToCart(value)} variant="contained" fullWidth>افزودن به سبد سفارش</Button>
         )}
             
           </div>

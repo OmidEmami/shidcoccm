@@ -45,7 +45,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin:2vw;
+    margin:0.5vw;
+    background-color: #0005A4;
+    padding: 0.5rem;
+    border-radius: 10px;
 }
 
   .icon:active {

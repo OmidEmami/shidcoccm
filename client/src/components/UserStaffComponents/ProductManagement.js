@@ -143,7 +143,7 @@ function ProductManagement() {
                          alt={product.productName} style={{ width: '10rem', cursor:"pointer"}} />}
                         <p>محصول: {product.productName}</p>
                         <p style={{fontSize:"0.8rem"}}>دست بندی : {product.productCategory}</p>
-                        <Button onClick={()=>handleSwitchComponent(product)}>اطلاعات بیشتر</Button>
+                        <Button style={{fontFamily:"iransans", color : "white", backgroundColor:"#3f3f3f", margin:"1vw"}} onClick={()=>handleSwitchComponent(product)}>اطلاعات بیشتر</Button>
                         </div>
                 ))}
         <div onClick={()=>setAddProductModal(!addProductModal)} className={styles.PlusContainer}>
