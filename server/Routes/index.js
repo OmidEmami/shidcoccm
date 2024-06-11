@@ -13,24 +13,26 @@ import { createVariant } from "../Controllers/ProductController/AddProductVarian
 import { getProductsVariants } from "../Controllers/ProductController/GetProductsVariants.js";
 import { regNewOrder } from "../Controllers/OderContoller/RegNewOrder.js";
 import { getFollowUpOrder } from "../Controllers/OderContoller/GetFollowUpOrder.js";
+import { SendExhibition } from "../Controllers/SendExhibition.js";
 const upload = multer({ storage: multer.memoryStorage() })
 const router = express.Router();
-router.post('/getverificationcode', verifyPhoneNumber)
-router.post('/checkverificationcode', checkVerificationCode)
-router.post('/loginwithcode',loginWithCode)
-router.post('/sendloginverifycode',sendLoginVerifyCode)
-router.post('/loginnormal', loginNormal);
-router.get('/token', refreshToken)
-router.post('/editprofile',editProfile);
-router.post('/uploadProduct', createProduct)
-router.get('/products', getAllProducts)
+router.post('/api/getverificationcode', verifyPhoneNumber)
+router.post('/api/checkverificationcode', checkVerificationCode)
+router.post('/api/loginwithcode',loginWithCode)
+router.post('/api/sendloginverifycode',sendLoginVerifyCode)
+router.post('/api/loginnormal', loginNormal);
+router.get('/api/token', refreshToken)
+router.post('/api/editprofile',editProfile);
+router.post('/api/uploadProduct', createProduct)
+router.get('/api/products', getAllProducts)
 router.get('/api/search',findUser)
-router.post('/uploadavatar', upload.single('image'), uploadAvatar);
-router.get('/getavatarall',getAllAvatar)
-router.get('/getavatar/:user', getAvatarUser);
-router.post('/messages',getMessages)
-router.post('/addVariantProduct',createVariant)
-router.post('/getProductVariants', getProductsVariants)
-router.post('/regNewOrder',regNewOrder);
-router.post('/getOrdersCustomer',getFollowUpOrder)
+router.post('/api/uploadavatar', upload.single('image'), uploadAvatar);
+router.get('/api/getavatarall',getAllAvatar)
+router.get('/api/getavatar/:user', getAvatarUser);
+router.post('/api/messages',getMessages)
+router.post('/api/addVariantProduct',createVariant)
+router.post('/api/getProductVariants', getProductsVariants)
+router.post('/api/regNewOrder',regNewOrder);
+router.post('/api/getOrdersCustomer',getFollowUpOrder)
+router.post('/api/sendExhibition', SendExhibition)
 export default router;

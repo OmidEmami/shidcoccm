@@ -40,12 +40,12 @@ async function main(){
 
 initSocket(server);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 
 
 
-server.listen(PORT,'0.0.0.0', ()=> console.log('Server running at port 3001'));
+server.listen(PORT,'0.0.0.0', ()=> console.log('Server running at port 3002'));
 main();
 
 

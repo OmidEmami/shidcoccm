@@ -42,7 +42,7 @@ function Login() {
     };
     const sendPhoneNumberToCode = async ()=>{
       try{
-        const response = await axios.post('http://localhost:3001/sendloginverifycode',{
+        const response = await axios.post('http://shidcoccm.ir/api/sendloginverifycode',{
           PhoneNumber: phone
         })
         
@@ -94,7 +94,7 @@ function Login() {
             setPasswordError({status:true, msg:"این فیلد الزامی است"})
         }else{
           try{
-            const response = await axios.post("http://localhost:3001/loginnormal",{
+            const response = await axios.post("http://shidcoccm.ir/api/loginnormal",{
               UserName : userName,
               Password:password
             })
@@ -129,7 +129,7 @@ function Login() {
       try{
 
       
-      const response = await axios.post("http://localhost:3001/loginwithcode",{
+      const response = await axios.post("http://shidcoccm.ir/api/loginwithcode",{
         PhoneNumber : phone,
         VerifyCode : receivedCode
       })

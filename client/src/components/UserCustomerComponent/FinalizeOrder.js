@@ -5,7 +5,7 @@ import { notify } from '../toast/toast';
 export const finalizeOrder = async (cart,username,phone)=>{
   
     try{
-        const response = await axios.post("http://localhost:3001/regNewOrder",
+        const response = await axios.post("http://shidcoccm.ir/api/regNewOrder",
         {
             cart:cart,
             UserName:username,

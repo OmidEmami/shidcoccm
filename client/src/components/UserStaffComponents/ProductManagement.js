@@ -30,7 +30,7 @@ function ProductManagement() {
         
        const fetchData = async()=>{
         try{
-            const response = await axios.get('http://localhost:3001/products')
+            const response = await axios.get('http://shidcoccm.ir/api/products')
             setProducts(response.data)
         }catch(error){
 
@@ -62,7 +62,7 @@ function ProductManagement() {
         formData.append('productName', productName);
         formData.append('productCategory', productCategory);
         try {
-            const response = await axios.post('http://localhost:3001/uploadProduct', formData, {
+            const response = await axios.post('http://shidcoccm.ir/api/uploadProduct', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

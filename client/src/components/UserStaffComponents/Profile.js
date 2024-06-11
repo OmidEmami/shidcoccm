@@ -76,7 +76,7 @@ function Profile() {
       const formData = new FormData();
       formData.append('image', selectedFile);
       formData.append('user',email)
-      await axios.post('http://localhost:3001/uploadavatar', formData, {
+      await axios.post('http://shidcoccm.ir/api/uploadavatar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -102,7 +102,7 @@ const realToken = useSelector((state) => state.tokenReducer.token);
     const user = decoded.email; // Replace with the actual user identifier
     
     // Fetch image data
-    axios.get(`http://localhost:3001/getavatar/${user}`, { responseType: 'arraybuffer' })
+    axios.get(`http://shidcoccm.ir/api/getavatar/${user}`, { responseType: 'arraybuffer' })
       .then(response => {
         const blob = new Blob([response.data], { type: 'image/jpeg' });
         const imageUrl = URL.createObjectURL(blob);
@@ -196,7 +196,7 @@ const editProfile = async(e)=>{
     && confirmPasswordError.status !== true
     ){
       try{
-      const response = await axios.post('http://localhost:3001/editprofile', {
+      const response = await axios.post('http://shidcoccm.ir/api/editprofile', {
         FullName : fullName,
         PhoneNumber : phone,
         Email : email,

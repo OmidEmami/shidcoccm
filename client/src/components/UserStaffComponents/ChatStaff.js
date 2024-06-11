@@ -77,7 +77,7 @@ function ChatStaff() {
   const debouncedFetchData = useRef(_debounce(async (query) => {
     try {
       
-      const response = await axios.get(`http://localhost:3001/api/search?query=${query}`);
+      const response = await axios.get(`http://shidcoccm.ir/api/api/search?query=${query}`);
       // if (isMounted.current) {
         
         setSearchResults(response.data);
@@ -90,12 +90,12 @@ function ChatStaff() {
 
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3001');
+    const newSocket = io('http://localhost:3002');
     setSocket(newSocket);
     newSocket.emit('join_room', { username: decoded.email });
     const fetchData = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/messages', {
+      const response = await axios.post('http://shidcoccm.ir/api/messages', {
         user: decoded.email
       });
 
@@ -165,7 +165,7 @@ function ChatStaff() {
         const newAvatars = [];
         for (let i = 1; i < contacts.length; i++) {
           try{
-            const response = await axios.get(`http://localhost:3001/getavatar/${contacts[i].user}`, { responseType: 'arraybuffer' });
+            const response = await axios.get(`http://shidcoccm.ir/api/getavatar/${contacts[i].user}`, { responseType: 'arraybuffer' });
             const blob = new Blob([response.data], { type: 'image/jpeg' });
             const imageUrl = URL.createObjectURL(blob);
             const obj = { image: imageUrl, user: contacts[i].user };

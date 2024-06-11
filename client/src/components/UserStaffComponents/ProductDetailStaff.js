@@ -76,7 +76,7 @@ useEffect(() => {
     const fetchData = async()=>{
       setIsLoading(true)
      try{
-         const response = await axios.post('http://localhost:3001/getProductVariants',{
+         const response = await axios.post('http://shidcoccm.ir/api/getProductVariants',{
           ProductName :data.productName,
           ProductCategory : data.productCategory
          })
@@ -159,7 +159,7 @@ useEffect(() => {
         formData.append('productName',data.productName)
         formData.append('productCategory',data.productCategory)
     try{
-      const response = await axios.post('http://localhost:3001/addVariantProduct', formData, {
+      const response = await axios.post('http://shidcoccm.ir/api/addVariantProduct', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

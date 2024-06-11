@@ -75,7 +75,7 @@ useEffect(() => {
     const fetchData = async()=>{
       setIsLoading(true)
      try{
-         const response = await axios.post('http://localhost:3001/getProductVariants',{
+         const response = await axios.post('http://shidcoccm.ir/api/getProductVariants',{
           ProductName :data.productName,
           ProductCategory : data.productCategory
          })

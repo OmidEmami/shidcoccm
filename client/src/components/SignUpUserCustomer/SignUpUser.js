@@ -96,7 +96,7 @@ const iranProvinces = [
     time.setSeconds(time.getSeconds() + 180);
   const receiveVerificationCode = async () =>{
     try{
-      const response = await axios.post('http://localhost:3001/checkverificationcode',{
+      const response = await axios.post('http://shidcoccm.ir/api/checkverificationcode',{
         Code : receivedCode,
         PhoneNumber: PhoneNumber,
         FullName:Name,
@@ -153,7 +153,7 @@ const sendSmsCodeVerification = async () =>{
   }else{
     setShowModalCodeVerify(true)
     try{
-      const response = await axios.post('http://localhost:3001/getverificationcode',{
+      const response = await axios.post('http://shidcoccm.ir/api/getverificationcode',{
         PhoneNumber : PhoneNumber,
         Access : 'SignUp'
       })

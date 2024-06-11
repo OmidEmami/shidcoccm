@@ -9,12 +9,16 @@ import './index.css';
 
 import ProductDetailStaff from "./components/UserStaffComponents/ProductDetailStaff";
 import { DashboardProvider } from "./components/Dashboard/DashboardContext";
+import SendLinks from "./SendLinks";
 function App() {
   return (
     <DashboardProvider>
     <div className={styles.app}>
       <BrowserRouter>
       <Switch>
+        <Route exact path="/sendlinks">
+        <SendLinks />
+        </Route>
         <Route exact path="/product">
 
         <ProductDetailStaff />

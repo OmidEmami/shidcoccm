@@ -25,7 +25,7 @@ function ProductManagementCustomer() {
         
        const fetchData = async()=>{
         try{
-            const response = await axios.get('http://localhost:3001/products')
+            const response = await axios.get('http://shidcoccm.ir/api/products')
             setProducts(response.data)
         }catch(error){
 
