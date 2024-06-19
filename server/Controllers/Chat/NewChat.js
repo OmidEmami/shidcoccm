@@ -13,7 +13,7 @@ const ChatUserSchema = new mongoose.Schema({
 export const initSocket = (server) => {
     const io = new Server(server, {
         cors: {
-          origin: "http://localhost:3000", // Client's address
+          origin: "http://shidcoccm.ir", // Client's address
           methods: ["GET", "POST"],
           credentials: true,
         },

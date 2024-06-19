@@ -2,6 +2,7 @@ import Users from "../../Models/Users.js";
 import VerificationCodes from "../../Models/VerificationCodes.js";
 import moment from 'jalali-moment' ;
 import bcrypt,{compare} from "bcrypt"
+import request from 'request';
 
 import jwt from "jsonwebtoken";
 export const verifyPhoneNumber = async(req,res)=>{
@@ -38,6 +39,33 @@ export const verifyPhoneNumber = async(req,res)=>{
             }
             
         }
+        const sendSms = async() =>{
+            request.post({
+                url: 'http://ippanel.com/api/select',
+                body: {
+        "op":"pattern",
+        "user":"09129348033",
+        "pass":"Shidco@2024",
+        "fromNum":"+983000505",
+        "toNum":`${req.body.PhoneNumber}`,
+        "patternCode":"dn6ccgatae9lse6",
+        "inputData":[
+                {"code":realRandomCode},
+            	
+            ]
+    },
+                json: true,
+            }, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+    //YOU‌ CAN‌ CHECK‌ THE‌ RESPONSE‌ AND SEE‌ ERROR‌ OR‌ SUCCESS‌ MESSAGE
+                    console.log(response.body);
+                } else {
+    console.log("whatever you want");
+                
+                }
+            });
+        }
+        await sendSms();
         setTimeout(expireVerifyCode, 180000);
         
         res.json(response)

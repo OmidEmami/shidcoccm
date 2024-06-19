@@ -68,7 +68,7 @@ function ChatStaff() {
   const [messageError, setMessageError] = useState({status:false, msg:''})
   const realToken = useSelector((state) => state.tokenReducer.token);
   const decoded = jwtDecode(realToken.realToken);
-  console.log(decoded)
+
   const [contacts, setContacts] = useState([{}])
   const [showChatContentContact, setShowChatContentContact] = useState('')
   const [selectedChat,setSelectedChat] = useState('');
@@ -77,7 +77,7 @@ function ChatStaff() {
   const debouncedFetchData = useRef(_debounce(async (query) => {
     try {
       
-      const response = await axios.get(`http://shidcoccm.ir/api/api/search?query=${query}`);
+      const response = await axios.get(`http://shidcoccm.ir/api/search?query=${query}`);
       // if (isMounted.current) {
         
         setSearchResults(response.data);
@@ -90,7 +90,7 @@ function ChatStaff() {
 
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3002');
+    const newSocket = io('http://shidcoccm.ir');
     setSocket(newSocket);
     newSocket.emit('join_room', { username: decoded.email });
     const fetchData = async () => {

@@ -21,6 +21,8 @@ const SendLinks = ()=> {
       console.log(response)
       setDisableButton(false)
       notify('موفق','success');
+      setName('')
+      setPhone('')
     } catch (error) {
       setDisableButton(false)
       console.error('Error:', error);

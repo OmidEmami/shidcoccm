@@ -1,4 +1,5 @@
 import request from 'request';
+import ExhibitionUser from '../Models/ExhibitionUser.js';
 export const SendExhibition = async (req, res) => {
     try {
         console.log(req.body)
@@ -10,7 +11,7 @@ export const SendExhibition = async (req, res) => {
                         "op": "send",
                         "uname": "09129348033",
                         "pass": "Shidco@2024",
-                        "message": `سلام ${req.body.name} عزیز، امیدواریم از بازدیدتان از غرفه کارخانه شیدکو در نمایشگاه ایرانپنکس لذت برده باشید. برای آشنایی بیشتر با محصولات شیدکو، به وب سایت ما مراجعه کنید. www.shidco.org  02188494011`,
+                        "message": `سلام ${req.body.name} عزیز  ضمن عرض تشکر از بازدید شما از غرفه کارخانه شیدکو در نمایشگاه ایرانپنکس ، لطفا برای آشنایی بیشتر با محصولات شیدکو ، به وبسایت ما مراجعه کنید. www.shidco.org 02188494011`,
                         
                         "from": "+983000505",
                         "to": [`${req.body.phone}`],
@@ -27,7 +28,10 @@ export const SendExhibition = async (req, res) => {
         };
 
         const result = await sendRequest();
-        console.log(result);
+        const responseNd = await ExhibitionUser.create({
+            PhoneNumber: req.body.phone,
+            Name : req.body.name
+        })
         res.status(200).json(result);
 
     } catch (error) {
