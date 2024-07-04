@@ -39,6 +39,7 @@ import { FaUsers } from "react-icons/fa6";
 import { MdEditSquare } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { HiOutlineLogout } from "react-icons/hi";
+import FileManager from '../UserStaffComponents/FileManager';
 
 
 const  MainDashboardStaff =()=> {
@@ -152,6 +153,7 @@ const logoutSystem = () =>{
                {item === 6 ? <AllCustomerManagement /> : null}
                {item === 7 ? <ProductManagement /> : null}
                {item === 8 ? <ProductDetailStaff /> : null}
+               {item === 9 ? <FileManager /> : null}
                </div>
                }
      
@@ -164,6 +166,8 @@ const logoutSystem = () =>{
             <div onClick={()=>showItemB(4)} className={styles.columnItem}><AiTwotoneNotification color='white' size="2vw"/><span style={{color:"white"}}>اطلاع رسانی گروهی</span></div>
             <div onClick={()=>showItemB(5)} className={styles.columnItem}><FaUsers color='white' size="2vw"/><span style={{color:"white"}}>مدیریت کاربران شیدکو</span></div>
             <div onClick={()=>showItemB(6)} className={styles.columnItem}><MdEditSquare color='white' size="2vw"/><span style={{color:"white"}}>مدیریت مشتریان</span></div>
+            <div onClick={()=>showItemB(9)} className={styles.columnItem}><MdEditSquare color='white' size="2vw"/><span style={{color:"white"}}>مدیریت فایل ها</span></div>
+
             <div onClick={()=>showItemB(7)} className={styles.columnItem}><AiOutlineProduct color='white' size="2vw" /><span style={{color:"white"}}>مدیریت محصولات</span></div>
             <div onClick={()=>showItemB(7)} className={styles.columnItem}><HiOutlineLogout color='white' size="2vw"/><span style={{color:"white"}}>خروج از سیستم</span></div>
 

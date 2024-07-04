@@ -8,10 +8,6 @@ import Select from 'react-select';
 import moment from 'jalali-moment' ;
 import TextField from '@mui/material/TextField';
 import styles from "./ChatStaff.module.css";
-
-
-
-
 import { IoSend } from "react-icons/io5";
 import { notify } from '../toast/toast';
 import { RxAvatar } from "react-icons/rx";
@@ -56,9 +52,7 @@ const theme = createTheme({
 function ChatStaff() {
 
 
-  const [socket, setSocket] = useState(null);
-  //const ReduxMessages = useSelector((state) => state.addMessageReducer.messages);
-  
+  const [socket, setSocket] = useState(null);  
   const [displaySend, setDisplaySend] = useState('none')
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState('');

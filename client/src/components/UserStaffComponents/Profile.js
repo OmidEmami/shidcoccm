@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import {notify} from "../toast/toast"
-// import bcrypt from "bcrypt";
 import LoadingComp from '../Loading/LoadingComp';
 import styles from "./Profile.module.css";
 import { createTheme, ThemeProvider } from '@mui/material/styles';

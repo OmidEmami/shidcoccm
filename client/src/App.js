@@ -10,12 +10,16 @@ import './index.css';
 import ProductDetailStaff from "./components/UserStaffComponents/ProductDetailStaff";
 import { DashboardProvider } from "./components/Dashboard/DashboardContext";
 import SendLinks from "./SendLinks";
+import FileUploadComponent from "./components/UserCustomerComponent/FileUploadComponent";
 function App() {
   return (
     <DashboardProvider>
     <div className={styles.app}>
       <BrowserRouter>
       <Switch>
+        <Route exact path="/fileuploadcustomer">
+        <FileUploadComponent />
+        </Route>
         <Route exact path="/sendlinks">
         <SendLinks />
         </Route>

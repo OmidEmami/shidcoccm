@@ -1,5 +1,4 @@
 import express from "express";
-
 import { checkVerificationCode, loginWithCode, sendLoginVerifyCode, verifyPhoneNumber } from "../Controllers/verifyWithCode/VerificationCode.js";
 import { loginNormal } from "../Controllers/Login/Login.js";
 import { refreshToken } from "../TokenManager/RefreshToken.js";
@@ -14,6 +13,8 @@ import { getProductsVariants } from "../Controllers/ProductController/GetProduct
 import { regNewOrder } from "../Controllers/OderContoller/RegNewOrder.js";
 import { getFollowUpOrder } from "../Controllers/OderContoller/GetFollowUpOrder.js";
 import { SendExhibition } from "../Controllers/SendExhibition.js";
+import { fileUploader } from "../Controllers/FileManager/FileUpload.js";
+import { getFilesUser } from "../Controllers/FileManager/GetFilesUser.js";
 const upload = multer({ storage: multer.memoryStorage() })
 const router = express.Router();
 router.post('/api/getverificationcode', verifyPhoneNumber)
@@ -27,6 +28,7 @@ router.post('/api/uploadProduct', createProduct)
 router.get('/api/products', getAllProducts)
 router.get('/api/search',findUser)
 router.post('/api/uploadavatar', upload.single('image'), uploadAvatar);
+router.post('/api/uploadfilecustomer', upload.single('file') , fileUploader)
 router.get('/api/getavatarall',getAllAvatar)
 router.get('/api/getavatar/:user', getAvatarUser);
 router.post('/api/messages',getMessages)
@@ -35,4 +37,5 @@ router.post('/api/getProductVariants', getProductsVariants)
 router.post('/api/regNewOrder',regNewOrder);
 router.post('/api/getOrdersCustomer',getFollowUpOrder)
 router.post('/api/sendExhibition', SendExhibition)
+router.post('/api/getfilesuser', getFilesUser)
 export default router;

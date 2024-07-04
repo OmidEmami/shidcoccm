@@ -14,7 +14,7 @@ const SendLinks = ()=> {
     e.preventDefault();
     try {
       setDisableButton(true)
-      const response = await axios.post("http://shidcoccm.ir/api//sendExhibition",{
+      const response = await axios.post("http://shidcoccm.ir/api/sendExhibition",{
         name : name,
         phone : phone
       })

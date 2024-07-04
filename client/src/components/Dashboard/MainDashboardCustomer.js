@@ -54,6 +54,9 @@ import fShape from "../../assests/fShape.png";
 import LogoShidco from "../../assests/Logo/logoShidco.png";
 import messanger from "../../assests/messanger.png";
 import orderIcon from "../../assests/orderIcon.png";
+import { MdOutlineUploadFile } from "react-icons/md";
+
+import FileUploadComponent from '../UserCustomerComponent/FileUploadComponent';
 const  MainDashboardStaff =()=> {
   const [showModalCart, setShowModalCart] = useState(false);
   const [doTrans, setDoTrans] = useState(false)
@@ -81,7 +84,7 @@ const refreshToken = async () => {
     try {
         setIsLoading(true)
         const response = await axios.get('http://shidcoccm.ir/api/token');
-      //  console.log(response)
+      
         setToken(response.data.accessToken);
        
        
@@ -228,6 +231,7 @@ const showItemB = (number) =>{
                {item === 6 ? <AdverCustomer /> : null}
                {item === 7 ? <ProductManagement /> : null}
                {item === 8 ? <ProductDetailCustomer /> : null}
+               {item === 9 ? <FileUploadComponent /> : null}
                </div>
                }
      
@@ -238,6 +242,7 @@ const showItemB = (number) =>{
             <div onClick={()=>showItemB(2)} className={styles.columnItem}><IoChatbubblesOutline color='white' size="2vw"/><span style={{color:"white"}}>پیامرسان</span></div>
             <div onClick={()=>showItemB(3)} className={styles.columnItem}><BiPurchaseTag color='white' size="2vw"/><span style={{color:"white"}}>ثبت سفارش</span></div>
             <div onClick={()=>showItemB(4)} className={styles.columnItem}><AiTwotoneNotification color='white' size="2vw"/><span style={{color:"white"}}>اعلانات</span></div>
+            <div onClick={()=>showItemB(9)} className={styles.columnItem}><MdOutlineUploadFile color='white' size="2vw"/><span style={{color:"white"}}>بارگذاری فایل</span></div>
             <div onClick={()=>showItemB(5)} className={styles.columnItem}><FaUsers color='white' size="2vw"/><span style={{color:"white"}}>پیگیری سفارشات</span></div>
             <div onClick={()=>showItemB(6)} className={styles.columnItem}><MdEditSquare color='white' size="2vw"/><span style={{color:"white"}}>محتوای تبلیغاتی</span></div>
             <div onClick={()=>showItemB(7)} className={styles.columnItem}><HiOutlineLogout color='white' size="2vw"/><span style={{color:"white"}}>خروج از سیستم</span></div>
